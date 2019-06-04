@@ -1,0 +1,9 @@
+-cp src
+
+-main hxtf.Hxtf
+
+-cpp build/cpp
+
+-cmd rm -rf build/ready
+-cmd cp -rf resources/framework build/ready
+-cmd cp -f  build/cpp/Hxtf build/ready/hxtf
