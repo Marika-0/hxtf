@@ -1,24 +1,21 @@
 package hxtf;
 
-import hxtf.Print.*;
+import haxe.macro.Expr;
+import haxe.macro.Context;
 
 using Type;
 
 class TestRun {
-	var suites = new Array<Class<TestSuite>>();
-
-	function add(c:Class<TestSuite>) {
-		suites.push(c);
-	}
-
-	function run() {
-		for (suite in suites) {
-			try {
-				suite.createInstance([]);
-			} catch (ex:Dynamic) {
-				stderr('[41;1mException: ${Std.string(ex)}[0m');
-				stderr('[41;1mWhen instantiating suite: ${Std.string(suite)}[0m');
-			}
-		}
-	}
+    macro function add(_:Expr, e:Expr) {
+        try {
+            var type = BuildTools.getTypePath(e);
+            return macro {
+                hxtf.Print.stdout("\n##  launching suite " + $v{BuildTools.toPackageArray(type).join(".")} + "\n");
+                new $type();
+            };
+        } catch (ex:Dynamic) {
+            Context.error('Error: ${Std.string(ex)}', Context.currentPos());
+        }
+        return macro $v{42};
+    }
 }

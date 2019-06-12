@@ -107,7 +107,7 @@
 		"\\.git"
 	],
 	"indentation": {
-		"character": "tab",
+		"character": "    ",
 		"conditionalPolicy": "aligned",
 		"indentObjectLiteral": true,
 		"tabWidth": 4,
