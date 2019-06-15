@@ -7,50 +7,47 @@ import hxtf.Print.*;
 using Type;
 
 class TestCase {
-    public var _id(default, null):String;
-    public var _stamp(default, null) = stamp();
-    public var _passed(default, null) = true;
+    public var id(default, null):String;
+    public var timestamp(default, null) = stamp();
+    public var passed(default, null) = true;
 
     function new(?id:String) {
-        _id = if (id != null && id != "") {
+        this.id = if (id != null && id != "") {
             id;
         } else {
             this.getClass().getClassName();
         }
-        stdout('~~  running $_id...\n');
+        stdout('~~  running ${this.id}...\n');
     }
 
     function assert(x:Bool, ?msg:String, ?pos:PosInfos) {
         if (!x) {
-            stderr('  [41;1m--${formatPosInfos(pos)} assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): assertion failure${msg == null ? "" : ' $msg'}[0m\n');
         }
-        _passed = _passed && x;
+        passed = passed && x;
         return x;
     }
 
     function assertImplicit(a:Dynamic, b:Dynamic, ?msg:String, ?pos:PosInfos) {
         if (a != b) {
-            stderr('  [41;1m--${formatPosInfos(pos)} implicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
-            _passed = false;
-            return false;
+            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): implicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            return passed = false;
         }
         return true;
     }
 
     function assertExplicit<T>(x:T, f:T->Bool, ?msg:String, ?pos:PosInfos) {
         if (!f(x)) {
-            stderr('  [41;1m--${formatPosInfos(pos)} explicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
-            _passed = false;
-            return false;
+            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): explicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            return passed = false;
         }
         return true;
     }
 
     function assertSpecific<A, B>(a:A, b:B, f:A->B->Bool, ?msg:String, ?pos:PosInfos) {
         if (!f(a, b)) {
-            stderr('  [41;1m--${formatPosInfos(pos)} specific assertion failure${msg == null ? "" : ' $msg'}[0m\n');
-            _passed = false;
-            return false;
+            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): specific assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            return passed = false;
         }
         return true;
     }

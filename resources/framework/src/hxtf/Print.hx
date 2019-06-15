@@ -7,10 +7,10 @@ using Std;
 using StringTools;
 
 class Print {
-    public static var noAnsi(default, null):Bool = isAnsiDisabled();
+    public static var noAnsi(default, never):Bool = BuildTools.isAnsiDisabled();
 
     public static inline function formatPosInfos(pos:PosInfos) {
-        return '${pos.className}.${pos.methodName}(${pos.lineNumber})';
+        return 'line ${pos.lineNumber}';
     }
 
     public static function formatTimeDelta(a:Float, b:Float) {
@@ -73,7 +73,4 @@ class Print {
         return buf.toString();
     }
 
-    static macro function isAnsiDisabled() {
-        return macro $v{haxe.macro.Context.defined("hxtf_noansi")};
-    }
 }

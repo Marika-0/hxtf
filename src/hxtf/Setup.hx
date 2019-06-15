@@ -1,6 +1,5 @@
 package hxtf;
 
-import haxe.Json;
 import hxtf.cli.Flags;
 import hxtf.cli.Printer.*;
 import hxtf.sys.FSManager;
@@ -14,8 +13,9 @@ class Setup {
         hxmlBase = [];
         hxmlBase.push("-cp ./src");
         hxmlBase.push("");
-        hxmlBase.push("-main TestRun");
+        hxmlBase.push("-main hxtf.TestRun");
         hxmlBase.push("");
+        hxmlBase.push("-D hxtf_cwd=" + Sys.getCwd());
         if (Flags.testsToRun.length != 0) {
             hxmlBase.push("-D hxtf_y=" + Flags.testsToRun.join(":"));
         }
@@ -51,21 +51,6 @@ class Setup {
 
         if (Flags.deletePreviousRecords) {
             FSManager.delete('./$target.json');
-        } else if (!Flags.forceTestRerun) {
-            if (FSManager.doesFileExist('./$target.json')) {
-                try {
-                    var objects = new StringBuf();
-                    for (item in cast(Json.parse(File.getContent('./$target.json')), Array<Dynamic>)) {
-                        objects.add(cast(item, String));
-                        objects.addChar(':'.code);
-                    }
-                    if (objects.length != 0) {
-                        hxml.push('-D hxtf_passed=${objects.toString().substr(0, objects.length - 1)}');
-                    }
-                } catch (ex:Dynamic) {
-                    stderr('[3mFailed to parse passing test cache json for target: $target[0m\n');
-                }
-            }
         }
 
         hxml.push("");

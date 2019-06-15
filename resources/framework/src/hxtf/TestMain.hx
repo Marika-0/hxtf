@@ -1,17 +1,17 @@
 package hxtf;
 
-import haxe.macro.Context;
 import haxe.macro.Expr;
+import haxe.macro.Context;
 
 @:allow(hxtf.TestRun)
-class TestSuite {
+class TestMain {
     public var passed(default, null):UInt = 0;
     public var failed(default, null):UInt = 0;
 
-    macro function add(_:Expr, e:Expr) {
+    static macro function add(e:Expr) {
         try {
-            var type = BuildTools.reifyTypePath(e);
-            var name = BuildTools.toPackageArray(type).join(".");
+            var type = hxtf.BuildTools.reifyTypePath(e);
+            var name = hxtf.BuildTools.toPackageArray(type).join(".");
 
             var ignore = false;
             for (regex in TestRun.toExclude) {
@@ -33,10 +33,14 @@ class TestSuite {
                 return macro null;
             }
 
-            return macro {hxtf.TestRun.evaluateCase(this, new $type(), $v{name});};
+            return macro {
+                hxtf.Print.stdout("\n### launching " + $v{name} + "\n");
+                hxtf.TestRun.evaluateSuite(this, new $type(), $v{name});
+            };
         } catch (ex:Dynamic) {
-            Context.error('Error: ${Std.string(ex)}', Context.currentPos());
+            Context.error('error: ${Std.string(ex)}', Context.currentPos());
         }
+
         return macro null;
     }
 }

@@ -332,15 +332,6 @@
 				{
 					"conditions": [
 						{
-							"cond": "anyItemLength >= n",
-							"value": 30
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
 							"cond": "itemCount >= n",
 							"value": 4
 						}
@@ -567,49 +558,7 @@
 					"conditions": [
 						{
 							"cond": "lineLength >= n",
-							"value": 140
-						},
-						{
-							"cond": "anyItemLength >= n",
-							"value": 60
-						}
-					],
-					"location": "beforeLast",
-					"type": "onePerLineAfterFirst"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 140
-						}
-					],
-					"location": "beforeLast",
-					"type": "fillLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount <= n",
-							"value": 3
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength <= n",
-							"value": 120
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
+							"value": 172
 						}
 					],
 					"location": "beforeLast",
