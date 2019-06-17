@@ -327,7 +327,7 @@
 							"value": 10
 						}
 					],
-					"type": "fillLine"
+					"type": "fillLineWithLeadingBreak"
 				},
 				{
 					"conditions": [
@@ -336,7 +336,7 @@
 							"value": 4
 						}
 					],
-					"type": "onePerLine"
+					"type": "fillLineWithLeadingBreak"
 				}
 			]
 		},

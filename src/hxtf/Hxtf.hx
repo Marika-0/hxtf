@@ -5,8 +5,15 @@ import hxtf.cli.Invocation;
 import hxtf.cli.Printer.*;
 import hxtf.sys.FSManager;
 
+/**
+    The main driver class for this program.
+**/
 class Hxtf {
-    public static var prePrinted = false;
+    /**
+        If `hxtf.cli.Invocation` printed anything. If `true`, an divider line
+        will be printed before the first target compilation message.
+    **/
+    @:allow(hxtf.cli.Invocation) static var prePrintingOccurred:Bool = false;
 
     static function main() {
         Invocation.run();
@@ -19,7 +26,9 @@ class Hxtf {
 
         Setup.setup();
 
-        inline function skip(target:String) stderr('[3mSkipping target: $target[0m\n');
+        inline function skip(target:String) {
+            stderr('[3mSkipping target: $target[0m\n');
+        }
         inline function divide(line = false) {
             stdout("\n");
             if (line) {
@@ -27,7 +36,7 @@ class Hxtf {
             }
         }
 
-        divide(prePrinted);
+        divide(prePrintingOccurred);
 
         var iterator = Flags.targets.iterator();
         for (target in iterator) {
@@ -53,7 +62,7 @@ class Hxtf {
             if (!Run.run(target)) {
                 stderr('[3mTesting failed for target: $target[0m\n');
                 if (!Flags.quickTestRuns && iterator.hasNext()) {
-                    stdout('[3mPress any key to continue...[0m\n');
+                    stdout("[3mPress any key to continue...[0m\n");
                     Sys.getChar(false);
                 }
             }

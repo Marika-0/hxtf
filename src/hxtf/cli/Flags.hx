@@ -1,5 +1,8 @@
 package hxtf.cli;
 
+/**
+    This class stores the default and given values for cli settings.
+**/
 @:allow(hxtf.cli.Invocation)
 class Flags {
     /**

@@ -46,6 +46,9 @@ using Type;
     - `[\` will be interpreted as `[\\]`.
 **/
 class Glob {
+    /**
+        The raw string used to construct `this` glob.
+    **/
     public var raw(default, null):RawGlob;
 
     var regex:EReg;
@@ -72,23 +75,27 @@ class Glob {
 
         If `s` is `null`, the result is unspecified.
     **/
-    public function match(s:String) {
+    public function match(s:String):Bool {
         return regex.match(s);
     }
 
     /**
         Returns a copy of `this` Glob.
     **/
-    public function copy() {
+    public function copy():Glob {
         var copy = this.getClass().createEmptyInstance();
         copy.regex = regex;
         copy.raw = raw;
         return copy;
     }
 
-    public static function parseRaw(raw:RawGlob) {
+    /**
+        Parses the given raw glob and transforms it into a EReg-type string with
+        the same match capabilities and limitations.
+    **/
+    public static function parseRaw(raw:RawGlob):RawGlob {
         var rawRegex = new StringBuf();
-        rawRegex.addChar('^'.code);
+        rawRegex.addChar("^".code);
 
         var justParsedAny = false;
         var parsingGroup = false;
@@ -105,64 +112,64 @@ class Glob {
             var initBreaking = breaking;
 
             if (startedParsingGroup) {
-                if (char != ']'.code && char != '!'.code) {
-                    rawRegex.addChar('['.code);
+                if (char != "]".code && char != "!".code) {
+                    rawRegex.addChar("[".code);
                 }
             } else if (justNegatedGroup) {
-                if (char != ']'.code) {
-                    rawRegex.addChar('['.code);
-                    rawRegex.addChar('^'.code);
+                if (char != "]".code) {
+                    rawRegex.addChar("[".code);
+                    rawRegex.addChar("^".code);
                 }
             }
 
             switch (char) {
-                case '*'.code:
+                case "*".code:
                     if (parsingGroup) {
-                        rawRegex.addChar('*'.code);
+                        rawRegex.addChar("*".code);
                     } else if (breaking) {
-                        rawRegex.addChar('\\'.code);
-                        rawRegex.addChar('*'.code);
+                        rawRegex.addChar("\\".code);
+                        rawRegex.addChar("*".code);
                     } else {
                         if (!justParsedAny) {
-                            rawRegex.addChar('.'.code);
-                            rawRegex.addChar('*'.code);
+                            rawRegex.addChar(".".code);
+                            rawRegex.addChar("*".code);
                         }
                         justParsedAny = true;
                     }
-                case '?'.code:
+                case "?".code:
                     if (parsingGroup) {
-                        rawRegex.addChar('?'.code);
+                        rawRegex.addChar("?".code);
                     } else if (breaking) {
-                        rawRegex.addChar('\\'.code);
-                        rawRegex.addChar('?'.code);
+                        rawRegex.addChar("\\".code);
+                        rawRegex.addChar("?".code);
                     } else {
-                        rawRegex.addChar('.'.code);
+                        rawRegex.addChar(".".code);
                     }
-                case '['.code:
+                case "[".code:
                     if (parsingGroup) {
-                        rawRegex.addChar('['.code);
+                        rawRegex.addChar("[".code);
                     } else if (breaking) {
-                        rawRegex.addChar('\\'.code);
-                        rawRegex.addChar('['.code);
+                        rawRegex.addChar("\\".code);
+                        rawRegex.addChar("[".code);
                     } else {
                         parsingGroup = true;
                         startedParsingGroup = true;
                     }
-                case '!'.code:
+                case "!".code:
                     if (startedParsingGroup && !breaking) {
                         justNegatedGroup = true;
                     } else {
-                        rawRegex.addChar('!'.code);
+                        rawRegex.addChar("!".code);
                     }
-                case '^'.code:
+                case "^".code:
                     if (startedParsingGroup || !parsingGroup) {
-                        rawRegex.addChar('\\'.code);
+                        rawRegex.addChar("\\".code);
                     }
-                    rawRegex.addChar('^'.code);
-                case '-'.code:
+                    rawRegex.addChar("^".code);
+                case "-".code:
                     if (parsingGroup) {
                         if (breaking) {
-                            rawRegex.addChar('\\'.code);
+                            rawRegex.addChar("\\".code);
                         } else if (startedParsingGroup) {
                             throw GlobException.SpanCalledAfterGroupOpening;
                         } else if (justNegatedGroup) {
@@ -173,11 +180,11 @@ class Glob {
                             parsingSpan = true;
                         }
                     }
-                    rawRegex.addChar('-'.code);
-                case ']'.code:
+                    rawRegex.addChar("-".code);
+                case "]".code:
                     if (parsingGroup) {
                         if (breaking) {
-                            // rawRegex.addChar('\\'.code);
+                            // rawRegex.addChar("\\".code);
                         } else if (parsingSpan) {
                             throw GlobException.SpanRanIntoGroupClosure;
                         } else {
@@ -185,57 +192,58 @@ class Glob {
                         }
                     }
                     if (!startedParsingGroup && !justNegatedGroup) {
-                        rawRegex.addChar(']'.code);
+                        rawRegex.addChar("]".code);
                     }
-                case '\\'.code:
+                case "\\".code:
                     if (breaking) {
-                        rawRegex.addChar('\\'.code);
-                        rawRegex.addChar('\\'.code);
+                        rawRegex.addChar("\\".code);
+                        rawRegex.addChar("\\".code);
                     } else {
                         breaking = true;
                     }
-                case '.'.code | '+'.code | '$'.code | '|'.code | '('.code | ')'.code:
+                case ".".code | "+".code | "$".code | "|".code | "(".code | ")".code:
                     if (!parsingGroup) {
-                        rawRegex.addChar('\\'.code);
+                        rawRegex.addChar("\\".code);
                     }
                     rawRegex.addChar(char);
-                default:
-                    rawRegex.addChar(char);
+                default: rawRegex.addChar(char);
             }
 
-            if (char != '*'.code) {
+            if (char != "*".code) {
                 justParsedAny = false;
             }
 
-            if (initStartedParsingGroup)
-                startedParsingGroup = false;
-            if (initJustNegatedGroup)
-                justNegatedGroup = false;
-            if (initParsingSpan)
-                parsingSpan = false;
-            if (initBreaking)
-                breaking = false;
+            if (initStartedParsingGroup) startedParsingGroup = false;
+            if (initJustNegatedGroup) justNegatedGroup = false;
+            if (initParsingSpan) parsingSpan = false;
+            if (initBreaking) breaking = false;
         }
 
         if (breaking) {
-            rawRegex.addChar('\\'.code);
-            rawRegex.addChar('\\'.code);
+            rawRegex.addChar("\\".code);
+            rawRegex.addChar("\\".code);
         }
         if (parsingGroup && !startedParsingGroup && !justNegatedGroup) {
-            rawRegex.addChar(']'.code);
+            rawRegex.addChar("]".code);
         }
 
-        rawRegex.addChar('$'.code);
+        rawRegex.addChar("$".code);
         return rawRegex.toString();
     }
 
-    public function hashCode() {
+    /**
+        Returns the hash code of this glob.
+    **/
+    public function hashCode():Int {
         var hash = 0;
         haxe.Utf8.iter(raw, function(c) hash += c);
         return hash;
     }
 }
 
+/**
+    An enumeration of possible exceptions that can occur when creating a glob.
+**/
 enum GlobException {
     SpanCalledAfterGroupOpening;
     SpanCalledAfterGroupNegation;

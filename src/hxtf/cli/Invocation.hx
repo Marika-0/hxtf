@@ -5,8 +5,12 @@ import hxtf.pattern.HaxeModuleGlob;
 
 using StringTools;
 
-@:allow(hxtf.Hxtf)
+/**
+    This class handles initial cli invocation and parses the given arguments,
+    storing valid information in `hxtf.cli.Flags`.
+**/
 class Invocation {
+    @:allow(hxtf.Hxtf)
     static function run() {
         var iterator = Sys.args().iterator();
         if (!iterator.hasNext()) {
@@ -15,7 +19,7 @@ class Invocation {
 
         inline function invalidArgument(arg:String) {
             stderr('[3mInvalid argument \'$arg\'[0m\n');
-            hxtf.Hxtf.prePrinted = true;
+            hxtf.Hxtf.prePrintingOccurred = true;
         }
 
         while (iterator.hasNext()) {
@@ -57,7 +61,7 @@ class Invocation {
                                     Flags.testsToIgnore.push(new HaxeModuleGlob(module).raw);
                                 } catch (ex:Dynamic) {
                                     stderr('[3mIgnored test object glob \'$module\'[0m\n');
-                                    hxtf.Hxtf.prePrinted = true;
+                                    hxtf.Hxtf.prePrintingOccurred = true;
                                 }
                             }
                         }
@@ -87,7 +91,6 @@ class Invocation {
                 }
             }
         }
-        return true;
     }
 
     static function printHelp() {

@@ -3,9 +3,17 @@ package hxtf;
 import hxtf.cli.Printer.*;
 import sys.io.File;
 
+/**
+    This class handles getting the contents of the target script file and
+    running it.
+**/
 @:allow(hxtf.Hxtf)
 class Run {
-    static function run(target:String) {
+    /**
+        Runs the script file for the given target `target` and returns if the
+        run was successful.
+    **/
+    static function run(target:String):Bool {
         var raw:String;
         try {
             raw = File.getContent('$target.script');
