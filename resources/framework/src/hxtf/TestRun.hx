@@ -9,12 +9,49 @@ import sys.io.File;
 
 using StringTools;
 
+/**
+    The main entry class for test runs.
+**/
 class TestRun {
+    /**
+        A record of all test cases that have passed.
+
+        Test cases are evaluated at compile-time when added to a test suite. If
+        they've already passed, and retesting isn't being forced, then the test
+        is excluded from compilation and not run.
+    **/
     public static var cache:BalancedTree<String, Bool> = BuildTools.getCache();
+
+    /**
+        The working directory when hxtf was invoked.
+
+        Test files are written to/read from this directory, so scripts can move
+        around the filesystem without issue.
+    **/
     public static var cwd(default, never):String = BuildTools.getCwd();
+
+    /**
+        Whether previously-passed tests are being run or not.
+    **/
     public static var forcing(default, never):Bool = BuildTools.getForcing();
+
+    /**
+        The current target for testing.
+    **/
     public static var target(default, never):String = BuildTools.getTarget();
+
+    /**
+        An array of regexes for test cases to exclude.
+
+        Specified with the `-n` option of hxtf.
+    **/
     public static var toExclude(default, never):Array<EReg> = BuildTools.getExcludes();
+
+    /**
+        An array of regexes for test cases to include.
+
+        Specified with the `-y` option of hxtf.
+    **/
     public static var toInclude(default, never):Array<EReg> = BuildTools.getIncludes();
 
     @:access(TestMain)
@@ -57,7 +94,8 @@ class TestRun {
         }
     }
 
-    public static function evaluateCase(suite:TestSuite, test:TestCase, name:String) {
+    @:allow(hxtf.TestSuite)
+    static function evaluateCase(suite:TestSuite, test:TestCase, name:String) {
         if (test.passed) {
             Print.stdout("[32m >> " + test.id + " succeeded (" + hxtf.Print.formatTimeDelta(test.timestamp, haxe.Timer.stamp()) + ")[0m\n");
             TestRun.cache.set(name, true);
@@ -71,7 +109,8 @@ class TestRun {
         }
     }
 
-    public static function evaluateSuite(main:TestMain, suite:TestSuite, name:String) {
+    @:allow(hxtf.TestMain)
+    static function evaluateSuite(main:TestMain, suite:TestSuite, name:String) {
         main.passed += suite.passed;
         main.failed += suite.failed;
         if (suite.failed == 0) {

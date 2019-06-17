@@ -4,13 +4,28 @@ import haxe.macro.Compiler;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
-using Type;
-
+/**
+    This class is designed to be inherited from by test suites.
+**/
 @:allow(hxtf.TestRun)
 class TestSuite {
+    /**
+        The number of test cases that have passed for this suite.
+    **/
     public var passed(default, null):UInt = 0;
+    /**
+        The number of test cases that have failed for this suite.
+    **/
     public var failed(default, null):UInt = 0;
 
+    /**
+        Adds the given test case to the test run.
+
+        If the argument of this function is not of runtime type
+        `Class<hxtf.TestCase>`, the result is unspecified.
+
+        See `hxtf.BuildTools.reifyTypePath` for more information.
+    **/
     macro function add(_:Expr, e:Expr) {
         try {
             var type = BuildTools.reifyTypePath(e);
@@ -21,12 +36,13 @@ class TestSuite {
             }
 
             if (!Context.defined("hxtf__macro__SuiteHasCases_" + Context.getLocalClass().toString())) {
+                Compiler.define("hxtf__macro__SuiteHasCases_" + Context.getLocalClass().toString());
                 return macro {
-                    hxtf.Print.stdout('\n### launching ${this.getClass().getClassName()}\n');
+                    hxtf.Print.stdout("\n### launching " + Type.getClassName(Type.getClass(this)) + "\n");
                     hxtf.TestRun.evaluateCase(this, new $type(), $v{name});
                 };
             }
-            Compiler.define("hxtf__macro__SuiteHasCases_" + Context.getLocalClass().toString());
+
             return macro {
                 hxtf.TestRun.evaluateCase(this, new $type(), $v{name});
             };
