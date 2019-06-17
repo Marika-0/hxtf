@@ -22,7 +22,7 @@ class TestRun {
         var run = new TestMain();
 
         if (run.failed == 0 && run.passed == 0) {
-            Print.stdout("\n[3mNo tests were run[0m\n");
+            Print.stdout("\n  [3;4mNo Tests Were Run![0m\n");
             Sys.exit(0);
         }
 
@@ -31,30 +31,29 @@ class TestRun {
         var ansi = if (run.failed == 0) "[42;1m" else if (run.failed <= run.passed) "[43;1m" else "[41;1m";
         var diff = Math.round(Math.abs(Std.string(run.passed).length - Std.string(run.failed).length)) + 1;
 
-        Print.stdout("\n[3mTesting completed[0m\n");
+        Print.stdout("\n[3mTesting complete![0m\n");
         Print.stdout('$ansi  Test passed: ${"".lpad(" ", diff - Std.string(run.passed).length)}${run.passed} [0m\n');
         Print.stdout('$ansi  Test failed: ${"".lpad(" ", diff - Std.string(run.failed).length)}${run.failed} [0m\n');
 
         if (run.failed != 0) {
             Sys.exit(1);
         }
+        Print.stdout('[3mTesting passed for target: $target[0m\n');
         Sys.exit(0);
     }
 
     static function saveCache() {
         var cachePath = addTrailingSlash(cwd) + target + ".json";
-        if (!FileSystem.exists(cachePath) || !FileSystem.isDirectory(cachePath)) {
-            var passedTests = new Array<String>();
-            for (test in cache.keys()) {
-                if (cache.get(test)) {
-                    passedTests.push(test);
-                }
+        var passedTests = new Array<String>();
+        for (test in cache.keys()) {
+            if (cache.get(test)) {
+                passedTests.push(test);
             }
-            try {
-                File.saveContent(cachePath, haxe.Json.stringify(passedTests));
-            } catch (ex:Dynamic) {
-                Print.stderr('[31;1mFailed to save test cache to $cachePath[0m\n');
-            }
+        }
+        try {
+            File.saveContent(cachePath, haxe.Json.stringify(passedTests));
+        } catch (ex:Dynamic) {
+            Print.stderr('[31;1mFailed to save test cache to $cachePath[0m\n');
         }
     }
 

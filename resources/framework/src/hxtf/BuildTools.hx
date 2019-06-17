@@ -129,27 +129,25 @@ class BuildTools {
             default: throw "Type path reification followed to invalid expression";
         }
     }
-/*
-    public static inline function useTestObject(t:String) {
-        var use = true;
 
+    public static function useTestObject(t:String) {
         for (regex in TestRun.toExclude) {
             if (regex.match(t)) {
-                use = false;
+                return false;
             }
         }
 
-        if (use && TestRun.toInclude.length != 0) {
+        if (TestRun.toInclude.length != 0) {
             for (regex in TestRun.toInclude) {
                 if (regex.match(t)) {
-                    use = false;
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
 
-        if (use && TestRun.forcing) use = false;
+        if (TestRun.forcing) return false;
 
-        return use && !TestRun.cache.exists(t);
-    }*/
+        return !TestRun.cache.exists(t);
+    }
 }
