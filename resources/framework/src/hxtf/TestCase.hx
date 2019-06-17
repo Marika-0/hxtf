@@ -49,7 +49,7 @@ class TestCase {
         } else {
             this.getClass().getClassName();
         }
-        stdout('~~  running ${this.id}...\n');
+        stdout('${Print.noAnsi ? " ~~ " : "~~  "}running ${this.id}...\n');
     }
 
     /**
@@ -58,7 +58,7 @@ class TestCase {
     **/
     function assert(x:Bool, ?msg:String, ?pos:PosInfos) {
         if (!x) {
-            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            stderr('[41;1m${Print.noAnsi ? "!-- " : "----"}${this.id} (${formatPosInfos(pos)}): assertion failure${msg == null ? "" : ' $msg'}[0m\n');
         }
         passed = passed && x;
         return x;
@@ -73,7 +73,7 @@ class TestCase {
     **/
     function assertImplicit(a:Dynamic, b:Dynamic, ?msg:String, ?pos:PosInfos) {
         if (a != b) {
-            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): implicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            stderr('[41;1m${Print.noAnsi ? "!!!!" : "----"}${this.id} (${formatPosInfos(pos)}): implicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
             return passed = false;
         }
         return true;
@@ -87,7 +87,7 @@ class TestCase {
     **/
     function assertExplicit<T>(x:T, f:T->Bool, ?msg:String, ?pos:PosInfos) {
         if (!f(x)) {
-            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): explicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            stderr('[41;1m${Print.noAnsi ? "!!!!" : "----"}${this.id} (${formatPosInfos(pos)}): explicit assertion failure${msg == null ? "" : ' $msg'}[0m\n');
             return passed = false;
         }
         return true;
@@ -102,7 +102,7 @@ class TestCase {
     **/
     function assertSpecific<A, B>(a:A, b:B, f:A->B->Bool, ?msg:String, ?pos:PosInfos) {
         if (!f(a, b)) {
-            stderr('[41;1m----${this.id} (${formatPosInfos(pos)}): specific assertion failure${msg == null ? "" : ' $msg'}[0m\n');
+            stderr('[41;1m${Print.noAnsi ? "!!!!" : "----"}${this.id} (${formatPosInfos(pos)}): specific assertion failure${msg == null ? "" : ' $msg'}[0m\n');
             return passed = false;
         }
         return true;

@@ -68,14 +68,14 @@ class TestRun {
         var ansi = if (run.failed == 0) "[42;1m" else if (run.failed <= run.passed) "[43;1m" else "[41;1m";
         var diff = Math.round(Math.abs(Std.string(run.passed).length - Std.string(run.failed).length)) + 1;
 
-        Print.stdout("\n[3mTesting complete![0m\n");
-        Print.stdout('$ansi  Test passed: ${"".lpad(" ", diff - Std.string(run.passed).length)}${run.passed} [0m\n');
-        Print.stdout('$ansi  Test failed: ${"".lpad(" ", diff - Std.string(run.failed).length)}${run.failed} [0m\n');
+        Print.stdout('\n${Print.noAnsi ? "  " : ""}[3mTesting complete![0m\n');
+        Print.stdout('${Print.noAnsi ? "  " : ""}$ansi  Tests passed: ${"".lpad(" ", diff - Std.string(run.passed).length)}${run.passed} [0m\n');
+        Print.stdout('${Print.noAnsi ? "  " : ""}$ansi  Tests failed: ${"".lpad(" ", diff - Std.string(run.failed).length)}${run.failed} [0m\n');
 
         if (run.failed != 0) {
             Sys.exit(1);
         }
-        Print.stdout('[3mTesting passed for target: $target[0m\n');
+        Print.stdout('${Print.noAnsi ? "  " : ""}[3mTesting passed for target: $target[0m\n');
         Sys.exit(0);
     }
 
@@ -101,7 +101,7 @@ class TestRun {
             TestRun.cache.set(name, true);
             suite.passed++;
         } else {
-            Print.stderr("[31;1m >> " + test.id + " failed (" + hxtf.Print.formatTimeDelta(test.timestamp, haxe.Timer.stamp()) + ")[0m\n");
+            Print.stderr("[31;1m" + (Print.noAnsi ? "!" : " ") + ">> "  + test.id + " failed (" + hxtf.Print.formatTimeDelta(test.timestamp, haxe.Timer.stamp()) + ")[0m\n");
             if (TestRun.cache.exists(name)) {
                 TestRun.cache.set(name, false);
             }

@@ -38,7 +38,7 @@ class TestSuite {
             if (!Context.defined("hxtf__macro__SuiteHasCases_" + Context.getLocalClass().toString())) {
                 Compiler.define("hxtf__macro__SuiteHasCases_" + Context.getLocalClass().toString());
                 return macro {
-                    hxtf.Print.stdout("\n### launching " + Type.getClassName(Type.getClass(this)) + "\n");
+                    hxtf.Print.stdout("\n" + (hxtf.Print.noAnsi ? " ## " : "### ") + "launching " + Type.getClassName(Type.getClass(this)) + "\n");
                     hxtf.TestRun.evaluateCase(this, new $type(), $v{name});
                 };
             }

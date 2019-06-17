@@ -60,7 +60,7 @@ class Hxtf {
                 continue;
             }
             if (!Run.run(target)) {
-                stderr('[3mTesting failed for target: $target[0m\n');
+                stderr('${Flags.disableAnsiFormatting ? "  " : ""}[3mTesting failed for target: $target[0m\n');
                 if (!Flags.quickTestRuns && iterator.hasNext()) {
                     stdout("[3mPress any key to continue...[0m\n");
                     Sys.getChar(false);
