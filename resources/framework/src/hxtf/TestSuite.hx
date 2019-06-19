@@ -8,6 +8,7 @@ import haxe.macro.Expr;
     This class is designed to be inherited from by test suites.
 **/
 @:allow(hxtf.TestRun)
+@:allow(hxtf.TestMain)
 class TestSuite {
     /**
         The number of test cases that have passed for this suite.
