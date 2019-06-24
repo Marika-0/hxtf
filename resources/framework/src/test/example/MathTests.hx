@@ -1,8 +1,8 @@
 package test.example;
 
 class MathTests extends hxtf.TestCase {
-    public function new() {
-        super();
+    function new() {
+        super("Example Math Tests");
         test_random();
         test_NaN();
     }
@@ -17,5 +17,7 @@ class MathTests extends hxtf.TestCase {
     function test_NaN() {
         assert(Math.isNaN(Math.NaN));
         assertExplicit(Math.NaN, function(x) return Math.isNaN(x));
+
+        throw("I Threw An Exception!");
     }
 }

@@ -16,6 +16,8 @@ using StringTools;
 **/
 @:dce
 class BuildTools {
+    public static var nonEmptySuites = new BalancedTree<String, Bool>();
+
     /**
         Gets the contents of the _&lt;test>.json_ file and parses it into a
         balanced binary search tree.
@@ -107,7 +109,7 @@ class BuildTools {
             return macro [];
         }
 
-        var excludes = [for (raw in Context.definedValue("hxtf_n").split(":")) macro new EReg(macro $v{raw}, "")];
+        var excludes = [for (raw in Context.definedValue("hxtf_n").split(":")) macro new EReg($v{raw}, "")];
         return macro $a{excludes};
     }
 
@@ -124,7 +126,7 @@ class BuildTools {
             return macro [];
         }
 
-        var includes = [for (raw in Context.definedValue("hxtf_y").split(":")) macro new EReg(macro $v{raw}, "")];
+        var includes = [for (raw in Context.definedValue("hxtf_y").split(":")) macro new EReg($v{raw}, "")];
         return macro $a{includes};
     }
 
