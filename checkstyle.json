@@ -80,7 +80,7 @@
         },
         {
             "props": {
-                "lineStyle": "none",
+                "lineStyle": "ignore",
                 "startStyle": "twostars"
             },
             "type": "DocCommentStyle"
@@ -163,8 +163,12 @@
                 "modifier": "PUBLIC",
                 "excludeNames": [
                     "new",
-                    "toString"
-                ]
+                    "toString",
+                    "hasNext",
+                    "next",
+                    "hash"
+                ],
+                "severity": "IGNORE"
             },
             "type": "FieldDocComment"
         },
@@ -208,13 +212,13 @@
         },
         {
             "props": {
-                "ignoreReturnAssignments": false
+                "ignoreReturnAssignments": true
             },
             "type": "InnerAssignment"
         },
         {
             "props": {
-                "allowProperties": false,
+                "allowProperties": true,
                 "allowMarkerInterfaces": true
             },
             "type": "Interface"
@@ -242,8 +246,8 @@
         },
         {
             "props": {
-                "max": 160,
-                "ignorePattern": "~/.*/"
+                "max": 156,
+                "ignorePattern": "^$"
             },
             "type": "LineLength"
         },
@@ -330,7 +334,8 @@
             "props": {
                 "ignoreExtern": true,
                 "format": "^[a-z][a-zA-Z0-9]*$",
-                "tokens": []
+                "tokens": [],
+                "severity": "IGNORE"
             },
             "type": "MethodName"
         },
@@ -403,7 +408,7 @@
                 "boolOpPolicy": "around",
                 "intervalOpPolicy": "none",
                 "assignOpPolicy": "around",
-                "functionArgPolicy": "around",
+                "functionArgPolicy": "none",
                 "bitwiseOpPolicy": "around",
                 "arithmeticOpPolicy": "around",
                 "compareOpPolicy": "around",
@@ -497,7 +502,7 @@
             "props": {
                 "enforceReturnTypeForAnonymous": false,
                 "allowEmptyReturn": true,
-                "enforceReturnType": false
+                "enforceReturnType": true
             },
             "type": "Return"
         },
@@ -517,7 +522,6 @@
                     "ABSTRACT_DEF",
                     "TYPEDEF_DEF",
                     "INTERFACE_DEF",
-                    "OBJECT_DECL",
                     "FUNCTION",
                     "FOR",
                     "IF",
@@ -526,7 +530,7 @@
                     "TRY",
                     "CATCH"
                 ],
-                "option": "same"
+                "option": "aloneorsingle"
             },
             "type": "RightCurly"
         },
@@ -609,7 +613,8 @@
                     "ENUM_DEF",
                     "INTERFACE_DEF",
                     "TYPEDEF_DEF"
-                ]
+                ],
+                "severity": "IGNORE"
             },
             "type": "TypeDocComment"
         },
