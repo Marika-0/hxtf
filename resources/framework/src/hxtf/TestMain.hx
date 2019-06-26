@@ -38,7 +38,7 @@ class TestMain {
 
         See `hxtf.BuildTools.reifyTypePath` for more information.
     **/
-    static macro function add(e:Expr) {
+    static macro function add(e:Expr):Expr {
         try {
             var type = hxtf.BuildTools.reifyTypePath(e);
             var name = hxtf.BuildTools.toPackageArray(type).join(".");

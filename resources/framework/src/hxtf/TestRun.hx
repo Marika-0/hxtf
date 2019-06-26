@@ -1,9 +1,11 @@
 package hxtf;
 
 import TestMain;
+import haxe.Timer.stamp;
 import haxe.Json;
 import haxe.ds.BalancedTree;
 import haxe.io.Path.addTrailingSlash;
+import hxtf.Print.*;
 import sys.FileSystem;
 import sys.io.File;
 
@@ -59,7 +61,7 @@ class TestRun {
         var run = new TestMain();
 
         if (run.failed == 0 && run.passed == 0) {
-            Print.stdout("\n  [3;4mNo Tests Were Run![0m\n");
+            stdout("\n  [3;4mNo Tests Were Run![0m\n");
             Sys.exit(0);
         }
 
@@ -68,18 +70,18 @@ class TestRun {
         var ansi = if (run.failed == 0) "[42;1m" else if (run.failed <= run.passed) "[43;1m" else "[41;1m";
         var diff = Math.round(Math.abs(Std.string(run.passed).length - Std.string(run.failed).length)) + 1;
 
-        Print.stdout('\n${Print.noAnsi ? "  " : ""}[3mTesting complete![0m\n');
-        Print.stdout('${Print.noAnsi ? "  " : ""}$ansi  Tests passed: ${"".lpad(" ", diff - Std.string(run.passed).length)}${run.passed} [0m\n');
-        Print.stdout('${Print.noAnsi ? "  " : ""}$ansi  Tests failed: ${"".lpad(" ", diff - Std.string(run.failed).length)}${run.failed} [0m\n');
+        stdout('\n${noAnsi ? "  " : ""}[3mTesting complete![0m\n');
+        stdout('${noAnsi ? "  " : ""}$ansi  Tests passed: ${"".lpad(" ", diff - Std.string(run.passed).length)}${run.passed} [0m\n');
+        stdout('${noAnsi ? "  " : ""}$ansi  Tests failed: ${"".lpad(" ", diff - Std.string(run.failed).length)}${run.failed} [0m\n');
 
         if (run.failed != 0) {
             Sys.exit(1);
         }
-        Print.stdout('${Print.noAnsi ? "  " : ""}[3mTesting passed for target: $target[0m\n');
+        stdout('${noAnsi ? "  " : ""}[3mTesting passed for target: $target[0m\n');
         Sys.exit(0);
     }
 
-    static function saveCache() {
+    static function saveCache():Void {
         var cachePath = addTrailingSlash(cwd) + target + ".json";
         var passedTests = new Array<String>();
         for (test in cache.keys()) {
@@ -90,18 +92,18 @@ class TestRun {
         try {
             File.saveContent(cachePath, haxe.Json.stringify(passedTests));
         } catch (ex:Dynamic) {
-            Print.stderr('[31;1mFailed to save test cache to $cachePath[0m\n');
+            stderr('[31;1mFailed to save test cache to $cachePath[0m\n');
         }
     }
 
     @:allow(hxtf.TestSuite)
-    static function evaluateCase(suite:TestSuite, test:TestCase, name:String) {
+    static function evaluateCase(suite:TestSuite, test:TestCase, name:String):Void {
         if (test.passed) {
-            Print.stdout("[32m >> " + test.id + " succeeded (" + hxtf.Print.formatTimeDelta(test.timestamp, haxe.Timer.stamp()) + ")[0m\n");
+            stdout('[32m >> ${test.id} succeeded (${formatTimeDelta(test.timestamp, stamp())})[0m\n');
             TestRun.cache.set(name, true);
             suite.passed++;
         } else {
-            Print.stderr("[31;1m" + (Print.noAnsi ? "!" : " ") + ">> "  + test.id + " failed (" + hxtf.Print.formatTimeDelta(test.timestamp, haxe.Timer.stamp()) + ")[0m\n");
+            stderr('[31;1m${noAnsi ? "!" : " "}>> ${test.id} failed (${formatTimeDelta(test.timestamp, stamp())})[0m\n');
             if (TestRun.cache.exists(name)) {
                 TestRun.cache.set(name, false);
             }
@@ -110,7 +112,7 @@ class TestRun {
     }
 
     @:allow(hxtf.TestMain)
-    static function evaluateSuite(main:TestMain, suite:TestSuite, name:String) {
+    static function evaluateSuite(main:TestMain, suite:TestSuite, name:String):Void {
         main.passed += suite.passed;
         main.failed += suite.failed;
         if (suite.failed == 0) {

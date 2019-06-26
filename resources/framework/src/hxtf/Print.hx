@@ -21,7 +21,7 @@ class Print {
 
         Used by hxtf to reduce code-reuse.
     **/
-    public static inline function formatPosInfos(pos:PosInfos) {
+    public static inline function formatPosInfos(pos:PosInfos):String {
         return 'line ${pos.lineNumber}';
     }
 
@@ -34,13 +34,13 @@ class Print {
         Otherwise the difference if formatted into `"%dd %Hh %Mm %Ss %fms"` (in
         `strftime` format), with leading zero entries removed.
     **/
-    public static function formatTimeDelta(a:Float, b:Float) {
+    public static function formatTimeDelta(a:Float, b:Float):String {
         if (b <= a) return "<= 1ms";
 
         var diff = DateTools.parse(1000 * (b - a));
         var str = "";
 
-        inline function space(str:String, s:String) {
+        inline function space(str:String, s:String):String {
             return (!str.endsWith(" ") && str.length != 0 ? " " : "") + s;
         }
 
@@ -57,7 +57,7 @@ class Print {
         Writes the given string `s` to the standard output stream, removing ANSI
         formatting if required.
     **/
-    public static inline function stdout(s:String) {
+    public static inline function stdout(s:String):Void {
         Sys.stdout().writeString(noAnsi ? stripAnsi(s) : s);
     }
 
@@ -65,14 +65,14 @@ class Print {
         Writes the given string `s` to the standard error stream, removing ANSI
         formatting if required.
     **/
-    public static inline function stderr(s:String) {
+    public static inline function stderr(s:String):Void {
         Sys.stderr().writeString(noAnsi ? stripAnsi(s) : s);
     }
 
     /**
         Strips ANSI formatting from the given string `s`.
     **/
-    public static function stripAnsi(s:String) {
+    public static function stripAnsi(s:String):String {
         var buf = new StringBuf();
         var blocking = false;
         var prev = -1;
@@ -104,5 +104,4 @@ class Print {
         }
         return buf.toString();
     }
-
 }

@@ -55,7 +55,7 @@ class TestSuite {
 
         See `hxtf.BuildTools.reifyTypePath` for more information.
     **/
-    macro function add(_:Expr, e:Expr) {
+    macro function add(_:Expr, e:Expr):Expr {
         try {
             var type = BuildTools.reifyTypePath(e);
             var name = BuildTools.toPackageArray(type).join(".");
@@ -72,8 +72,7 @@ class TestSuite {
                         hxtf.TestRun.evaluateCase(this, new $type(), $v{name});
                     } catch (ex:Dynamic) {
                         failed++;
-                        hxtf.Print.stderr("[41;1m" + (hxtf.Print.noAnsi ? "!-- " : "----") + $v{name} + " unhandled exception occurred: " + Std.string(ex) +
-                            "[0m\n");
+                        hxtf.Print.stderr("[41;1m" + (hxtf.Print.noAnsi ? "!-- " : "----") + $v{name} + " unhandled exception occurred: " + Std.string(ex) + "[0m\n");
                     }
                 };
             }
@@ -83,8 +82,7 @@ class TestSuite {
                     hxtf.TestRun.evaluateCase(this, new $type(), $v{name});
                 } catch (ex:Dynamic) {
                     failed++;
-                    hxtf.Print.stderr("[41;1m" + (hxtf.Print.noAnsi ? "!-- " : "----") + $v{name} + " unhandled exception occurred: " + Std.string(ex) +
-                        "[0m\n");
+                    hxtf.Print.stderr("[41;1m" + (hxtf.Print.noAnsi ? "!-- " : "----") + $v{name} + " unhandled exception occurred: " + Std.string(ex) + "[0m\n");
                 }
             };
         } catch (ex:Dynamic) {

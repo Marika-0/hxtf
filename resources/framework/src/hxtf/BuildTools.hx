@@ -164,7 +164,7 @@ class BuildTools {
         if (path.length == 0) throw "Type path reification returned as empty";
         if (path.length == 1) return {pack: [], name: path[0]};
 
-        inline function firstAlphaIsLowerCase(s:String) {
+        inline function firstAlphaIsLowerCase(s:String):Bool {
             var ret = false;
             for (index in 0...s.length) {
                 var c = s.fastCodeAt(index);
@@ -207,7 +207,7 @@ class BuildTools {
         This function, given some `haxe.macro.TypePath` `tp`, converts it into
         an array pathing straight to the type (including sub-types).
     **/
-    public static function toPackageArray(tp:TypePath) {
+    public static function toPackageArray(tp:TypePath):Array<String> {
         return if (tp.sub == null) {
             tp.pack.concat([tp.name]);
         } else {
@@ -228,7 +228,7 @@ class BuildTools {
            _&lt;test>.json_ cache, returns `true`.
         1. Otherwise returns `true`.
     **/
-    public static function useTestObject(t:String) {
+    public static function useTestObject(t:String):Bool {
         for (regex in TestRun.toExclude) {
             if (regex.match(t)) {
                 return false;
