@@ -247,7 +247,7 @@
         {
             "props": {
                 "max": 156,
-                "ignorePattern": "^$"
+                "ignorePattern": "^.*$"
             },
             "type": "LineLength"
         },
@@ -278,7 +278,8 @@
                     0,
                     1,
                     2
-                ]
+                ],
+                "severity": "IGNORE"
             },
             "type": "MagicNumber"
         },
@@ -522,7 +523,15 @@
                     "ABSTRACT_DEF",
                     "TYPEDEF_DEF",
                     "INTERFACE_DEF",
-                    "FUNCTION",
+                    "FUNCTION"
+                ],
+                "option": "same"
+            },
+            "type": "RightCurly"
+        },
+        {
+            "props": {
+                "tokens": [
                     "FOR",
                     "IF",
                     "WHILE",
@@ -530,10 +539,10 @@
                     "TRY",
                     "CATCH"
                 ],
-                "option": "aloneorsingle"
+                "option": "alone"
             },
             "type": "RightCurly"
-        },
+        }
         {
             "props": {
                 "commaPolicy": "after",
