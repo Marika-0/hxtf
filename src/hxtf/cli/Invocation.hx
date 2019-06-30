@@ -11,7 +11,7 @@ using StringTools;
 **/
 class Invocation {
     @:allow(hxtf.Hxtf)
-    static function run() {
+    static function run():Void {
         var iterator = Sys.args().iterator();
         if (!iterator.hasNext()) {
             printUsage();
@@ -19,6 +19,11 @@ class Invocation {
 
         inline function invalidArgument(arg:String) {
             stderr('[3mInvalid argument \'$arg\'[0m\n');
+            hxtf.Hxtf.prePrintingOccurred = true;
+        }
+
+        inline function embeddedArgument(arg:String) {
+            stderr('[3mEmbedded argument \'$arg\' requires an argument and was ignored[0m\n');
             hxtf.Hxtf.prePrintingOccurred = true;
         }
 
@@ -53,8 +58,8 @@ class Invocation {
                         if (arg.length == 1) {
                             continue;
                         }
-                    }
-                    if (arg.endsWith("n")) {
+                        arg = arg.substr(0, arg.length - 1);
+                    } else if (arg.endsWith("n")) {
                         for (module in iterator.next().split(":")) {
                             if (module.length != 0) {
                                 try {
@@ -68,6 +73,7 @@ class Invocation {
                         if (arg.length == 1) {
                             continue;
                         }
+                        arg = arg.substr(0, arg.length - 1);
                     }
                     for (char in arg.split("")) {
                         switch (char) {
@@ -79,7 +85,9 @@ class Invocation {
                             case "w": Flags.writeCompilationOutput = true;
                             case "h": printHelp();
                             case "u": printUsage();
-                            default: invalidArgument('-$arg');
+                            case "y": embeddedArgument("y");
+                            case "n": embeddedArgument("n");
+                            default: invalidArgument('-$char');
                         }
                     }
                 } else {
@@ -93,7 +101,7 @@ class Invocation {
         }
     }
 
-    static function printHelp() {
+    static function printHelp():Void {
         //          [------------------------------------80-chars------------------------------------]
         stdout("Usage: hxtf [OPTIONS...] TARGETS...\n");
         stdout("Run configurable unit tests for a haxe program.\n");
@@ -120,7 +128,7 @@ class Invocation {
         Sys.exit(0);
     }
 
-    static function printUsage() {
+    static function printUsage():Void {
         stdout("Usage: hxtf [OPTIONS...] TARGETS...\n");
         stdout("\n");
         Sys.exit(0);
