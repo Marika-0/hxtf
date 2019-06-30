@@ -1,12 +1,11 @@
 package hxtf;
 
 import TestMain;
-import haxe.Timer.stamp;
+import haxe.Timer;
 import haxe.Json;
 import haxe.ds.BalancedTree;
 import haxe.io.Path.addTrailingSlash;
 import hxtf.Print.*;
-import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
@@ -90,24 +89,9 @@ class TestRun {
             }
         }
         try {
-            File.saveContent(cachePath, haxe.Json.stringify(passedTests));
+            File.saveContent(cachePath, Json.stringify(passedTests));
         } catch (ex:Dynamic) {
             stderr('[31;1mFailed to save test cache to $cachePath[0m\n');
-        }
-    }
-
-    @:allow(hxtf.TestSuite)
-    static function evaluateCase(suite:TestSuite, test:TestCase, name:String):Void {
-        if (test.passed) {
-            stdout('[32m >> ${test.id} succeeded (${formatTimeDelta(test.timestamp, stamp())})[0m\n');
-            TestRun.cache.set(name, true);
-            suite.passed++;
-        } else {
-            stderr('[31;1m${noAnsi ? "!" : " "}>> ${test.id} failed (${formatTimeDelta(test.timestamp, stamp())})[0m\n');
-            if (TestRun.cache.exists(name)) {
-                TestRun.cache.set(name, false);
-            }
-            suite.failed++;
         }
     }
 
@@ -115,13 +99,43 @@ class TestRun {
     static function evaluateSuite(main:TestMain, suite:TestSuite, name:String):Void {
         main.passed += suite.passed;
         main.failed += suite.failed;
+
         if (suite.failed == 0) {
-            if (suite.passed == 0) return;
+            if (suite.passed != 0) {
+                TestRun.cache.set(name, true);
+            }
+        } else if (TestRun.cache.exists(name)) {
+            TestRun.cache.set(name, false);
+        }
+    }
+
+    @:allow(hxtf.TestMain)
+    static function suiteException(main:TestMain, exception:Dynamic, name:String) {
+        main.failed++;
+        stderr('[41;1m${noAnsi ? "!## " : "### "}$name unhandled suite exception: ${Std.string(exception)}[0m\n');
+        printExceptionStackToStderr();
+    }
+
+    @:allow(hxtf.TestSuite)
+    static function evaluateCase(suite:TestSuite, test:TestCase, name:String, start:Float):Void {
+        if (test.passed) {
+            suite.passed++;
+            stdout('[32m >> ${test.id} passed (${formatTimeDelta(start, Timer.stamp())})[0m\n');
             TestRun.cache.set(name, true);
         } else {
+            suite.failed++;
+            stderr('[31;1m${noAnsi ? "!" : " "}>> ${test.id} failed (${formatTimeDelta(start, Timer.stamp())})[0m\n');
             if (TestRun.cache.exists(name)) {
                 TestRun.cache.set(name, false);
             }
         }
+    }
+
+    @:allow(hxtf.TestSuite)
+    static function caseException(suite:TestSuite, exception:Dynamic, name:String, stamp:Float) {
+        suite.failed++;
+        stderr('[41;1m${noAnsi ? "!-- " : "----"} $name unhandled case exception: ${Std.string(exception)}[0m\n');
+        printExceptionStackToStderr();
+        stderr('[31;1m${noAnsi ? "!" : " "}>> $name failed (${formatTimeDelta(stamp, Timer.stamp())})[0m\n');
     }
 }

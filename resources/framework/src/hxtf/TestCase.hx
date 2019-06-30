@@ -21,13 +21,6 @@ class TestCase {
     public var id(default, null):String;
 
     /**
-        The time this test case was invoked.
-
-        Used internally - modifying this value could cause unexpected behavior.
-    **/
-    public var timestamp(default, null):Float;
-
-    /**
         If any assertion calls have failed for this test case.
 
         Used internally - modifying this value could cause unexpected behavior.
@@ -48,7 +41,6 @@ class TestCase {
         } else {
             this.getClass().getClassName();
         }
-        timestamp = haxe.Timer.stamp();
         passed = true;
         stdout('${Print.noAnsi ? " ~~ " : "~~  "}running ${this.id}...\n');
     }

@@ -40,16 +40,15 @@ class TestMain {
     **/
     static macro function add(e:Expr):Expr {
         try {
-            var type = hxtf.BuildTools.reifyTypePath(e);
-            var name = hxtf.BuildTools.toPackageArray(type).join(".");
+            var path = BuildTools.reifyTypePath(e);
+            var type = BuildTools.toTypeArray(path).join(".");
 
             return macro {
-                hxtf.TestRun.evaluateSuite(this, new $type(), $v{name});
+                hxtf.TestRun.evaluateSuite(this, new $path(), $v{type});
             };
         } catch (ex:Dynamic) {
             Context.error('error: ${Std.string(ex)}', Context.currentPos());
         }
-
         return macro null;
     }
 }

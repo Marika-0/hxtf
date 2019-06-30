@@ -57,10 +57,10 @@ class TestSuite {
     **/
     macro function add(_:Expr, e:Expr):Expr {
         try {
-            var type = BuildTools.reifyTypePath(e);
-            var name = BuildTools.toPackageArray(type).join(".");
+            var path = BuildTools.reifyTypePath(e);
+            var type = BuildTools.toTypeArray(path).join(".");
 
-            if (!BuildTools.useTestObject(name)) {
+            if (!BuildTools.useTestObject(type)) {
                 return macro null;
             }
 
@@ -68,25 +68,24 @@ class TestSuite {
                 BuildTools.nonEmptySuites.set(Context.getLocalClass().toString(), true);
                 return macro {
                     hxtf.Print.stdout("\n" + (hxtf.Print.noAnsi ? " ## " : "### ") + "launching " + id + "\n");
+                    var stamp = haxe.Timer.stamp();
                     try {
-                        hxtf.TestRun.evaluateCase(this, new $type(), $v{name});
+                        hxtf.TestRun.evaluateCase(this, new $path(), $v{type}, stamp);
                     } catch (ex:Dynamic) {
-                        failed++;
-                        hxtf.Print.stderr("[41;1m" + (hxtf.Print.noAnsi ? "!-- " : "----") + $v{name} + " unhandled exception occurred: " + Std.string(ex) + "[0m\n");
+                        hxtf.TestRun.caseException(this, ex, $v{type}, stamp);
                     }
-                };
-            }
-
-            return macro {
-                try {
-                    hxtf.TestRun.evaluateCase(this, new $type(), $v{name});
-                } catch (ex:Dynamic) {
-                    failed++;
-                    hxtf.Print.stderr("[41;1m" + (hxtf.Print.noAnsi ? "!-- " : "----") + $v{name} + " unhandled exception occurred: " + Std.string(ex) + "[0m\n");
                 }
-            };
+            }
+            return macro {
+                var stamp = haxe.Timer.stamp();
+                try {
+                    hxtf.TestRun.evaluateCase(this, new $path(), $v{type}, stamp);
+                } catch (ex:Dynamic) {
+                    hxtf.TestRun.caseException(this, ex, $v{type}, stamp);
+                }
+            }
         } catch (ex:Dynamic) {
-            Context.error('Error: ${Std.string(ex)}', Context.currentPos());
+            Context.error('error: ${Std.string(ex)}', Context.currentPos());
         }
         return macro null;
     }

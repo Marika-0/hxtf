@@ -1,5 +1,6 @@
 package hxtf;
 
+import haxe.CallStack;
 import haxe.PosInfos;
 import haxe.Utf8;
 
@@ -40,7 +41,7 @@ class Print {
         var diff = DateTools.parse(1000 * (b - a));
         var str = "";
 
-        inline function space(str:String, s:String):String {
+        inline function space(str:String, s:String) {
             return (!str.endsWith(" ") && str.length != 0 ? " " : "") + s;
         }
 
@@ -103,5 +104,22 @@ class Print {
             buf.addChar("".code);
         }
         return buf.toString();
+    }
+
+    @:access(haxe.CallStack)
+    public static function printExceptionStackToStderr() {
+        if (CallStack.exceptionStack().length == 0) {
+            stderr("  [41;1m    Exception stack not available [0m\n");
+        } else {
+            for (item in CallStack.exceptionStack()) {
+                var buf = new StringBuf();
+                CallStack.itemToString(buf, item);
+                if (noAnsi) {
+                    Sys.stderr().writeString('      Called from ${buf.toString()}\n');
+                } else {
+                    Sys.stderr().writeString('  [41;1m    Called from ${buf.toString()} [0m\n');
+                }
+            }
+        }
     }
 }
