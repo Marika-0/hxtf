@@ -13,7 +13,7 @@ class Printer {
         Writes the given string `str` to the process standard output stream
         (stripping ANSI from the string if required).
     **/
-    public static inline function stdout(str:String) {
+    public static inline function stdout(str:String):Void {
         Sys.stdout().writeString(disableAnsiFormatting ? str.stripAnsi() : str);
     }
 
@@ -21,7 +21,7 @@ class Printer {
         Writes the given string `str` to the process standard error stream
         (stripping ANSI from the string if required).
     **/
-    public static inline function stderr(str:String) {
+    public static inline function stderr(str:String):Void {
         Sys.stderr().writeString(disableAnsiFormatting ? str.stripAnsi() : str);
     }
 }

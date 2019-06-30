@@ -15,7 +15,7 @@ class Hxtf {
     **/
     @:allow(hxtf.cli.Invocation) static var prePrintingOccurred:Bool = false;
 
-    static function main() {
+    static function main():Void {
         Invocation.run();
 
         if (Flags.targets.length == 0) {

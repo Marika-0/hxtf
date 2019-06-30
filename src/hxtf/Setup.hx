@@ -20,7 +20,7 @@ class Setup {
         been called).
     **/
     @:allow(hxtf.Hxtf)
-    static function setup() {
+    static function setup():Void {
         hxmlBase = [];
         hxmlBase.push("-cp ./src");
         hxmlBase.push("");
