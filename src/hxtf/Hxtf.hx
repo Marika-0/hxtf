@@ -19,9 +19,28 @@ class Hxtf {
         Invocation.run();
 
         if (Flags.targets.length == 0) {
-            stderr("[1mNo targets were passed to test for![0m\n");
+            if (Flags.deletePreviousRecords) {
+                stderr("[0mNo targets were passed to clear the cache of!\n");
+            } else {
+                stderr("[1mNo targets were passed to test for![0m\n");
+            }
             stdout("\n");
             Sys.exit(1);
+        }
+
+        if (Flags.deletePreviousRecords) {
+            var deleted = false;
+            for (target in Flags.targets) {
+                if (FSManager.delete('./$target.json')) {
+                    stdout('[3mDeleted $target.json[0m\n');
+                    deleted = true;
+                }
+            }
+            if (!deleted) {
+                stderr("[1mNo cache files were deleted[0m\n");
+            }
+            stdout("\n");
+            Sys.exit(0);
         }
 
         Setup.setup();
@@ -32,7 +51,7 @@ class Hxtf {
         inline function divide(line = false) {
             stdout("\n");
             if (line) {
-                stdout("================================================================\n");
+                stdout("[0m================================================================\n");
             }
         }
 

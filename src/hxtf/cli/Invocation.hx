@@ -102,7 +102,8 @@ class Invocation {
         stdout("    -c, --compile   only run compilation for the specified targets\n");
         stdout("    -f, --force     force rerunning of previously-passed tests\n");
         stdout("    -q, --quick     do not wait for acknowledgement after a failed test run\n");
-        stdout("    -r, --reset     delete all passed-test records for each target\n");
+        stdout("    -r, --reset     delete the passed-test cache of each target\n");
+        stdout("                      tests will not be invoked\n");
         stdout("    -a, --no-ansi   disable output ANSI formatting\n");
         stdout("    -w, --write     write haxe compiler outputs to stdout\n");
         stdout("                      output cannot be formatted to remove ANSI\n");

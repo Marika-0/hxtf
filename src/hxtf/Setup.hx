@@ -66,10 +66,6 @@ class Setup {
 
         hxml.push('-D hxtf_target=$target');
 
-        if (Flags.deletePreviousRecords) {
-            FSManager.delete('./$target.json');
-        }
-
         hxml.push("");
         hxml.push('$target.hxml');
         hxml.push("");
