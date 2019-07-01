@@ -219,4 +219,23 @@ class TestCase {
         }
         return true;
     }
+
+    /**
+        Prints an error message that some unspecified error occurred.
+
+        Calling this method does not fail the test case.
+    **/
+    function softFail(msg:String, printPos = true, ?pos:PosInfos):Void {
+        stderr('[41;1m${Print.noAnsi ? "!!!!" : "----"}${this.id}${printPos ? ' (${formatPosInfos(pos)})' : ""}: $msg[0m\n');
+    }
+
+    /**
+        Prints an error message that some unspecified error occurred.
+
+        Calling this method fails the test case.
+    **/
+    function hardFail(msg:String, printPos = true, ?pos:PosInfos):Void {
+        stderr('[41;1m${Print.noAnsi ? "!!!!" : "----"}${this.id}${printPos ? ' (${formatPosInfos(pos)})' : ""}: $msg[0m\n');
+        this.passed = false;
+    }
 }
