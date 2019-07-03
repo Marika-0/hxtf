@@ -1,9 +1,7 @@
 package test.example;
 
 class TestSuite extends hxtf.TestSuite {
-    function new() {
-        super("Example Test Suite");
-
+    public function new() {
         add(test.example.ArrayTests);
         add(test.example.MathTests);
     }

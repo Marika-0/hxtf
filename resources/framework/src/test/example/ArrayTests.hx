@@ -1,8 +1,7 @@
 package test.example;
 
 class ArrayTests extends hxtf.TestCase {
-    function new() {
-        super("Example Array Tests");
+    public function new() {
         test_length();
     }
 

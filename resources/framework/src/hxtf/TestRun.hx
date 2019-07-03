@@ -1,79 +1,43 @@
 package hxtf;
 
 import TestMain;
-import haxe.Timer;
 import haxe.Json;
+import haxe.Timer.stamp;
 import haxe.ds.BalancedTree;
 import haxe.io.Path.addTrailingSlash;
+import haxe.macro.Expr;
 import hxtf.Print.*;
 import sys.io.File;
 
 using StringTools;
 
-/**
-    The main entry class for test runs.
-**/
-class TestRun {
-    /**
-        A record of all test cases that have passed.
-
-        Test cases are evaluated at compile-time when added to a test suite. If
-        they've already passed, and retesting isn't being forced, then the test
-        is excluded from compilation and not run.
-    **/
-    public static var cache:BalancedTree<String, Bool> = BuildTools.getCache();
-
-    /**
-        The working directory when hxtf was invoked.
-
-        Test files are written to/read from this directory, so scripts can move
-        around the filesystem without issue.
-    **/
+@:access(TestMain)
+@:final class TestRun {
     public static var cwd(default, never):String = BuildTools.getCwd();
-
-    /**
-        Whether previously-passed tests are being run or not.
-    **/
-    public static var forcing(default, never):Bool = BuildTools.getForcing();
-
-    /**
-        The current target for testing.
-    **/
     public static var target(default, never):String = BuildTools.getTarget();
+    public static var cache(default, never):BalancedTree<String, Bool> = BuildTools.getCache();
+    public static var passedCases(default, null):UInt = 0;
+    public static var failedCases(default, null):UInt = 0;
 
-    /**
-        An array of regexes for test cases to exclude.
-
-        Specified with the `-n` option of hxtf.
-    **/
-    public static var toExclude(default, never):Array<EReg> = BuildTools.getExcludes();
-
-    /**
-        An array of regexes for test cases to include.
-
-        Specified with the `-y` option of hxtf.
-    **/
-    public static var toInclude(default, never):Array<EReg> = BuildTools.getIncludes();
-
-    @:access(TestMain)
     static function main() {
-        var run = new TestMain();
+        Print.stdout("\n");
+        new TestMain();
 
-        if (run.failed == 0 && run.passed == 0) {
+        if (passedCases == 0 && failedCases == 0) {
             stdout("\n  [3;4mNo Tests Were Run![0m\n");
             Sys.exit(0);
         }
 
         saveCache();
 
-        var ansi = if (run.failed == 0) "[42;1m" else if (run.failed <= run.passed) "[43;1m" else "[41;1m";
-        var diff = Math.round(Math.abs(Std.string(run.passed).length - Std.string(run.failed).length)) + 1;
+        var ansi = failedCases == 0 ? "[42;1m" : failedCases <= passedCases ? "[43;1m" : "[41;1m";
+        var diff = Math.round(Math.abs(Std.string(passedCases).length - Std.string(failedCases).length)) + 1;
 
         stdout('\n${noAnsi ? "  " : ""}[3mTesting complete![0m\n');
-        stdout('${noAnsi ? "  " : ""}$ansi  Tests passed: ${"".lpad(" ", diff - Std.string(run.passed).length)}${run.passed} [0m\n');
-        stdout('${noAnsi ? "  " : ""}$ansi  Tests failed: ${"".lpad(" ", diff - Std.string(run.failed).length)}${run.failed} [0m\n');
+        stdout('${noAnsi ? "  " : ""}$ansi  Tests passed: ${"".lpad(" ", diff - Std.string(passedCases).length)}${passedCases} [0m\n');
+        stdout('${noAnsi ? "  " : ""}$ansi  Tests failed: ${"".lpad(" ", diff - Std.string(failedCases).length)}${failedCases} [0m\n');
 
-        if (run.failed != 0) {
+        if (failedCases != 0) {
             Sys.exit(1);
         }
         stdout('${noAnsi ? "  " : ""}[3mTesting passed for target: $target[0m\n');
@@ -95,47 +59,29 @@ class TestRun {
         }
     }
 
-    @:allow(hxtf.TestMain)
-    static function evaluateSuite(main:TestMain, suite:TestSuite, name:String):Void {
-        main.passed += suite.passed;
-        main.failed += suite.failed;
-
-        if (suite.failed == 0) {
-            if (suite.passed != 0) {
-                TestRun.cache.set(name, true);
-            }
-        } else if (TestRun.cache.exists(name)) {
-            TestRun.cache.set(name, false);
-        }
-    }
-
-    @:allow(hxtf.TestMain)
-    static function suiteException(main:TestMain, exception:Dynamic, name:String) {
-        main.failed++;
-        stderr('[41;1m${noAnsi ? "!## " : "### "}$name unhandled suite exception: ${Std.string(exception)}[0m\n');
-        printExceptionStackToStderr();
-    }
-
     @:allow(hxtf.TestSuite)
-    static function evaluateCase(suite:TestSuite, test:TestCase, name:String, start:Float):Void {
+    static function evaluateCase(test:TestCase, name:String, start:Float) {
         if (test.passed) {
-            suite.passed++;
-            stdout('[32m >> ${test.id} passed (${formatTimeDelta(start, Timer.stamp())})[0m\n');
-            TestRun.cache.set(name, true);
+            stdout('[32m >> $name passed${formatTimeDelta(start, stamp())}[0m\n');
+            cache.set(name, true);
+            passedCases++;
         } else {
-            suite.failed++;
-            stderr('[31;1m${noAnsi ? "!" : " "}>> ${test.id} failed (${formatTimeDelta(start, Timer.stamp())})[0m\n');
-            if (TestRun.cache.exists(name)) {
-                TestRun.cache.set(name, false);
-            }
+            caseFailure(name, start);
         }
     }
 
     @:allow(hxtf.TestSuite)
-    static function caseException(suite:TestSuite, exception:Dynamic, name:String, stamp:Float) {
-        suite.failed++;
-        stderr('[41;1m${noAnsi ? "!-- " : "----"} $name unhandled case exception: ${Std.string(exception)}[0m\n');
-        printExceptionStackToStderr();
-        stderr('[31;1m${noAnsi ? "!" : " "}>> $name failed (${formatTimeDelta(stamp, Timer.stamp())})[0m\n');
+    static function caseException(ex:Dynamic, name:String, start:Float) {
+        stderr('[41;1m${noAnsi ? "!-- " : "----"}$name unhandled exception: ${Std.string(ex)}[0m\n');
+        Print.stderrExceptionStack();
+        caseFailure(name, start);
+    }
+
+    static inline function caseFailure(name:String, start:Float) {
+        stderr('[31;1m${noAnsi ? "!" : " "}>> ${name} failed${formatTimeDelta(start, stamp())}[0m\n');
+        if (cache.exists(name)) {
+            cache.set(name, false);
+        }
+        failedCases++;
     }
 }

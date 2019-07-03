@@ -1,8 +1,7 @@
 package test.example;
 
 class MathTests extends hxtf.TestCase {
-    function new() {
-        super("Example Math Tests");
+    public function new() {
         test_random();
         test_NaN();
     }
