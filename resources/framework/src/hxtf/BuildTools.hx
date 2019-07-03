@@ -6,10 +6,13 @@ import haxe.macro.Expr;
 import haxe.macro.ExprTools;
 import sys.FileSystem;
 
+/**
+    A collection of various tools used internally by hxtf when compiling a test
+    run.
+**/
 class BuildTools {
-    public static var typePathRegex(default, never) = ~/^(([a-z0-9_][a-zA-Z0-9_]*[.])*)(_*[A-Z0-9][a-zA-Z0-9_]*)([.](_*[A-Z0-9][a-zA-Z0-9_]*))?$/;
+    static var typePathRegex(default, never) = ~/^(([a-z0-9_][a-zA-Z0-9_]*[.])*)(_*[A-Z0-9][a-zA-Z0-9_]*)([.](_*[A-Z0-9][a-zA-Z0-9_]*))?$/;
 
-    static var forcing:Bool = getForcing();
     static var includeCases:Array<EReg> = getIncludes();
     static var excludeCases:Array<EReg> = getExcludes();
 
@@ -85,7 +88,7 @@ class BuildTools {
             return false;
         }
 
-        return forcing || !TestRun.cache.exists(t);
+        return getForcing() || !TestRun.cache.exists(t);
     }
 
     static macro function getIncludes():ExprOf<Array<EReg>> {

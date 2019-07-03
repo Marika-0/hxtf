@@ -4,6 +4,9 @@ import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.ExprTools;
 
+/**
+    Secondary root for test runs - chains test cases.
+**/
 class TestSuite {
     macro function add(_:Expr, e:Expr) {
         try {

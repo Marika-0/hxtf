@@ -3,6 +3,9 @@ package hxtf;
 import haxe.macro.Expr;
 import haxe.macro.Context;
 
+/**
+    Main root for test runs - chains test suites.
+**/
 class TestMain {
     static macro function add(e:Expr) {
         try {

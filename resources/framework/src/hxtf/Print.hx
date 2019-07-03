@@ -4,6 +4,9 @@ import haxe.CallStack;
 
 using Std;
 
+/**
+    Functions for writing to the standard output & error streams and formatting.
+**/
 class Print {
     public static var noAnsi(default, never):Bool = BuildTools.isAnsiDisabled();
 
