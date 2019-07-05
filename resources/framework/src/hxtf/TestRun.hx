@@ -12,7 +12,7 @@ import sys.io.File;
 using StringTools;
 
 @:access(TestMain)
-@:final class TestRun {
+class TestRun {
     public static var cwd(default, never):String = BuildTools.getCwd();
     public static var target(default, never):String = BuildTools.getTarget();
     public static var cache(default, never):BalancedTree<String, Bool> = BuildTools.getCache();
@@ -62,7 +62,7 @@ using StringTools;
     @:allow(hxtf.TestSuite)
     static function evaluateCase(test:TestCase, name:String, start:Float) {
         if (test.passed) {
-            stdout('[32m >> $name passed${formatTimeDelta(start, stamp())}[0m\n');
+            stdout('[32m >> $name passed [32;1m${formatTimeDelta(start, stamp())}[0m\n');
             cache.set(name, true);
             passedCases++;
         } else {

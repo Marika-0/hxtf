@@ -34,7 +34,7 @@ class Print {
         if (0 < diff.seconds) str += diff.seconds.string() + "s ";
         if (0 < diff.ms.int()) str += diff.ms.int().string() + "ms ";
 
-        return str == "" ? "" : ' ($str)';
+        return str == "" ? "" : '[${StringTools.trim(str)}]';
     }
 
     public static function formatPosString(pos:haxe.macro.Expr.Position):String {
