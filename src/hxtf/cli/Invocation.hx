@@ -10,6 +10,8 @@ using StringTools;
     storing valid information in `hxtf.cli.Flags`.
 **/
 class Invocation {
+    static var postRunStdErrs = new Array<String>();
+
     @:allow(hxtf.Hxtf)
     static function run():Void {
         var iterator = Sys.args().iterator();
@@ -18,12 +20,12 @@ class Invocation {
         }
 
         inline function invalidArgument(arg:String) {
-            stderr('[3mInvalid argument \'$arg\'[0m\n');
+            postRunStdErrs.push('[3mInvalid argument \'$arg\'[0m\n');
             hxtf.Hxtf.prePrintingOccurred = true;
         }
 
         inline function embeddedArgument(arg:String) {
-            stderr('[3mEmbedded argument \'$arg\' requires an argument and was ignored[0m\n');
+            postRunStdErrs.push('[3mEmbedded argument \'$arg\' requires an argument and was ignored[0m\n');
             hxtf.Hxtf.prePrintingOccurred = true;
         }
 
@@ -98,6 +100,11 @@ class Invocation {
                     Flags.targets.push(target);
                 }
             }
+        }
+
+        hxtf.Hxtf.prePrintingOccurred = postRunStdErrs.length != 0;
+        for (item in postRunStdErrs) {
+            stderr(item);
         }
     }
 
