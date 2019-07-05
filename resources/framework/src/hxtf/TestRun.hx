@@ -24,7 +24,7 @@ using StringTools;
         new TestMain();
 
         if (passedCases == 0 && failedCases == 0) {
-            stdout("\n  [3;4mNo Tests Were Run![0m\n");
+            stdout("  [3;4mNo Tests Were Run![0m\n");
             Sys.exit(0);
         }
 
