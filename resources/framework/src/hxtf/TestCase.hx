@@ -216,6 +216,6 @@ private class Helper {
     }
 
     public static inline function prompt(test:TestCase, msg:String, printPos:Bool, pos:PosInfos):Void {
-        stderr('[41;1m${Print.noAnsi ? "!!!!" : "----"}${test.getClass().getClassName()}${printPos ? ' (${formatPosInfos(pos)})' : ""}: $msg[0m\n');
+        stderr('[41;1m${Print.noAnsi ? "!---" : "----"}${test.getClass().getClassName()}${printPos ? ' (${formatPosInfos(pos)})' : ""}: $msg[0m\n');
     }
 }

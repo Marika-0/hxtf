@@ -25,7 +25,7 @@ class TestSuite {
 
             return macro {
                 var stamp = haxe.Timer.stamp();
-                hxtf.Print.stdout('${hxtf.Print.noAnsi ? " ~~ " : "~~  "}running ${name}...\n');
+                hxtf.Print.stdout('[37m${hxtf.Print.noAnsi ? " ~~ " : "~~  "}running ${name}...[0m\n');
                 try {
                     hxtf.TestRun.evaluateCase(new $type(), $v{name}, stamp);
                 } catch (ex:Dynamic) {

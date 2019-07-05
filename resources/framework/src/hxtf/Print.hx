@@ -9,6 +9,7 @@ using Std;
 **/
 class Print {
     public static var noAnsi(default, never):Bool = BuildTools.isAnsiDisabled();
+    public static var ansiRegex(default, never) = ~/[][[\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?␇)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g;
 
     public static inline function stdout(s:String):Void {
         Sys.stdout().writeString(noAnsi ? stripAnsi(s) : s);
@@ -42,44 +43,15 @@ class Print {
         return str.substring(5, str.length - 1) + " : ";
     }
 
-    public static function stripAnsi(s:String):String {
-        var buf = new StringBuf();
-        var blocking = false;
-        var prev = -1;
-
-        haxe.Utf8.iter(s, function(char) {
-            if (blocking) {
-                if (char == "m".code) {
-                    blocking = false;
-                }
-            } else if (char == "[".code) {
-                if (prev == "".code) {
-                    blocking = true;
-                } else {
-                    buf.addChar("[".code);
-                }
-            } else if (prev == "".code) {
-                buf.addChar("".code);
-                if (char != "".code) {
-                    buf.addChar(char);
-                }
-            } else if (char != "".code) {
-                buf.addChar(char);
-            }
-            prev = char;
-        });
-
-        if (prev == "".code && !blocking) {
-            buf.addChar("".code);
-        }
-        return buf.toString();
+    public static inline function stripAnsi(s:String):String {
+        return ansiRegex.split(s).join("");
     }
 
     @:access(haxe.CallStack)
     @:allow(hxtf.TestRun)
     static function stderrExceptionStack() {
         if (CallStack.exceptionStack().length == 0) {
-            stderr("  [41;1m    Exception stack not available [0m\n");
+            stderr("[41;1m      Exception stack not available [0m\n");
         } else {
             for (item in CallStack.exceptionStack()) {
                 var buf = new StringBuf();
@@ -87,7 +59,7 @@ class Print {
                 if (noAnsi) {
                     Sys.stderr().writeString('      Called from ${buf.toString()}\n');
                 } else {
-                    Sys.stderr().writeString('  [41;1m    Called from ${buf.toString()} [0m\n');
+                    Sys.stderr().writeString('[41;1m      Called from ${buf.toString()} [0m\n');
                 }
             }
         }

@@ -62,7 +62,14 @@ class TestRun {
     @:allow(hxtf.TestSuite)
     static function evaluateCase(test:TestCase, name:String, start:Float) {
         if (test.passed) {
-            stdout('[32m >> $name passed [32;1m${formatTimeDelta(start, stamp())}[0m\n');
+            var time = formatTimeDelta(start, stamp());
+            if (time != "") {
+                time = " [96;1m" + time;
+            }
+            var path = name.split(".");
+            var type = path.pop();
+
+            stdout('[92m >> ${path.join(".")}.[1m$type[0m[92m passed$time[0m\n');
             cache.set(name, true);
             passedCases++;
         } else {
@@ -72,13 +79,20 @@ class TestRun {
 
     @:allow(hxtf.TestSuite)
     static function caseException(ex:Dynamic, name:String, start:Float) {
-        stderr('[41;1m${noAnsi ? "!-- " : "----"}$name unhandled exception: ${Std.string(ex)}[0m\n');
+        stderr('[41;1m${noAnsi ? "!-- " : "----"}$name exception: ${Std.string(ex)} [0m\n');
         Print.stderrExceptionStack();
         caseFailure(name, start);
     }
 
     static inline function caseFailure(name:String, start:Float) {
-        stderr('[31;1m${noAnsi ? "!" : " "}>> ${name} failed${formatTimeDelta(start, stamp())}[0m\n');
+        var time = formatTimeDelta(start, stamp());
+        if (time != "") {
+            time = " [93;1m" + time;
+        }
+        var path = name.split(".");
+        var type = path.pop();
+
+        stderr('[91m${noAnsi ? "!" : " "}>> ${path.join(".")}.[1m$type[0m[91m failed$time[0m\n');
         if (cache.exists(name)) {
             cache.set(name, false);
         }
