@@ -16,7 +16,7 @@ class Compile {
 
         if (Flags.writeCompilationOutput) {
             if (Sys.command("haxe test.hxml") != 0) {
-                stderr('[3mCompilation failed for target: $target[0m\n');
+                stderr('\n[3mCompilation failed for target: $target[0m');
                 stdout("\n");
                 return false;
             }

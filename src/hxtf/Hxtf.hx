@@ -46,7 +46,7 @@ class Hxtf {
         Setup.setup();
 
         inline function skip(target:String) {
-            stderr('[3mSkipping target: $target[0m\n');
+            stderr('[0m[3mSkipping target: $target[0m\n');
         }
         inline function divide(line = false) {
             stdout("\n");
@@ -70,12 +70,16 @@ class Hxtf {
                 continue;
             }
             if (!Compile.target(target)) {
-                skip(target);
+                if (!Flags.writeCompilationOutput) {
+                    skip(target);
+                }
                 divide();
                 continue;
             }
             if (Flags.onlyCompiling) {
-                divide();
+                if (!iterator.hasNext() || Flags.writeCompilationOutput) {
+                    divide();
+                }
                 continue;
             }
             if (!Run.run(target)) {
