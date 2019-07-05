@@ -1,6 +1,11 @@
+# Configured or Haxe 3.4.7
+
 -cp src
 
 -main hxtf.Hxtf
+
+-dce full
+-D analyzer
 
 -cpp build/cpp
 
