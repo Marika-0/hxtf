@@ -7,8 +7,9 @@
 -dce full
 -D analyzer
 
--cpp build/cpp
+-neko buildtmp/hxtf.n
 
--cmd rm -rf build/ready
--cmd cp -rf resources/framework build/ready
--cmd cp -f  build/cpp/Hxtf build/ready/hxtf
+-cmd rm -rf build
+-cmd cp -rf framework build
+-cmd mv -f  buildtmp/hxtf.n build/hxtf.n
+-cmd rm -rf buildtmp
