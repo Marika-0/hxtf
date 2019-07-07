@@ -8,7 +8,7 @@ import haxe.macro.ExprTools;
     Secondary root for test runs - chains test cases.
 **/
 class TestSuite {
-    macro function add(_:Expr, e:Expr) {
+    macro function add(_:Expr, e:Expr):Expr {
         try {
             var type:TypePath;
             try {
@@ -25,7 +25,7 @@ class TestSuite {
 
             return macro {
                 var stamp = haxe.Timer.stamp();
-                hxtf.Print.stdout('[37m${hxtf.Print.noAnsi ? " ~~ " : "~~  "}running ${name}...[0m\n');
+                hxtf.Print.stdout('[37m${hxtf.Print.noAnsi ? " ~~ " : "~~  "}${name}...[0m\n');
                 try {
                     hxtf.TestRun.evaluateCase(new $type(), $v{name}, stamp);
                 } catch (ex:Dynamic) {

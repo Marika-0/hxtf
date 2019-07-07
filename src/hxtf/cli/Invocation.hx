@@ -36,15 +36,24 @@ class Invocation {
                 arg = arg.substring(1);
                 if (arg.startsWith("-")) {
                     switch (arg) {
-                        case "-compile": Flags.onlyCompiling = true;
-                        case "-force": Flags.forceTestRerun = true;
-                        case "-quick": Flags.quickTestRuns = true;
-                        case "-reset": Flags.deletePreviousRecords = true;
-                        case "-no-ansi": Flags.disableAnsiFormatting = true;
-                        case "-write": Flags.writeCompilationOutput = true;
-                        case "-help": printHelp();
-                        case "-usage": printUsage();
-                        default: invalidArgument('-$arg');
+                        case "-compile":
+                            Flags.onlyCompiling = true;
+                        case "-force":
+                            Flags.forceTestRerun = true;
+                        case "-quick":
+                            Flags.quickTestRuns = true;
+                        case "-reset":
+                            Flags.deletePreviousRecords = true;
+                        case "-no-ansi":
+                            Flags.disableAnsiFormatting = true;
+                        case "-write":
+                            Flags.writeCompilationOutput = true;
+                        case "-help":
+                            printHelp();
+                        case "-usage":
+                            printUsage();
+                        default:
+                            invalidArgument('-$arg');
                     }
                 } else if (arg.length != 0) {
                     if (arg.endsWith("y")) {
@@ -79,17 +88,28 @@ class Invocation {
                     }
                     for (char in arg.split("")) {
                         switch (char) {
-                            case "c": Flags.onlyCompiling = true;
-                            case "f": Flags.forceTestRerun = true;
-                            case "q": Flags.quickTestRuns = true;
-                            case "r": Flags.deletePreviousRecords = true;
-                            case "a": Flags.disableAnsiFormatting = true;
-                            case "w": Flags.writeCompilationOutput = true;
-                            case "h": printHelp();
-                            case "u": printUsage();
-                            case "y": embeddedArgument("y");
-                            case "n": embeddedArgument("n");
-                            default: invalidArgument('-$char');
+                            case "c":
+                                Flags.onlyCompiling = true;
+                            case "f":
+                                Flags.forceTestRerun = true;
+                            case "q":
+                                Flags.quickTestRuns = true;
+                            case "r":
+                                Flags.deletePreviousRecords = true;
+                            case "a":
+                                Flags.disableAnsiFormatting = true;
+                            case "w":
+                                Flags.writeCompilationOutput = true;
+                            case "h":
+                                printHelp();
+                            case "u":
+                                printUsage();
+                            case "y":
+                                embeddedArgument("y");
+                            case "n":
+                                embeddedArgument("n");
+                            default:
+                                invalidArgument('-$char');
                         }
                     }
                 } else {

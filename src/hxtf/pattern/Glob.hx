@@ -206,17 +206,26 @@ class Glob {
                         rawRegex.addChar("\\".code);
                     }
                     rawRegex.addChar(char);
-                default: rawRegex.addChar(char);
+                default:
+                    rawRegex.addChar(char);
             }
 
             if (char != "*".code) {
                 justParsedAny = false;
             }
 
-            if (initStartedParsingGroup) startedParsingGroup = false;
-            if (initJustNegatedGroup) justNegatedGroup = false;
-            if (initParsingSpan) parsingSpan = false;
-            if (initBreaking) breaking = false;
+            if (initStartedParsingGroup) {
+                startedParsingGroup = false;
+            }
+            if (initJustNegatedGroup) {
+                justNegatedGroup = false;
+            }
+            if (initParsingSpan) {
+                parsingSpan = false;
+            }
+            if (initBreaking) {
+                breaking = false;
+            }
         }
 
         if (breaking) {

@@ -5,7 +5,6 @@ import haxe.Json;
 import haxe.Timer.stamp;
 import haxe.ds.BalancedTree;
 import haxe.io.Path.addTrailingSlash;
-import haxe.macro.Expr;
 import hxtf.Print.*;
 import sys.io.File;
 
@@ -19,7 +18,7 @@ class TestRun {
     public static var passedCases(default, null):UInt = 0;
     public static var failedCases(default, null):UInt = 0;
 
-    static function main() {
+    static function main():Void {
         Print.stdout("\n");
         new TestMain();
 
@@ -60,7 +59,7 @@ class TestRun {
     }
 
     @:allow(hxtf.TestSuite)
-    static function evaluateCase(test:TestCase, name:String, start:Float) {
+    static function evaluateCase(test:TestCase, name:String, start:Float):Void {
         if (test.passed) {
             var time = formatTimeDelta(start, stamp());
             if (time != "") {
@@ -78,13 +77,13 @@ class TestRun {
     }
 
     @:allow(hxtf.TestSuite)
-    static function caseException(ex:Dynamic, name:String, start:Float) {
+    static function caseException(ex:Dynamic, name:String, start:Float):Void {
         stderr('[41;1m${noAnsi ? "!-- " : "----"}$name exception: ${Std.string(ex)} [0m\n');
         Print.stderrExceptionStack();
         caseFailure(name, start);
     }
 
-    static inline function caseFailure(name:String, start:Float) {
+    static inline function caseFailure(name:String, start:Float):Void {
         var time = formatTimeDelta(start, stamp());
         if (time != "") {
             time = " [93;1m" + time;

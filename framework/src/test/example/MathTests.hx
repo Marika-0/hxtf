@@ -7,7 +7,9 @@ class MathTests extends hxtf.TestCase {
     }
 
     function test_random() {
-        for (_ in 0...1000000) assert(Math.random() < 1);
+        for (_ in 0...1000000) {
+            assert(Math.random() < 1);
+        }
         assert(Math.random() < 0);
         assertExplicit(Math.random(), function(x) return x < 1);
         assertSpecific(Math.random(), 1, function(a, b) return a < b);

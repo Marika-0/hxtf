@@ -208,13 +208,23 @@ class TestCase {
     }
 }
 
+/**
+    Helper function for TestCase that shouldn't be accessible to derived
+    classes.
+**/
 private class Helper {
+    /**
+        Fails the test case and prints error information.
+    **/
     public static function fail(test:TestCase, pre:String, msg:String, pos:PosInfos):Bool {
         stderr('[41;1m${noAnsi ? "!-- " : "----"}${test.getClass().getClassName()} (${formatPosInfos(pos)}):${pre == null ? "" : ' $pre'}${msg == null ? "" : ' $msg'}[0m\n');
         test.setField("passed", false);
         return false;
     }
 
+    /**
+        Prompts with error information.
+    **/
     public static inline function prompt(test:TestCase, msg:String, printPos:Bool, pos:PosInfos):Void {
         stderr('[41;1m${Print.noAnsi ? "!---" : "----"}${test.getClass().getClassName()}${printPos ? ' (${formatPosInfos(pos)})' : ""}: $msg[0m\n');
     }

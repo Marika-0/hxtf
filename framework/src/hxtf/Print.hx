@@ -9,7 +9,6 @@ using Std;
 **/
 class Print {
     public static var noAnsi(default, never):Bool = BuildTools.isAnsiDisabled();
-    public static var ansiRegex(default, never) = ~/[][[\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?␇)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g;
 
     public static inline function stdout(s:String):Void {
         Sys.stdout().writeString(noAnsi ? stripAnsi(s) : s);
@@ -24,16 +23,28 @@ class Print {
     }
 
     public static function formatTimeDelta(a:Float, b:Float):String {
-        if (b <= a) return "";
+        if (b <= a) {
+            return "";
+        }
 
         var diff = DateTools.parse(1000 * (b - a));
         var str = "";
 
-        if (0 < diff.days) str += diff.days.string() + "d ";
-        if (0 < diff.hours) str += diff.hours.string() + "h ";
-        if (0 < diff.minutes) str += diff.minutes.string() + "m ";
-        if (0 < diff.seconds) str += diff.seconds.string() + "s ";
-        if (0 < diff.ms.int()) str += diff.ms.int().string() + "ms ";
+        if (0 < diff.days) {
+            str += diff.days.string() + "d ";
+        }
+        if (0 < diff.hours) {
+            str += diff.hours.string() + "h ";
+        }
+        if (0 < diff.minutes) {
+            str += diff.minutes.string() + "m ";
+        }
+        if (0 < diff.seconds) {
+            str += diff.seconds.string() + "s ";
+        }
+        if (0 < diff.ms.int()) {
+            str += diff.ms.int().string() + "ms ";
+        }
 
         return str == "" ? "" : '[${StringTools.trim(str)}]';
     }
@@ -44,12 +55,14 @@ class Print {
     }
 
     public static inline function stripAnsi(s:String):String {
-        return ansiRegex.split(s).join("");
+        return
+            ~/[][[\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?␇)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g.split(s)
+            .join("");
     }
 
     @:access(haxe.CallStack)
     @:allow(hxtf.TestRun)
-    static function stderrExceptionStack() {
+    static function stderrExceptionStack():Void {
         if (CallStack.exceptionStack().length == 0) {
             stderr("[41;1m      Exception stack not available [0m\n");
         } else {

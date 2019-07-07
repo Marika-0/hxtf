@@ -7,7 +7,7 @@ import haxe.macro.Context;
     Main root for test runs - chains test suites.
 **/
 class TestMain {
-    static macro function add(e:Expr) {
+    static macro function add(e:Expr):Expr {
         try {
             var type:TypePath;
             try {

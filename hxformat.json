@@ -1,497 +1,731 @@
 {
-    "disableFormatting": false,
-    "emptyLines": {
-        "abstractEmptyLines": {
-            "afterPrivateFunctions": 1,
-            "afterPrivateVars": 1,
-            "afterStaticFunctions": 1,
-            "afterStaticVars": 1,
-            "afterVars": 1,
-            "beginType": 0,
-            "betweenFunctions": 1,
-            "betweenStaticFunctions": 1,
-            "betweenStaticVars": 0,
-            "betweenVars": 0,
-            "endType": 0
-        },
-        "afterBlocks": "remove",
-        "afterFileHeaderComment": 1,
-        "afterLeftCurly": "remove",
-        "afterPackage": 1,
-        "afterReturn": "remove",
-        "beforeBlocks": "remove",
-        "beforeDocCommentEmptyLines": "one",
-        "beforePackage": 0,
-        "beforeRightCurly": "remove",
-        "betweenMultilineComments": 0,
-        "betweenSingleLineTypes": 0,
-        "betweenTypes": 1,
-        "classEmptyLines": {
-            "afterPrivateFunctions": 1,
-            "afterPrivateVars": 1,
-            "afterStaticFunctions": 1,
-            "afterStaticVars": 1,
-            "afterVars": 1,
-            "beginType": 0,
-            "betweenFunctions": 1,
-            "betweenStaticFunctions": 1,
-            "betweenStaticVars": 0,
-            "betweenVars": 0,
-            "endType": 0
-        },
-        "conditionalsEmptyLines": {
-            "afterElse": 0,
-            "afterError": 0,
-            "afterIf": 0,
-            "beforeElse": 0,
-            "beforeEnd": 0,
-            "beforeError": 0
-        },
-        "enumAbstractEmptyLines": {
-            "afterVars": 1,
-            "beginType": 0,
-            "betweenFunctions": 1,
-            "betweenVars": 0,
-            "endType": 0
-        },
-        "enumEmptyLines": {
-            "beginType": 0,
-            "betweenFields": 0,
-            "endType": 0
-        },
-        "externClassEmptyLines": {
-            "afterVars": 0,
-            "beginType": 0,
-            "betweenFunctions": 0,
-            "betweenVars": 0,
-            "endType": 0
-        },
-        "finalNewline": true,
-        "importAndUsing": {
-            "beforeType": 1,
-            "beforeUsing": 1,
-            "betweenImports": 0,
-            "betweenImportsLevel": "firstLevelPackage"
-        },
-        "interfaceEmptyLines": {
-            "afterVars": 0,
-            "beginType": 0,
-            "betweenFunctions": 0,
-            "betweenVars": 0,
-            "endType": 0
-        },
-        "lineCommentsBetweenFunctions": "keep",
-        "lineCommentsBetweenTypes": "keep",
-        "macroClassEmptyLines": {
-            "afterPrivateFunctions": 1,
-            "afterPrivateVars": 1,
-            "afterStaticFunctions": 1,
-            "afterStaticVars": 1,
-            "afterVars": 1,
-            "beginType": 0,
-            "betweenFunctions": 1,
-            "betweenStaticFunctions": 1,
-            "betweenStaticVars": 0,
-            "betweenVars": 0,
-            "endType": 0
-        },
-        "maxAnywhereInFile": 1,
-        "typedefEmptyLines": {
-            "beginType": 0,
-            "betweenFields": 0,
-            "endType": 0
-        }
-    },
-    "excludes": [
-        "\\.haxelib",
-        "\\.git"
-    ],
-    "indentation": {
-        "character": "    ",
-        "conditionalPolicy": "aligned",
-        "indentObjectLiteral": true,
-        "tabWidth": 4,
-        "trailingWhitespace": false
-    },
-    "lineEnds": {
-        "caseColon": "after",
-        "emptyCurly": "noBreak",
-        "leftCurly": "after",
-        "metadataFunction": "none",
-        "metadataOther": "none",
-        "metadataType": "none",
-        "metadataVar": "none",
-        "rightCurly": "both",
-        "sharp": "after"
-    },
-    "sameLine": {
-        "anonFunctionBody": "same",
-        "caseBody": "same",
-        "catchBody": "same",
-        "comprehensionFor": "same",
-        "doWhile": "same",
-        "doWhileBody": "same",
-        "elseBody": "same",
-        "elseIf": "same",
-        "expressionCase": "same",
-        "expressionIf": "same",
-        "expressionIfWithBlocks": false,
-        "expressionTry": "same",
-        "forBody": "same",
-        "functionBody": "same",
-        "ifBody": "same",
-        "ifElse": "same",
-        "returnBody": "same",
-        "tryBody": "same",
-        "tryCatch": "same",
-        "whileBody": "same"
-    },
-    "whitespace": {
-        "addLineCommentSpace": true,
-        "arrowFunctionsPolicy": "around",
-        "binopPolicy": "around",
-        "bracesConfig": {
-            "anonTypeBraces": {
-                "openingPolicy": "before",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            },
-            "blockBraces": {
-                "openingPolicy": "before",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            },
-            "objectLiteralBraces": {
-                "openingPolicy": "before",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            },
-            "typedefBraces": {
-                "openingPolicy": "before",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            },
-            "unknownBraces": {
-                "openingPolicy": "before",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            }
-        },
-        "caseColonPolicy": "onlyAfter",
-        "catchPolicy": "after",
-        "closingBracketPolicy": "none",
-        "colonPolicy": "none",
-        "commaPolicy": "onlyAfter",
-        "compressSuccessiveParenthesis": true,
-        "doPolicy": "after",
-        "dotPolicy": "none",
-        "forPolicy": "after",
-        "formatStringInterpolation": true,
-        "functionTypeHaxe3Policy": "none",
-        "functionTypeHaxe4Policy": "around",
-        "ifPolicy": "after",
-        "intervalPolicy": "none",
-        "objectFieldColonPolicy": "after",
-        "openingBracketPolicy": "noneAfter",
-        "parenConfig": {
-            "anonFuncParamParens": {
-                "closingPolicy": "onlyAfter",
-                "openingPolicy": "none",
-                "removeInnerWhenEmpty": true
-            },
-            "callParens": {
-                "closingPolicy": "onlyAfter",
-                "openingPolicy": "none",
-                "removeInnerWhenEmpty": true
-            },
-            "conditionParens": {
-                "openingPolicy": "noneAfter",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            },
-            "expressionParens": {
-                "openingPolicy": "noneAfter",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            },
-            "forLoopParens": {
-                "openingPolicy": "noneAfter",
-                "closingPolicy": "onlyAfter",
-                "removeInnerWhenEmpty": true
-            },
-            "funcParamParens": {
-                "closingPolicy": "onlyAfter",
-                "openingPolicy": "none",
-                "removeInnerWhenEmpty": true
-            },
-            "metadataParens": {
-                "closingPolicy": "onlyAfter",
-                "openingPolicy": "none",
-                "removeInnerWhenEmpty": true
-            }
-        },
-        "semicolonPolicy": "onlyAfter",
-        "switchPolicy": "after",
-        "ternaryPolicy": "around",
-        "tryPolicy": "after",
-        "typeCheckColonPolicy": "around",
-        "typeExtensionPolicy": "after",
-        "typeHintColonPolicy": "none",
-        "typeParamClosePolicy": "none",
-        "typeParamOpenPolicy": "none",
-        "whilePolicy": "after"
-    },
-    "wrapping": {
-        "anonFunctionSignature": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "itemCount >= n",
-                            "value": 4
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                }
-            ]
-        },
-        "anonType": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "itemCount >= n",
-                            "value": 4
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                }
-            ]
-        },
-        "arrayWrap": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                }
-            ]
-        },
-        "callParameter": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        },
-                        {
-                            "cond": "itemCount >= n",
-                            "value": 2
-                        }
-                    ],
-                    "type": "fillLine"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLine"
-                }
-            ]
-        },
-        "functionSignature": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "fillLine"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLine"
-                }
-            ]
-        },
-        "implementsExtends": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                }
-            ]
-        },
-        "maxLineLength": 156,
-        "metadataCallParameter": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "itemCount >= n",
-                            "value": 7
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                }
-            ]
-        },
-        "methodChain": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "onePerLine"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "onePerLine"
-                }
-            ]
-        },
-        "objectLiteral": {
-            "defaultWrap": "noWrap",
-            "rules": [
-                {
-                    "conditions": [
-                        {
-                            "cond": "itemCount >= n",
-                            "value": 4
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "lineLength >= n",
-                            "value": 156
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                },
-                {
-                    "conditions": [
-                        {
-                            "cond": "hasMultilineItems"
-                        }
-                    ],
-                    "type": "fillLineWithLeadingBreak"
-                }
-            ]
-        },
-        "opAddSubChain": {
-            "defaultWrap": "noWrap",
-            "rules": []
-        },
-        "opBoolChain": {
-            "defaultWrap": "noWrap",
-            "rules": []
-        },
-        "typeParameter": {
-            "defaultWrap": "noWrap",
-            "rules": []
-        }
-    }
+	"whitespace": {
+		"whilePolicy": "after",
+		"typeParamOpenPolicy": "none",
+		"closingBracketPolicy": "none",
+		"ternaryPolicy": "around",
+		"functionTypeHaxe3Policy": "none",
+		"typeHintColonPolicy": "none",
+		"commaPolicy": "onlyAfter",
+		"addLineCommentSpace": true,
+		"typeCheckColonPolicy": "around",
+		"arrowFunctionsPolicy": "around",
+		"openingBracketPolicy": "noneAfter",
+		"tryPolicy": "after",
+		"typeParamClosePolicy": "none",
+		"objectFieldColonPolicy": "after",
+		"typeExtensionPolicy": "after",
+		"semicolonPolicy": "onlyAfter",
+		"functionTypeHaxe4Policy": "around",
+		"catchPolicy": "after",
+		"binopPolicy": "around",
+		"compressSuccessiveParenthesis": true,
+		"forPolicy": "after",
+		"colonPolicy": "none",
+		"doPolicy": "after",
+		"switchPolicy": "after",
+		"caseColonPolicy": "onlyAfter",
+		"parenConfig": {
+			"funcParamParens": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "none"
+			},
+			"forLoopParens": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "noneAfter"
+			},
+			"anonFuncParamParens": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "none"
+			},
+			"metadataParens": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "none"
+			},
+			"conditionParens": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "noneAfter"
+			},
+			"callParens": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "none"
+			},
+			"expressionParens": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "noneAfter"
+			}
+		},
+		"ifPolicy": "after",
+		"intervalPolicy": "none",
+		"formatStringInterpolation": true,
+		"dotPolicy": "none",
+		"bracesConfig": {
+			"unknownBraces": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "before"
+			},
+			"anonTypeBraces": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "before"
+			},
+			"blockBraces": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "before"
+			},
+			"objectLiteralBraces": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "before"
+			},
+			"typedefBraces": {
+				"removeInnerWhenEmpty": true,
+				"closingPolicy": "onlyAfter",
+				"openingPolicy": "before"
+			}
+		}
+	},
+	"indentation": {
+		"character": "    ",
+		"indentComplexValueExpressions": false,
+		"indentCaseLabels": true,
+		"trailingWhitespace": false,
+		"tabWidth": 4,
+		"indentObjectLiteral": true,
+		"conditionalPolicy": "aligned"
+	},
+	"sameLine": {
+		"forBody": "next",
+		"tryBody": "next",
+		"anonFunctionBody": "same",
+		"whileBody": "next",
+		"returnBody": "same",
+		"elseIf": "same",
+		"expressionIf": "same",
+		"ifBody": "next",
+		"ifElse": "same",
+		"elseBody": "next",
+		"expressionCase": "keep",
+		"comprehensionFor": "same",
+		"expressionIfWithBlocks": false,
+		"untypedBody": "same",
+		"doWhile": "same",
+		"expressionTry": "same",
+		"tryCatch": "same",
+		"functionBody": "next",
+		"caseBody": "next",
+		"doWhileBody": "next",
+		"returnBodySingleLine": "same",
+		"catchBody": "next"
+	},
+	"disableFormatting": false,
+	"emptyLines": {
+		"betweenSingleLineTypes": 0,
+		"beforeBlocks": "remove",
+		"betweenTypes": 1,
+		"afterLeftCurly": "remove",
+		"afterReturn": "remove",
+		"maxAnywhereInFile": 1,
+		"enumAbstractEmptyLines": {
+			"afterVars": 1,
+			"existingBetweenFields": "keep",
+			"betweenFunctions": 1,
+			"beginType": 0,
+			"endType": 0,
+			"betweenVars": 0
+		},
+		"afterFileHeaderComment": 1,
+		"lineCommentsBetweenFunctions": "keep",
+		"beforePackage": 0,
+		"typedefEmptyLines": {
+			"betweenFields": 0,
+			"existingBetweenFields": "keep",
+			"beginType": 0,
+			"endType": 0
+		},
+		"interfaceEmptyLines": {
+			"afterVars": 0,
+			"existingBetweenFields": "keep",
+			"betweenFunctions": 0,
+			"beginType": 0,
+			"endType": 0,
+			"betweenVars": 0
+		},
+		"externClassEmptyLines": {
+			"afterVars": 0,
+			"existingBetweenFields": "keep",
+			"betweenFunctions": 0,
+			"beginType": 0,
+			"endType": 0,
+			"betweenVars": 0
+		},
+		"abstractEmptyLines": {
+			"betweenStaticFunctions": 1,
+			"afterStaticFunctions": 1,
+			"afterVars": 1,
+			"existingBetweenFields": "keep",
+			"betweenFunctions": 1,
+			"afterPrivateFunctions": 1,
+			"beginType": 0,
+			"afterStaticVars": 1,
+			"afterPrivateVars": 1,
+			"endType": 0,
+			"betweenStaticVars": 0,
+			"betweenVars": 0
+		},
+		"afterBlocks": "remove",
+		"betweenMultilineComments": 0,
+		"importAndUsing": {
+			"beforeType": 1,
+			"betweenImports": 0,
+			"beforeUsing": 1,
+			"betweenImportsLevel": "all"
+		},
+		"classEmptyLines": {
+			"betweenStaticFunctions": 1,
+			"afterStaticFunctions": 1,
+			"afterVars": 1,
+			"existingBetweenFields": "keep",
+			"betweenFunctions": 1,
+			"afterPrivateFunctions": 1,
+			"beginType": 0,
+			"afterStaticVars": 1,
+			"afterPrivateVars": 1,
+			"endType": 0,
+			"betweenStaticVars": 0,
+			"betweenVars": 0
+		},
+		"lineCommentsBetweenTypes": "keep",
+		"afterFieldsWithDocComments": "one",
+		"beforeDocCommentEmptyLines": "one",
+		"finalNewline": true,
+		"enumEmptyLines": {
+			"betweenFields": 0,
+			"existingBetweenFields": "keep",
+			"beginType": 0,
+			"endType": 0
+		},
+		"afterPackage": 1,
+		"macroClassEmptyLines": {
+			"betweenStaticFunctions": 1,
+			"afterStaticFunctions": 1,
+			"afterVars": 1,
+			"existingBetweenFields": "keep",
+			"betweenFunctions": 1,
+			"afterPrivateFunctions": 1,
+			"beginType": 0,
+			"afterStaticVars": 1,
+			"afterPrivateVars": 1,
+			"endType": 0,
+			"betweenStaticVars": 0,
+			"betweenVars": 0
+		},
+		"conditionalsEmptyLines": {
+			"afterElse": 0,
+			"afterError": 0,
+			"beforeError": 0,
+			"beforeElse": 0,
+			"afterIf": 0,
+			"beforeEnd": 0
+		},
+		"beforeRightCurly": "remove"
+	},
+	"lineEnds": {
+		"objectLiteralCurly": null,
+		"emptyCurly": "noBreak",
+		"rightCurly": "both",
+		"metadataOther": "none",
+		"leftCurly": "after",
+		"anonTypeCurly": null,
+		"metadataType": "none",
+		"typedefCurly": null,
+		"sharp": "after",
+		"metadataVar": "none",
+		"blockCurly": null,
+		"caseColon": "after",
+		"metadataFunction": "none"
+	},
+	"excludes": [
+		"\\.haxelib",
+		"\\.git",
+		"node_modules"
+	],
+	"wrapping": {
+		"metadataCallParameter": {
+			"rules": [
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "totalItemLength >= n",
+							"value": 140
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 160
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"callParameter": {
+			"rules": [
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 7
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "totalItemLength >= n",
+							"value": 140
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "anyItemLength >= n",
+							"value": 80
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 160
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"functionSignature": {
+			"rules": [],
+			"defaultAdditionalIndent": 1,
+			"defaultWrap": "fillLine"
+		},
+		"opAddSubChain": {
+			"rules": [
+				{
+					"type": "onePerLineAfterFirst",
+					"location": "beforeLast",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 160
+						},
+						{
+							"cond": "anyItemLength >= n",
+							"value": 60
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"location": "beforeLast",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 160
+						}
+					]
+				},
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "itemCount <= n",
+							"value": 3
+						}
+					]
+				},
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "totalItemLength <= n",
+							"value": 120
+						}
+					]
+				},
+				{
+					"type": "onePerLineAfterFirst",
+					"location": "beforeLast",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 4
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"implementsExtends": {
+			"rules": [
+				{
+					"type": "fillLine",
+					"additionalIndent": 2,
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 140
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"additionalIndent": 2,
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 4
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"typeParameter": {
+			"rules": [
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "anyItemLength >= n",
+							"value": 50
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "totalItemLength >= n",
+							"value": 70
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"anonFunctionSignature": {
+			"rules": [
+				{
+					"type": "fillLine",
+					"additionalIndent": 1,
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 7
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"additionalIndent": 1,
+					"conditions": [
+						{
+							"cond": "totalItemLength >= n",
+							"value": 80
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"methodChain": {
+			"rules": [
+				{
+					"type": "onePerLineAfterFirst",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 160
+						}
+					]
+				},
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "itemCount <= n",
+							"value": 3
+						}
+					]
+				},
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "totalItemLength <= n",
+							"value": 80
+						}
+					]
+				},
+				{
+					"type": "onePerLineAfterFirst",
+					"conditions": [
+						{
+							"cond": "anyItemLength >= n",
+							"value": 30
+						},
+						{
+							"cond": "itemCount >= n",
+							"value": 4
+						}
+					]
+				},
+				{
+					"type": "onePerLineAfterFirst",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 7
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"maxLineLength": 160,
+		"anonType": {
+			"rules": [
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "itemCount <= n",
+							"value": 3
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "anyItemLength >= n",
+							"value": 30
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "totalItemLength >= n",
+							"value": 60
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 4
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"objectLiteral": {
+			"rules": [
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "itemCount <= n",
+							"value": 3
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "anyItemLength >= n",
+							"value": 30
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "totalItemLength >= n",
+							"value": 60
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 4
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"arrayMatrixWrap": "matrixWrapWithAlign",
+		"arrayWrap": {
+			"rules": [
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "hasMultilineItems",
+							"value": 1
+						}
+					]
+				},
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "totalItemLength <= n",
+							"value": 80
+						}
+					]
+				},
+				{
+					"type": "fillLineWithLeadingBreak",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 10
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "anyItemLength >= n",
+							"value": 30
+						}
+					]
+				},
+				{
+					"type": "onePerLine",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 4
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"multiVar": {
+			"rules": [
+				{
+					"type": "fillLine",
+					"conditions": [
+						{
+							"cond": "anyItemLength <= n",
+							"value": 15
+						}
+					]
+				},
+				{
+					"type": "onePerLineAfterFirst",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 80
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		},
+		"opBoolChain": {
+			"rules": [
+				{
+					"type": "onePerLineAfterFirst",
+					"location": "beforeLast",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 140
+						},
+						{
+							"cond": "anyItemLength >= n",
+							"value": 40
+						}
+					]
+				},
+				{
+					"type": "fillLine",
+					"location": "beforeLast",
+					"conditions": [
+						{
+							"cond": "lineLength >= n",
+							"value": 140
+						}
+					]
+				},
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "itemCount <= n",
+							"value": 3
+						}
+					]
+				},
+				{
+					"type": "noWrap",
+					"conditions": [
+						{
+							"cond": "totalItemLength <= n",
+							"value": 120
+						}
+					]
+				},
+				{
+					"type": "onePerLineAfterFirst",
+					"location": "beforeLast",
+					"conditions": [
+						{
+							"cond": "itemCount >= n",
+							"value": 4
+						}
+					]
+				}
+			],
+			"defaultWrap": "noWrap"
+		}
+	}
 }

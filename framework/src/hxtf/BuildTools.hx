@@ -21,12 +21,16 @@ class BuildTools {
     }
 
     public static macro function getCwd():ExprOf<String> {
-        if (!Context.defined("hxtf_cwd")) return macro $v{null};
+        if (!Context.defined("hxtf_cwd")) {
+            return macro $v{null};
+        }
         return macro $v{Context.definedValue("hxtf_cwd")};
     }
 
     public static macro function getTarget():ExprOf<String> {
-        if (!Context.defined("hxtf_target")) return macro $v{null};
+        if (!Context.defined("hxtf_target")) {
+            return macro $v{null};
+        }
         return macro $v{Context.definedValue("hxtf_target")};
     }
 
@@ -95,7 +99,10 @@ class BuildTools {
         if (!Context.defined("hxtf_y")) {
             return macro [];
         }
-        var includes = [for (raw in Context.definedValue("hxtf_y").split(":")) macro new EReg($v{raw}, "")];
+        var includes = [
+            for (raw in Context.definedValue("hxtf_y").split(":"))
+                macro new EReg($v{raw}, "")
+        ];
         return macro $a{includes};
     }
 
@@ -103,7 +110,10 @@ class BuildTools {
         if (!Context.defined("hxtf_n")) {
             return macro [];
         }
-        var excludes = [for (raw in Context.definedValue("hxtf_n").split(":")) macro new EReg($v{raw}, "")];
+        var excludes = [
+            for (raw in Context.definedValue("hxtf_n").split(":"))
+                macro new EReg($v{raw}, "")
+        ];
         return macro $a{excludes};
     }
 
