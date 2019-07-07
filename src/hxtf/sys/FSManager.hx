@@ -140,4 +140,18 @@ class FSManager extends sys.FileSystem {
             return false;
         }
     }
+
+    /**
+        Returns an array of all files at the specified path `path`.
+
+        If the directory specified by `path` does not exist, `null` is returned.
+
+        `path` is not prepended to to output file names.
+    **/
+    public static function readFiles(path:String):Array<String> {
+        if (!doesDirectoryExist(path)) {
+            return null;
+        }
+        return readDirectory(path).filter(function(p) return !isDirectory(p));
+    }
 }
