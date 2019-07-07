@@ -5,13 +5,16 @@ import hxtf.cli.Invocation;
 import hxtf.cli.Printer.*;
 import hxtf.sys.FSManager;
 
+using Lambda;
+using StringTools;
+
 /**
     The main driver class for this program.
 **/
 class Hxtf {
     /**
-        If `hxtf.cli.Invocation` printed anything. If `true`, an divider line
-        will be printed before the first target compilation message.
+        If `hxtf.cli.Invocation` printed anything, a divider line will be
+        printed before the first target compilation message.
     **/
     @:allow(hxtf.cli.Invocation) static var prePrintingOccurred:Bool = false;
 
@@ -20,12 +23,36 @@ class Hxtf {
 
         if (Flags.targets.length == 0) {
             if (Flags.deletePreviousRecords) {
-                stderr("[0mNo targets were passed to clear the cache of!\n");
+                stderr("[1mDelete all .json files with corresponding .hxml and .script files? [Y/n][0m ");
+
+                var input = Sys.stdin().readLine().toLowerCase();
+                if (input == "" || input == "y") {
+                    var files = FSManager.readFiles("./");
+                    files = files.filter(function(f) return f.endsWith(".json")
+                        && f.length > 4
+                        && files.has(f.substr(0, f.length - 4) + "hxml")
+                        && files.has(f.substr(0, f.length - 4) + "script"));
+                    files.sort(function(a, b) return Reflect.compare(a, b));
+
+                    var deleted = false;
+                    for (file in files) {
+                        if (FSManager.delete(file)) {
+                            stdout('[3mDeleted $file[0m\n');
+                            deleted = true;
+                        }
+                    }
+                    if (!deleted) {
+                        stderr("[3mNo cache files were deleted![0m\n");
+                    }
+                } else {
+                    stdout("[3mAborted[0m\n");
+                }
+                stdout("\n");
+                Sys.exit(0);
             } else {
-                stderr("[1mNo targets were passed to test for![0m\n");
+                stderr("[1mNo targets were passed to test for![0m\n\n");
+                Sys.exit(1);
             }
-            stdout("\n");
-            Sys.exit(1);
         }
 
         if (Flags.deletePreviousRecords) {
@@ -37,7 +64,7 @@ class Hxtf {
                 }
             }
             if (!deleted) {
-                stderr("[1mNo cache files were deleted[0m\n");
+                stderr("[1mNo cache files were deleted![0m\n");
             }
             stdout("\n");
             Sys.exit(0);
