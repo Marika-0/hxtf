@@ -12,12 +12,6 @@ using StringTools;
     The main driver class for this program.
 **/
 class Hxtf {
-    /**
-        If `hxtf.cli.Invocation` printed anything, a divider line will be
-        printed before the first target compilation message.
-    **/
-    @:allow(hxtf.cli.Invocation) static var prePrintingOccurred:Bool = false;
-
     static function main():Void {
         Invocation.run();
 
@@ -50,7 +44,11 @@ class Hxtf {
                 stdout("\n");
                 Sys.exit(0);
             } else {
-                stderr("[1mNo targets were passed to test for![0m\n\n");
+                if (Invocation.prePrintingOccurred) {
+                    stderr("\n[1mNo targets were passed to test for![0m\n\n");
+                } else {
+                    stderr("[1mNo targets were passed to test for![0m\n\n");
+                }
                 Sys.exit(1);
             }
         }
@@ -82,7 +80,7 @@ class Hxtf {
             }
         }
 
-        divide(prePrintingOccurred);
+        divide(Invocation.prePrintingOccurred);
 
         var iterator = Flags.targets.iterator();
         for (target in iterator) {
