@@ -154,11 +154,8 @@
 				"requireReturn": false,
 				"ignoreOverride": true,
 				"tokens": [
-					"ABSTRACT_DEF",
 					"CLASS_DEF",
-					"ENUM_DEF",
-					"INTERFACE_DEF",
-					"TYPEDEF_DEF"
+					"INTERFACE_DEF"
 				],
 				"modifier": "PUBLIC",
 				"excludeNames": []
@@ -205,13 +202,14 @@
 		},
 		{
 			"props": {
-				"ignoreReturnAssignments": false
+                "ignoreReturnAssignments": false,
+                "severity": "IGNORE"
 			},
 			"type": "InnerAssignment"
 		},
 		{
 			"props": {
-				"allowProperties": false,
+				"allowProperties": true,
 				"allowMarkerInterfaces": true
 			},
 			"type": "Interface"
