@@ -33,8 +33,8 @@ class TestRun {
         var diff = Math.round(Math.abs(Std.string(passedCases).length - Std.string(failedCases).length)) + 1;
 
         stdout('\n${noAnsi ? "  " : ""}[3mTesting complete![0m\n');
-        stdout('${noAnsi ? "  " : ""}$ansi  Tests passed: ${"".lpad(" ", diff - Std.string(passedCases).length)}${passedCases} [0m\n');
-        stdout('${noAnsi ? "  " : ""}$ansi  Tests failed: ${"".lpad(" ", diff - Std.string(failedCases).length)}${failedCases} [0m\n');
+        stdout(' ${noAnsi ? "  " : ""}$ansi Tests passed: ${"".lpad(" ", diff - Std.string(passedCases).length)}${passedCases} [0m\n');
+        stdout(' ${noAnsi ? "  " : ""}$ansi Tests failed: ${"".lpad(" ", diff - Std.string(failedCases).length)}${failedCases} [0m\n');
 
         if (failedCases != 0) {
             Sys.exit(1);
