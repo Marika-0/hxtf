@@ -10,7 +10,13 @@ using StringTools;
     storing valid information in `hxtf.cli.Flags`.
 **/
 class Invocation {
-    static var postRunStdErrs = new Array<String>();
+    /**
+        Set to `true` if any printing occurred due to invalid flags or
+        arguments.
+    **/
+    public static var prePrintingOccurred(default, null) = false;
+
+    static var postRunErrors = new List<String>();
 
     @:allow(hxtf.Hxtf)
     static function run():Void {
@@ -20,13 +26,15 @@ class Invocation {
         }
 
         inline function invalidArgument(arg:String) {
-            postRunStdErrs.push('[3mInvalid argument \'$arg\'[0m\n');
-            hxtf.Hxtf.prePrintingOccurred = true;
+            postRunErrors.add('[3mInvalid flag \'$arg\'[0m\n');
         }
 
         inline function embeddedArgument(arg:String) {
-            postRunStdErrs.push('[3mEmbedded argument \'$arg\' requires an argument and was ignored[0m\n');
-            hxtf.Hxtf.prePrintingOccurred = true;
+            postRunErrors.add('[3mEmbedded flag \'$arg\' requires an argument[0m\n');
+        }
+
+        inline function missingArgument(arg:String) {
+            postRunErrors.add('[3mFlag \'$arg\' requires an argument[0m\n');
         }
 
         while (iterator.hasNext()) {
@@ -57,12 +65,17 @@ class Invocation {
                     }
                 } else if (arg.length != 0) {
                     if (arg.endsWith("y")) {
-                        for (module in iterator.next().split(":")) {
-                            if (module.length != 0) {
-                                try {
-                                    Flags.testsToRun.push(new HaxeModuleGlob(module).raw);
-                                } catch (ex:Dynamic) {
-                                    stderr('[3mInvalid ignored test object glob \'$module\'[0m\n');
+                        var val = iterator.next();
+                        if (val == null) {
+                            missingArgument("-y");
+                        } else {
+                            for (module in val.split(":")) {
+                                if (module.length != 0) {
+                                    try {
+                                        Flags.testsToRun.push(new HaxeModuleGlob(module).raw);
+                                    } catch (ex:Dynamic) {
+                                        postRunErrors.add('[3mInvalid ignored test object glob \'$module\'[0m\n');
+                                    }
                                 }
                             }
                         }
@@ -71,13 +84,17 @@ class Invocation {
                         }
                         arg = arg.substr(0, arg.length - 1);
                     } else if (arg.endsWith("n")) {
-                        for (module in iterator.next().split(":")) {
-                            if (module.length != 0) {
-                                try {
-                                    Flags.testsToIgnore.push(new HaxeModuleGlob(module).raw);
-                                } catch (ex:Dynamic) {
-                                    stderr('[3mIgnored test object glob \'$module\'[0m\n');
-                                    hxtf.Hxtf.prePrintingOccurred = true;
+                        var val = iterator.next();
+                        if (val == null) {
+                            missingArgument("-n");
+                        } else {
+                            for (module in iterator.next().split(":")) {
+                                if (module.length != 0) {
+                                    try {
+                                        Flags.testsToIgnore.push(new HaxeModuleGlob(module).raw);
+                                    } catch (ex:Dynamic) {
+                                        stderr('[3mIgnored test object glob \'$module\'[0m\n');
+                                    }
                                 }
                             }
                         }
@@ -122,42 +139,55 @@ class Invocation {
             }
         }
 
-        hxtf.Hxtf.prePrintingOccurred = postRunStdErrs.length != 0;
-        for (item in postRunStdErrs) {
+        prePrintingOccurred = postRunErrors.length != 0;
+        for (item in postRunErrors) {
             stderr(item);
         }
     }
 
+    // @formatter:off
     static function printHelp():Void {
-        //          [------------------------------------80-chars------------------------------------]
-        stdout("Usage: hxtf [OPTIONS...] TARGETS...\n");
-        stdout("Run configurable unit tests for a haxe program.\n");
-        stdout("\n");
-        stdout("Options:\n");
-        stdout("    -c, --compile   only run compilation for the specified targets\n");
-        stdout("    -f, --force     force rerunning of previously-passed tests\n");
-        stdout("    -q, --quick     do not wait for acknowledgement after a failed test run\n");
-        stdout("    -r, --reset     delete the passed-test cache of each target\n");
-        stdout("                      tests will not be invoked\n");
-        stdout("    -a, --no-ansi   disable output ANSI formatting\n");
-        stdout("    -w, --write     write haxe compiler outputs to stdout\n");
-        stdout("                      output cannot be formatted to remove ANSI\n");
-        stdout("\n");
-        stdout("    -y TEST[:TEST]* run only these tests\n");
-        stdout("    -n TEST[:TEST]* do not run these tests (overrides '-y')\n");
-        stdout("\n");
-        stdout("    -h, --help      print this help and exit\n");
-        stdout("    -u, --usage     print usage information and exit\n");
-        stdout("\n");
-        stdout("Targets:\n");
-        stdout("    A colon-separated list of targets to test (in order)\n");
-        stdout("\n");
+        //  [------------------------------------80 chars------------------------------------]
+        stdout([
+            "usage: hxtf [OPTIONS...] TARGETS...",
+            "",
+            "Run configurable unit tests for Haxe targets",
+            "with access to Sys and the system package",
+            "",
+            "Options:",
+            "    -c, --compile   only run compilation for the specified targets",
+            "    -f, --force     force rerunning of previously-passed tests",
+            "    -q, --quick     do not wait for acknowledgement after a failed test run",
+            "    -r, --reset     delete the passed-test cache of each target",
+            "                      tests will not be invoked",
+            "    -a, --no-ansi   disable output ANSI formatting",
+            "    -w, --write     write haxe compiler outputs to stdout",
+            "                      output cannot be formatted to remove ANSI",
+            "",
+            "    -y TEST[:TEST]* run only these tests",
+            "    -n TEST[:TEST]* do not run these tests (overrides '-y')",
+            "",
+            "    -h, --help      print this help and exit",
+            "    -u, --usage     print usage information and exit",
+            "",
+            "Targets:",
+            "    A colon or space-separated list of targets to test (in order)",
+            "",
+            ""
+        ].join("\n"));
         Sys.exit(0);
     }
 
+    // @formatter:off
     static function printUsage():Void {
-        stdout("Usage: hxtf [OPTIONS...] TARGETS...\n");
-        stdout("\n");
+        //  [------------------------------------80 chars------------------------------------]
+        stdout([
+            "usage: hxtf [OPTIONS...] TARGETS...",
+            "",
+            "Use 'hxtf --help' for more information.",
+            "",
+            ""
+        ].join("\n"));
         Sys.exit(0);
     }
 }
