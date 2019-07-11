@@ -189,6 +189,15 @@ class TestCase {
     }
 
     /**
+        Prints a prompt to stdout.
+
+        Calling this method will not fail the test case.
+    **/
+    function prompt(msg:String, printPos = false, ?pos:PosInfos):Void {
+        Helper.prompt(this, msg, printPos, pos);
+    }
+
+    /**
         Prints an error message that some unspecified error occurred.
 
         Calling this method does not fail the test case.
