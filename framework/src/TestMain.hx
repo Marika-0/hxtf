@@ -1,9 +1,7 @@
 package;
 
-import hxtf.TestMain.add;
-
-class TestMain extends hxtf.TestMain {
+class TestMain extends TestObject {
     function new() {
-        add(test.example.TestSuite);
+        addSuite(test.TestSuite);
     }
 }

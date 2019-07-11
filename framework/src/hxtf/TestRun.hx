@@ -28,19 +28,7 @@ class TestRun {
         }
 
         saveCache();
-
-        var ansi = failedCases == 0 ? "[42;1m" : failedCases <= passedCases ? "[43;1m" : "[41;1m";
-        var diff = Math.round(Math.abs(Std.string(passedCases).length - Std.string(failedCases).length)) + 1;
-
-        stdout('\n${noAnsi ? "  " : ""}[3mTesting complete![0m\n');
-        stdout(' ${noAnsi ? "  " : ""}$ansi Tests passed: ${"".lpad(" ", diff - Std.string(passedCases).length)}${passedCases} [0m\n');
-        stdout(' ${noAnsi ? "  " : ""}$ansi Tests failed: ${"".lpad(" ", diff - Std.string(failedCases).length)}${failedCases} [0m\n');
-
-        if (failedCases != 0) {
-            Sys.exit(1);
-        }
-        stdout('${noAnsi ? "  " : ""}[3mTesting passed for target: $target[0m\n');
-        Sys.exit(0);
+        printResults();
     }
 
     static function saveCache():Void {
@@ -58,43 +46,18 @@ class TestRun {
         }
     }
 
-    @:allow(hxtf.TestSuite)
-    static function evaluateCase(test:TestCase, name:String, start:Float):Void {
-        if (test.passed) {
-            var time = formatTimeDelta(start, stamp());
-            if (time != "") {
-                time = " [96;1m" + time;
-            }
-            var path = name.split(".");
-            var type = path.pop();
+    static function printResults():Void {
+        var ansi = failedCases == 0 ? "[42;1m" : failedCases <= passedCases ? "[43;1m" : "[41;1m";
+        var diff = Math.round(Math.abs(Std.string(passedCases).length - Std.string(failedCases).length)) + 1;
 
-            stdout('[92m >> ${path.join(".")}.[1m$type[0m[92m passed$time[0m\n');
-            cache.set(name, true);
-            passedCases++;
-        } else {
-            caseFailure(name, start);
+        stdout('\n${noAnsi ? "  " : ""}[3mTesting complete![0m\n');
+        stdout(' ${noAnsi ? "  " : ""}$ansi Tests passed: ${"".lpad(" ", diff - Std.string(passedCases).length)}${passedCases} [0m\n');
+        stdout(' ${noAnsi ? "  " : ""}$ansi Tests failed: ${"".lpad(" ", diff - Std.string(failedCases).length)}${failedCases} [0m\n');
+
+        if (failedCases != 0) {
+            Sys.exit(1);
         }
-    }
-
-    @:allow(hxtf.TestSuite)
-    static function caseException(ex:Dynamic, name:String, start:Float):Void {
-        stderr('[41;1m${noAnsi ? "!-- " : "----"}$name exception: ${Std.string(ex)} [0m\n');
-        Print.stderrExceptionStack();
-        caseFailure(name, start);
-    }
-
-    static inline function caseFailure(name:String, start:Float):Void {
-        var time = formatTimeDelta(start, stamp());
-        if (time != "") {
-            time = " [93;1m" + time;
-        }
-        var path = name.split(".");
-        var type = path.pop();
-
-        stderr('[91m${noAnsi ? "!" : " "}>> ${path.join(".")}.[1m$type[0m[91m failed$time[0m\n');
-        if (cache.exists(name)) {
-            cache.set(name, false);
-        }
-        failedCases++;
+        stdout('${noAnsi ? "  " : ""}[3mTesting passed for target: $target[0m\n');
+        Sys.exit(0);
     }
 }

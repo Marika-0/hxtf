@@ -1,7 +1,5 @@
 package hxtf;
 
-import haxe.CallStack;
-
 using Std;
 
 /**
@@ -58,23 +56,5 @@ class Print {
         return
             ~/[][[\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?␇)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g.split(s)
             .join("");
-    }
-
-    @:access(haxe.CallStack)
-    @:allow(hxtf.TestRun)
-    static function stderrExceptionStack():Void {
-        if (CallStack.exceptionStack().length == 0) {
-            stderr("[41;1m      Exception stack not available [0m\n");
-        } else {
-            for (item in CallStack.exceptionStack()) {
-                var buf = new StringBuf();
-                CallStack.itemToString(buf, item);
-                if (noAnsi) {
-                    Sys.stderr().writeString('      Called from ${buf.toString()}\n');
-                } else {
-                    Sys.stderr().writeString('[41;1m      Called from ${buf.toString()} [0m\n');
-                }
-            }
-        }
     }
 }
