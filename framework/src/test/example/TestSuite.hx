@@ -1,8 +1,8 @@
 package test.example;
 
-class TestSuite extends hxtf.TestSuite {
+class TestSuite extends TestObject {
     public function new() {
-        add(test.example.ArrayTests);
-        add(test.example.MathTests);
+        addCase(test.example.ArrayTests);
+        addCase(test.example.MathTests);
     }
 }
