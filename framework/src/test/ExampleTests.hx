@@ -20,7 +20,8 @@ class ExampleTests extends TestCase {
         assertNNaN(42);
         assertNNaN(Math.POSITIVE_INFINITY);
         assertNNaN(Math.NEGATIVE_INFINITY);
-        softFail("Soft failure message - won't fail test case");
-        hardFail("Hard failure message - will fail test case");
+        prompt("Prompt - doesn't fail the test case");
+        softFail("Soft failure message - doesn't fail the test case");
+        hardFail("Hard failure message - will fail the test case");
     }
 }
