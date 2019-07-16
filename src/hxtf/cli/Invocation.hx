@@ -88,7 +88,7 @@ class Invocation {
                         if (val == null) {
                             missingArgument("-n");
                         } else {
-                            for (module in iterator.next().split(":")) {
+                            for (module in val.split(":")) {
                                 if (module.length != 0) {
                                     try {
                                         Flags.testsToIgnore.push(new HaxeModuleGlob(module).raw);

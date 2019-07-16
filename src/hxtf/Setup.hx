@@ -34,10 +34,10 @@ class Setup {
             hxmlBase.push("-D hxtf_n=" + Flags.testsToIgnore.join(":"));
         }
         if (Flags.forceTestRerun) {
-            hxmlBase.push("-D hxtf_force");
+            hxmlBase.push("-D hxtf_force=1");
         }
         if (Flags.disableAnsiFormatting) {
-            hxmlBase.push("-D hxtf_noansi");
+            hxmlBase.push("-D hxtf_noansi=1");
         }
     }
 
