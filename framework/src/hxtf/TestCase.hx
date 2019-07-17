@@ -7,7 +7,7 @@ using Reflect;
 using Type;
 
 /**
-    Tertiary root for test runs - chains assertion calls.
+    Base class for a test case, the parts of a test run that actually run tests.
 **/
 class TestCase {
     /**
@@ -15,7 +15,7 @@ class TestCase {
 
         Used internally.
     **/
-    public var passed(default, never) = true;
+    @:noCompletion var passed(default, never) = true;
 
     /**
         Asserts that the given value is `true`.
@@ -226,7 +226,7 @@ private class Helper {
         Fails the test case and prints error information.
     **/
     public static function fail(test:TestCase, pre:String, msg:String, pos:PosInfos):Bool {
-        stderr('[41;1m${noAnsi ? "!-- " : "----"}${test.getClass().getClassName()} (${formatPosInfos(pos)}):${pre == null ? "" : ' $pre'}${msg == null ? "" : ' $msg'}[0m\n');
+        stderr('[41;1m${ansi ? "----" : "!-- "}${test.getClass().getClassName()} (${formatPosInfos(pos)}):${pre == null ? "" : ' $pre'}${msg == null ? "" : ' $msg'}[0m\n');
         test.setField("passed", false);
         return false;
     }
@@ -235,6 +235,6 @@ private class Helper {
         Prompts with error information.
     **/
     public static inline function prompt(test:TestCase, msg:String, printPos:Bool, pos:PosInfos):Void {
-        stderr('[41;1m${Print.noAnsi ? "!---" : "----"}${test.getClass().getClassName()}${printPos ? ' (${formatPosInfos(pos)})' : ""}: $msg[0m\n');
+        stderr('[41;1m${ansi ? "----" : "!-- "}${test.getClass().getClassName()}${printPos ? ' (${formatPosInfos(pos)})' : ""}: $msg[0m\n');
     }
 }
