@@ -22,7 +22,7 @@ class Run {
             return false;
         }
 
-        stdout('[1mTesting target: $target[0m\n');
+        stdout('[1mTesting target: $target[0m\n\n');
 
         return Sys.command(raw) == 0;
     }
