@@ -1,28 +1,29 @@
 package hxtf;
 
-import TestMain;
-import haxe.Json;
 import haxe.Timer.stamp;
 import haxe.ds.BalancedTree;
-import haxe.io.Path.addTrailingSlash;
+import haxe.io.Path.addTrailingSlash as slash;
 import hxtf.Print.*;
 import sys.io.File;
 
 using StringTools;
 
-@:access(TestMain)
 class TestRun {
-    public static var cwd(default, never):String = BuildTools.getCwd();
-    public static var target(default, never):String = BuildTools.getTarget();
-    public static var cache(default, never):BalancedTree<String, Bool> = BuildTools.getCache();
-    public static var passedCases(default, null):UInt = 0;
-    public static var failedCases(default, null):UInt = 0;
+    public static var cache(default, null):BalancedTree<String, Bool>;
+    public static var cwd(default, null):String;
+    public static var forcing(default, null):Bool;
+    public static var target(default, null):String;
 
+    static var passedTestCount:UInt = 0;
+    static var failedTestCount:UInt = 0;
+
+    @:access(TestMain)
     static function main():Void {
-        Print.stdout("\n");
+        setup();
+
         new TestMain();
 
-        if (passedCases == 0 && failedCases == 0) {
+        if (passedTestCount == 0 && failedTestCount == 0) {
             stdout("  [3;4mNo Tests Were Run![0m\n");
             Sys.exit(0);
         }
@@ -31,8 +32,18 @@ class TestRun {
         printResults();
     }
 
+    @:access(hxtf.Print)
+    static function setup():Void {
+        cache = Build.getCache();
+        cwd = Build.getCwd();
+        forcing = Build.getForcing();
+        target = Build.getTarget();
+
+        Print.ansi = Build.getAnsi();
+    }
+
     static function saveCache():Void {
-        var cachePath = addTrailingSlash(cwd) + target + ".json";
+        var path = slash(cwd) + target + ".cache";
         var passedTests = new Array<String>();
         for (test in cache.keys()) {
             if (cache.get(test)) {
@@ -40,24 +51,32 @@ class TestRun {
             }
         }
         try {
-            File.saveContent(cachePath, Json.stringify(passedTests));
+            File.saveContent(path, passedTests.join("\n"));
         } catch (ex:Dynamic) {
-            stderr('[31;1mFailed to save test cache to $cachePath[0m\n');
+            stderr('[31;1mfailed to save test cache $path[0m\n');
         }
     }
 
     static function printResults():Void {
-        var ansi = failedCases == 0 ? "[42;1m" : failedCases <= passedCases ? "[43;1m" : "[41;1m";
-        var diff = Math.round(Math.abs(Std.string(passedCases).length - Std.string(failedCases).length)) + 1;
+        var preamble = if (failedTestCount == 0) {
+            "[42;1m";
+        } else if (failedTestCount <= passedTestCount) {
+            "[43;1m";
+        } else {
+            "[41;1m";
+        }
 
-        stdout('\n${noAnsi ? "  " : ""}[3mTesting complete![0m\n');
-        stdout(' ${noAnsi ? "  " : ""}$ansi Tests passed: ${"".lpad(" ", diff - Std.string(passedCases).length)}${passedCases} [0m\n');
-        stdout(' ${noAnsi ? "  " : ""}$ansi Tests failed: ${"".lpad(" ", diff - Std.string(failedCases).length)}${failedCases} [0m\n');
+        var space = Math.round(Math.abs(Std.string(passedTestCount).length - Std.string(failedTestCount).length)) + 1;
 
-        if (failedCases != 0) {
+        stdout("\n");
+        stdout('${ansi ? "" : "  "}[3mTesting complete![0m\n');
+        stdout('${ansi ? "" : "  "} $preamble Tests passed: ${"".lpad(" ", space - '$passedTestCount'.length)}${passedTestCount} [0m\n');
+        stdout('${ansi ? "" : "  "} $preamble Tests failed: ${"".lpad(" ", space - '$failedTestCount'.length)}${failedTestCount} [0m\n');
+
+        if (failedTestCount != 0) {
             Sys.exit(1);
         }
-        stdout('${noAnsi ? "  " : ""}[3mTesting passed for target: $target[0m\n');
+        stdout('${ansi ? "" : "  "}[3mTesting passed for target: $target[0m\n');
         Sys.exit(0);
     }
 }
