@@ -49,7 +49,7 @@ class Glob {
     /**
         The raw string used to construct `this` glob.
     **/
-    public var raw(default, null):RawGlob;
+    public var raw(default, null):String;
 
     var regex:EReg;
 
@@ -59,7 +59,7 @@ class Glob {
         Guaranteed to throw an instance of type `GlobException` if an error
         occurs.
     **/
-    public function new(raw:RawGlob) {
+    public function new(raw:String) {
         try {
             this.raw = parseRaw(raw);
             regex = new EReg(this.raw, "");
@@ -93,7 +93,7 @@ class Glob {
         Parses the given raw glob and transforms it into a EReg-type string with
         the same match capabilities and limitations.
     **/
-    public static function parseRaw(raw:RawGlob):RawGlob {
+    public static function parseRaw(raw:String):String {
         var rawRegex = new StringBuf();
         rawRegex.addChar("^".code);
 
@@ -238,15 +238,6 @@ class Glob {
 
         rawRegex.addChar("$".code);
         return rawRegex.toString();
-    }
-
-    /**
-        Returns the hash code of this glob.
-    **/
-    public function hashCode():Int {
-        var hash = 0;
-        haxe.Utf8.iter(raw, function(c) hash += c);
-        return hash;
     }
 }
 

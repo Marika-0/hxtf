@@ -8,7 +8,7 @@ class HaxeModuleGlob extends Glob {
     /**
         Creates a new HaxeModuleGlob.
     **/
-    public function new(raw:RawGlob) {
+    public function new(raw:String) {
         if (!~/^(([*0-9?A-Z_a-z])|(([*0-9?A-Z_a-z][.*0-9?A-Z_a-z]*[*0-9?A-Z_a-z])|(\[!?(([.0-9A-Z_a-z])|([.0-9A-Z_a-z]-[.0-9A-Z_a-z]))+\]))+)$/.match(raw)) {
             throw HaxeModuleGlobException.InvalidGlob;
         }
