@@ -1,5 +1,3 @@
-# Configured or Haxe 3.4.7
-
 -cp src
 
 -main hxtf.Hxtf
@@ -7,9 +5,9 @@
 -dce full
 -D analyzer
 
--neko buildtmp/hxtf.n
+-hl buildtmp/hxtf.hl
 
 -cmd rm -rf build
 -cmd cp -rf framework build
--cmd mv -f  buildtmp/hxtf.n build/hxtf.n
+-cmd mv -f  buildtmp/hxtf.hl build/hxtf.hl
 -cmd rm -rf buildtmp
