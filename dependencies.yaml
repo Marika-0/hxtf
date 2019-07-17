@@ -1,14 +1,15 @@
 %YAML 1.2
 ---
 
-# Versions of Haxe things this release works for.
-haxe versions:
-  haxe:     ["3.4.7"]
-  haxe_ver: [3.407]
-  haxelib:  ["3.3.0"]
-
-# Internal library versions.
-internal haxelibs:
-  checkstyle: "2.4.2"
-  dox:        "1.2.0"
-  formatter:  "1.8.1"
+version:
+  internal:
+    haxe     : "4.0.0-rc.3"
+    haxelib  : "3.4.0"
+    libraries:
+      checkstyle : "2.4.2"
+      dox        : "1.2.0"
+      formatter  : "1.8.1"
+  release:
+    - version     : "1.0.0-alpha.1"
+      dependencies:
+        hashlink : "1.10.0"
