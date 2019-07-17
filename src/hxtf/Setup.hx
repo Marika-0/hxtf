@@ -22,7 +22,6 @@ class Setup {
     @:allow(hxtf.Hxtf)
     static function setup():Void {
         hxmlBase = [];
-        hxmlBase.push("-cp ./src");
         hxmlBase.push("");
         hxmlBase.push("-main hxtf.TestRun");
         hxmlBase.push("");
@@ -35,10 +34,16 @@ class Setup {
         }
         if (Flags.forceTestRerun) {
             hxmlBase.push("-D hxtf_force=1");
+        } else {
+            hxmlBase.push("-D hxtf_force=0");
         }
         if (Flags.disableAnsiFormatting) {
-            hxmlBase.push("-D hxtf_noansi=1");
+            hxmlBase.push("-D hxtf_ansi=0");
+        } else {
+            hxmlBase.push("-D hxtf_ansi=1");
         }
+        hxmlBase.push("");
+        hxmlBase.push("--macro hxtf.Macro.setup()");
     }
 
     /**
