@@ -22,7 +22,7 @@ class Invocation {
     static function run():Void {
         var iterator = Sys.args().iterator();
         if (!iterator.hasNext()) {
-            printUsage();
+            printNoFlags();
         }
 
         inline function invalidArgument(arg:String) {
@@ -172,7 +172,6 @@ class Invocation {
             "",
             "Targets:",
             "    A colon or space-separated list of targets to test (in order)",
-            "",
             ""
         ].join("\n"));
         Sys.exit(0);
@@ -183,9 +182,17 @@ class Invocation {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
             "usage: hxtf [OPTIONS...] TARGETS...",
-            "",
-            "Use 'hxtf --help' for more information.",
-            "",
+            ""
+        ].join("\n"));
+        Sys.exit(0);
+    }
+
+    // @formatter:off
+    static function printNoFlags():Void {
+        //  [------------------------------------80 chars------------------------------------]
+        stdout([
+            "usage: hxtf [OPTIONS...] TARGETS...",
+            "Try 'hxtf --help' for more information.",
             ""
         ].join("\n"));
         Sys.exit(0);
