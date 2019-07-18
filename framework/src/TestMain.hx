@@ -1,6 +1,6 @@
 package;
 
-class TestMain extends TestObject {
+class TestMain extends TestBroker {
     function new() {
         addSuite(test.TestSuite);
     }

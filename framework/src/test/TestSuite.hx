@@ -1,6 +1,6 @@
 package test;
 
-class TestSuite extends TestObject {
+class TestSuite extends TestBroker {
     public function new() {
         addCase(test.ExampleTests);
         addSuite(test.example.TestSuite);

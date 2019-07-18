@@ -12,7 +12,7 @@ import hxtf.Print.*;
 **/
 class TestBroker {
     /**
-        Adds the given TestObject to the test run.
+        Adds the given TestBroker to the test run.
     **/
     static macro function addSuite(e:Expr):Expr {
         try {
@@ -52,9 +52,9 @@ class TestBroker {
                 var stamp = haxe.Timer.stamp();
                 hxtf.Print.stdout('[37m${hxtf.Macro.ansi ? "~~  " : " ~~ "}${name}...[0m\n');
                 try {
-                    hxtf.TestObject.Helper.evaluateCase(new $type(), $v{name}, stamp);
+                    hxtf.TestBroker.Helper.evaluateCase(new $type(), $v{name}, stamp);
                 } catch (ex:Dynamic) {
-                    hxtf.TestObject.Helper.caseException(ex, $v{name}, stamp);
+                    hxtf.TestBroker.Helper.caseException(ex, $v{name}, stamp);
                 }
             }
         } catch (ex:Dynamic) {
