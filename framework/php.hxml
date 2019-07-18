@@ -1,0 +1,5 @@
+-cp src
+
+-D hxtf_ansi=0
+
+-php build/php
