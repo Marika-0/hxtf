@@ -34,9 +34,9 @@ class Setup {
         }
         hxmlBase.push("-D hxtf_cwd=" + Sys.getCwd());
         if (Flags.forceTestRerun) {
-            hxmlBase.push("-D hxtf_force=1");
+            hxmlBase.push("-D hxtf_forcing=1");
         } else {
-            hxmlBase.push("-D hxtf_force=0");
+            hxmlBase.push("-D hxtf_forcing=0");
         }
         if (Flags.testsToRun.length != 0) {
             hxmlBase.push("-D hxtf_y=" + Flags.testsToRun.join(":"));
