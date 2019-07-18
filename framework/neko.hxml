@@ -1,1 +1,3 @@
+-cp src
+
 -neko ./build/neko/TestRun.n
