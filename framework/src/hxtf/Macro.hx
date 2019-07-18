@@ -97,6 +97,15 @@ class Macro {
                 pulledTests.push(new EReg(raw, ""));
             }
         }
+        if (Context.defined("hxtf_pull")) {
+            for (raw in Context.definedValue("hxtf_pull").split(":")) {
+                try {
+                    pulledTests.push(new EReg(raw, ""));
+                } catch (ex:Dynamic) {
+                    Context.warning('invalid pulled test regex: $ex', Context.currentPos());
+                }
+            }
+        }
     }
 
     static function loadIncludes():Void {
@@ -104,6 +113,15 @@ class Macro {
         if (Context.defined("hxtf_y")) {
             for (raw in Context.definedValue("hxtf_y").split(":")) {
                 pushedTests.push(new EReg(raw, ""));
+            }
+        }
+        if (Context.defined("hxtf_push")) {
+            for (raw in Context.definedValue("hxtf_push").split(":")) {
+                try {
+                    pushedTests.push(new EReg(raw, ""));
+                } catch (ex:Dynamic) {
+                    Context.warning('invalid pushed test regex: $ex', Context.currentPos());
+                }
             }
         }
     }
