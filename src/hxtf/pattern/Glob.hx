@@ -95,7 +95,9 @@ class Glob {
     **/
     public static function parseRaw(raw:String):String {
         var rawRegex = new StringBuf();
-        rawRegex.addChar("^".code);
+        if (!raw.startsWith("*")) {
+            rawRegex.addChar("^".code);
+        }
 
         var justParsedAny = false;
         var parsingGroup = false;
@@ -236,7 +238,9 @@ class Glob {
             rawRegex.addChar("]".code);
         }
 
-        rawRegex.addChar("$".code);
+        if (!raw.endsWith("*")) {
+            rawRegex.addChar("$".code);
+        }
         return rawRegex.toString();
     }
 }
