@@ -117,6 +117,6 @@ class Hxtf {
             divide(iterator.hasNext());
         }
 
-        FSManager.delete("./test.hxml");
+        FSManager.delete("./_.hxml");
     }
 }
