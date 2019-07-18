@@ -1,5 +1,5 @@
 -cp src
 
--D hxtf_forcing=1;
+-D hxtf_forcing=1
 
 -python build/python/TestRun.py

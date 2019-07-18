@@ -1,3 +1,5 @@
 -cp src
 
+-D hxtf_push=.*Math.*:.*Array.*
+
 -cpp ./build/cpp/
