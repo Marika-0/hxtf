@@ -99,7 +99,7 @@ class TestCase {
         Prints to the standard error stream if the assertion fails, optionally
         with some text `msg`.
     **/
-    function assertNull(v:Dynamic, ?msg:String, ?pos:PosInfos):Bool {
+    function assertNull(v:Null<Dynamic>, ?msg:String, ?pos:PosInfos):Bool {
         return if (v != null) {
             Helper.fail(this, "not null", msg, pos);
         } else {
@@ -113,7 +113,7 @@ class TestCase {
         Prints to the standard error stream if the assertion fails, optionally
         with some text `msg`.
     **/
-    function assertNNull(v:Dynamic, ?msg:String, ?pos:PosInfos):Bool {
+    function assertNNull(v:Null<Dynamic>, ?msg:String, ?pos:PosInfos):Bool {
         return if (v == null) {
             Helper.fail(this, "is null", msg, pos);
         } else {
