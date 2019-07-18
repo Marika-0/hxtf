@@ -17,12 +17,12 @@ class Hxtf {
 
         if (Flags.targets.length == 0) {
             if (Flags.deletePreviousRecords) {
-                stderr("[1mDelete all .json files with corresponding .hxml and .script files? [Y/n][0m ");
+                stderr("[1mDelete all .cache files with corresponding .hxml and .script files? [Y/n][0m ");
 
                 var input = Sys.stdin().readLine().toLowerCase();
                 if (input == "" || input == "y") {
                     var files = FSManager.readFiles("./");
-                    files = files.filter(function(f) return f.endsWith(".json")
+                    files = files.filter(function(f) return f.endsWith(".cache")
                         && f.length > 4
                         && files.has(f.substr(0, f.length - 4) + "hxml")
                         && files.has(f.substr(0, f.length - 4) + "script"));
@@ -56,8 +56,8 @@ class Hxtf {
         if (Flags.deletePreviousRecords) {
             var deleted = false;
             for (target in Flags.targets) {
-                if (FSManager.delete('./$target.json')) {
-                    stdout('[3mDeleted $target.json[0m\n');
+                if (FSManager.delete('./$target.cache')) {
+                    stdout('[3mDeleted $target.cache[0m\n');
                     deleted = true;
                 }
             }
