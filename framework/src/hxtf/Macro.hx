@@ -78,7 +78,7 @@ class Macro {
     static function loadCache():Void {
         cache = new BalancedTree<String, Bool>();
 
-        if (cwd == null || target == null) {
+        if (forcing || cwd == null || target == null) {
             return;
         }
 

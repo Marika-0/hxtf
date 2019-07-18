@@ -91,7 +91,7 @@ class Build {
             return false;
         }
 
-        return Macro.forcing || !Macro.cache.exists(test);
+        return !Macro.cache.exists(test);
     }
     #end
 
