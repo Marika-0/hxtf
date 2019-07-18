@@ -63,8 +63,6 @@ class Macro {
         loadCache();
         loadExcludes();
         loadIncludes();
-
-        haxe.macro.Compiler.addClassPath("hxtf.TestObject");
     }
 
     static function loadCache():Void {
