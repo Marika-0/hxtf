@@ -204,6 +204,7 @@ class TestCase {
     **/
     function softFail(msg:String, printPos = true, ?pos:PosInfos):Void {
         Helper.prompt(this, msg, printPos, pos);
+        TestRun.cache.set(this.getClass().getClassName(), false);
     }
 
     /**

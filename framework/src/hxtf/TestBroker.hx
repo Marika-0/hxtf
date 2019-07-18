@@ -77,7 +77,9 @@ class Helper {
             var type = path.pop();
 
             stdout('[92m >> ${path.join(".")}.[1m$type[0m[92m passed$time[0m\n');
-            TestRun.cache.set(name, true);
+            if (!TestRun.cache.exists(name)) {
+                TestRun.cache.set(name, true);
+            }
             TestRun.passedTestCount++;
         } else {
             caseFailure(name, start);

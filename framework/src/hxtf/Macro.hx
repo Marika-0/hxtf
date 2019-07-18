@@ -65,6 +65,16 @@ class Macro {
         loadIncludes();
     }
 
+    /**
+        Gets each line of the <target>.cache file and adds it as a `true` entry
+        to `cache`. Entries start off `true` so that if a test case has a
+        soft-failure it can set it's entry to `false` and that entry won't be
+        written to the cache at the end of the test run.
+
+        `hxtf.TestBroker.Helper.evaluateCase` must check to see if the test case
+        already exists in `cache` and not set it to `true`, so that soft
+        failure's aren't overwritten
+    **/
     static function loadCache():Void {
         cache = new BalancedTree<String, Bool>();
 
