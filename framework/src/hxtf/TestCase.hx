@@ -15,7 +15,7 @@ class TestCase {
 
         Used internally.
     **/
-    @:noCompletion var passed(default, never) = true;
+    @:noCompletion var _passed(default, never) = true;
 
     /**
         Asserts that the given value is `true`.
@@ -214,7 +214,7 @@ class TestCase {
     **/
     function hardFail(msg:String, printPos = true, ?pos:PosInfos):Void {
         Helper.prompt(this, msg, printPos, pos);
-        this.setField("passed", false);
+        this.setField("_passed", false);
     }
 }
 
@@ -228,7 +228,7 @@ private class Helper {
     **/
     public static function fail(test:TestCase, pre:String, msg:String, pos:PosInfos):Bool {
         stderr('[41;1m${ansi ? "----" : "!-- "}${test.getClass().getClassName()} (${formatPosInfos(pos)}):${pre == null ? "" : ' $pre'}${msg == null ? "" : ' $msg'}[0m\n');
-        test.setField("passed", false);
+        test.setField("_passed", false);
         return false;
     }
 

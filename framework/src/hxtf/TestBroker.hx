@@ -68,7 +68,7 @@ class TestBroker {
 @:access(hxtf.TestCase)
 class Helper {
     public static function evaluateCase(test:TestCase, name:String, start:Float):Void {
-        if (test.passed) {
+        if (test._passed) {
             var time = formatTimeDelta(start, stamp());
             if (time != "") {
                 time = " [96;1m" + time;
