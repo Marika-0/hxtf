@@ -9,9 +9,25 @@ import sys.io.File;
 using StringTools;
 
 class TestRun {
+    /**
+        The cache of TestCases.
+    **/
     public static var cache(default, null):BalancedTree<String, Bool>;
+
+    /**
+        The directory the test run cache will be saved to.
+    **/
     public static var cwd(default, null):String;
+
+    /**
+        `true` if test runs are being forced (rerun if they previously passed),
+        `false` otherwise.
+    **/
     public static var forcing(default, null):Bool;
+
+    /**
+        The target of this test run.
+    **/
     public static var target(default, null):String;
 
     static var passedTestCount:UInt = 0;
