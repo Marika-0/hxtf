@@ -8,9 +8,9 @@ import haxe.macro.ExprTools;
 import hxtf.Print.*;
 
 /**
-    Base class for containers of TestCases and other TestObjects.
+    Base class for containers of TestCases and other TestBrokers.
 **/
-class TestObject {
+class TestBroker {
     /**
         Adds the given TestObject to the test run.
     **/
