@@ -2,7 +2,7 @@ package test;
 
 class TestSuite extends TestBroker {
     public function new() {
-        addCase(test.ExampleTests);
-        addSuite(test.example.TestSuite);
+        addTest(test.ExampleTests);
+        addBroker(test.example.TestSuite);
     }
 }

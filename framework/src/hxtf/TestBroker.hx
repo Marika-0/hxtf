@@ -14,7 +14,7 @@ class TestBroker {
     /**
         Adds the given TestBroker to the test run.
     **/
-    static macro function addSuite(e:Expr):Expr {
+    static macro function addBroker(e:Expr):Expr {
         try {
             var type:TypePath;
             try {
@@ -33,7 +33,7 @@ class TestBroker {
     /**
         Adds the given TestCase to the test run.
     **/
-    static macro function addCase(e:Expr):Expr {
+    static macro function addTest(e:Expr):Expr {
         try {
             var type:TypePath;
             try {
