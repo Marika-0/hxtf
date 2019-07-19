@@ -62,10 +62,13 @@ class Glob {
     public function new(raw:String) {
         try {
             this.raw = parseRaw(raw);
+            trace(this.raw);
             regex = new EReg(this.raw, "");
         } catch (ex:GlobException) {
+            trace(Std.string(ex));
             throw ex;
         } catch (ex:Dynamic) {
+            trace(Std.string(GlobException.Unknown));
             throw GlobException.Unknown;
         }
     }
@@ -186,12 +189,20 @@ class Glob {
                 case "]".code:
                     if (parsingGroup) {
                         if (breaking) {
-                            // rawRegex.addChar("\\".code);
+                            rawRegex.addChar("\\".code);
+                            rawRegex.addChar("]".code);
+                            breaking = false;
+                            continue;
                         } else if (parsingSpan) {
                             throw GlobException.SpanRanIntoGroupClosure;
                         } else {
                             parsingGroup = false;
                         }
+                    } else {
+                        rawRegex.addChar("\\".code);
+                        rawRegex.addChar("]".code);
+                        breaking = false;
+                        continue;
                     }
                     if (!startedParsingGroup && !justNegatedGroup) {
                         rawRegex.addChar("]".code);
