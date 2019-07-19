@@ -1,7 +1,7 @@
 package hxtf.cli;
 
 import hxtf.cli.Printer.*;
-import hxtf.pattern.HaxeModuleGlob;
+import hxtf.pattern.Glob;
 
 using StringTools;
 
@@ -74,7 +74,7 @@ class Invocation {
                             for (module in val.split(":")) {
                                 if (module.length != 0) {
                                     try {
-                                        Flags.testsToRun.push(new HaxeModuleGlob(module).raw);
+                                        Flags.testsToRun.push(new Glob(module).raw);
                                     } catch (ex:Dynamic) {
                                         postRunErrors.add('[3mInvalid ignored test object glob \'$module\'[0m\n');
                                     }
@@ -93,7 +93,7 @@ class Invocation {
                             for (module in val.split(":")) {
                                 if (module.length != 0) {
                                     try {
-                                        Flags.testsToIgnore.push(new HaxeModuleGlob(module).raw);
+                                        Flags.testsToIgnore.push(new Glob(module).raw);
                                     } catch (ex:Dynamic) {
                                         stderr('[3mIgnored test object glob \'$module\'[0m\n');
                                     }
