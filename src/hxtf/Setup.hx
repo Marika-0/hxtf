@@ -30,7 +30,7 @@ class Setup {
         hxmlBase.push("-D hxtf_ansi=" + (Flags.disableAnsiFormatting ? "0" : "1"));
         hxmlBase.push("-D hxtf_cache=" + (Flags.saveCache ? "1" : "0"));
         hxmlBase.push("-D hxtf_cwd=" + Sys.getCwd());
-        hxmlBase.push("-D hxtf_forcing=" + (Flags.forceTestRerun ? "1" : "0"));
+        hxmlBase.push("-D hxtf_force=" + (Flags.forceTestRerun ? "1" : "0"));
         if (Flags.testsToRun.length != 0) {
             hxmlBase.push("-D hxtf_y=" + Flags.testsToRun.join(":"));
         }
