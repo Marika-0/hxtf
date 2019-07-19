@@ -36,6 +36,11 @@ class Flags {
     public static var writeCompilationOutput(default, null) = false;
 
     /**
+        Whether or not passed tests should be cached.
+    **/
+    public static var saveCache(default, null) = true;
+
+    /**
         The globs of test objects to run.
     **/
     public static var testsToRun(default, null) = new Array<String>();

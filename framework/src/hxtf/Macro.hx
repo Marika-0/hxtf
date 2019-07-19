@@ -46,6 +46,12 @@ class Macro {
     public static var pushedTests(default, null):Array<EReg>;
 
     /**
+        `true` if the passed tests for this test run are being saved to the
+        cache, `false` otherwise.
+    **/
+    public static var savingCache(default, null):Bool;
+
+    /**
         The target of this test run.
     **/
     public static var target(default, null):String;
@@ -58,6 +64,7 @@ class Macro {
         ansi = Context.definedValue("hxtf_ansi") == "1";
         cwd = Context.defined("hxtf_cwd") ? Context.definedValue("hxtf_cwd") : null;
         forcing = Context.definedValue("hxtf_forcing") == "1";
+        savingCache = Context.definedValue("hxtf_cache") == "1";
         target = Context.defined("hxtf_target") ? Context.definedValue("hxtf_target") : null;
 
         loadCache();

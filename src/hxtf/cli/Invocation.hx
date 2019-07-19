@@ -56,6 +56,8 @@ class Invocation {
                             Flags.disableAnsiFormatting = true;
                         case "-write":
                             Flags.writeCompilationOutput = true;
+                        case "-no-cache":
+                            Flags.saveCache = false;
                         case "-help":
                             printHelp();
                         case "-usage":
@@ -117,6 +119,8 @@ class Invocation {
                                 Flags.disableAnsiFormatting = true;
                             case "w":
                                 Flags.writeCompilationOutput = true;
+                            case "z":
+                                Flags.saveCache = false;
                             case "h":
                                 printHelp();
                             case "u":
@@ -163,6 +167,7 @@ class Invocation {
             "    -a, --no-ansi   disable output ANSI formatting",
             "    -w, --write     write haxe compiler outputs to stdout",
             "                      output cannot be formatted to remove ANSI",
+            "    -z, --no-cache  disable caching of passed tests",
             "",
             "    -y TEST[:TEST]* only compile/run these tests",
             "    -n TEST[:TEST]* exclude these tests (overrides '-y')",

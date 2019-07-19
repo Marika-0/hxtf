@@ -55,6 +55,14 @@ class Build {
     }
 
     /**
+        Returns the value of `hxtf.Macro.savingCache`.
+    **/
+    public static macro function getSavingCache():ExprOf<Bool> {
+        var savingCache = Macro.savingCache;
+        return macro $v{savingCache};
+    }
+
+    /**
         Returns the value of `hxtf.Macro.target`.
     **/
     public static macro function getTarget():ExprOf<String> {

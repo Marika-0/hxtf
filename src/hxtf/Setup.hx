@@ -27,17 +27,10 @@ class Setup {
         hxmlBase.push("");
         hxmlBase.push("--macro hxtf.Macro.setup()");
         hxmlBase.push("");
-        if (Flags.disableAnsiFormatting) {
-            hxmlBase.push("-D hxtf_ansi=0");
-        } else {
-            hxmlBase.push("-D hxtf_ansi=1");
-        }
+        hxmlBase.push("-D hxtf_ansi=" + (Flags.disableAnsiFormatting ? "0" : "1"));
+        hxmlBase.push("-D hxtf_cache=" + (Flags.saveCache ? "1" : "0"));
         hxmlBase.push("-D hxtf_cwd=" + Sys.getCwd());
-        if (Flags.forceTestRerun) {
-            hxmlBase.push("-D hxtf_forcing=1");
-        } else {
-            hxmlBase.push("-D hxtf_forcing=0");
-        }
+        hxmlBase.push("-D hxtf_forcing=" + (Flags.forceTestRerun ? "1" : "0"));
         if (Flags.testsToRun.length != 0) {
             hxmlBase.push("-D hxtf_y=" + Flags.testsToRun.join(":"));
         }

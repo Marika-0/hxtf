@@ -26,6 +26,12 @@ class TestRun {
     public static var forcing(default, null):Bool;
 
     /**
+        `true` if the passed tests for this test run are being saved to the
+        cache, `false` otherwise.
+    **/
+    public static var savingCache(default, null):Bool;
+
+    /**
         The target of this test run.
     **/
     public static var target(default, null):String;
@@ -44,7 +50,9 @@ class TestRun {
             Sys.exit(0);
         }
 
-        saveCache();
+        if (savingCache) {
+            saveCache();
+        }
         printResults();
     }
 
@@ -53,6 +61,7 @@ class TestRun {
         cache = Build.getCache();
         cwd = Build.getCwd();
         forcing = Build.getForcing();
+        savingCache = Build.getSavingCache();
         target = Build.getTarget();
 
         Print.ansi = Build.getAnsi();
@@ -69,7 +78,7 @@ class TestRun {
         try {
             File.saveContent(path, passedTests.join("\n"));
         } catch (ex:Dynamic) {
-            stderr('[31;1mfailed to save test cache $path[0m\n');
+            stderr('[31;1mFailed to save test cache $path[0m\n');
         }
     }
 
