@@ -56,20 +56,16 @@ class Glob {
     /**
         Creates a new glob expression with pattern `raw`.
 
-        Guaranteed to throw an instance of type `GlobException` if an error
-        occurs.
+        If the glob is invalid, guaranteed to throw an exception of type String.
     **/
     public function new(raw:String) {
         try {
             this.raw = parseRaw(raw);
-            trace(this.raw);
             regex = new EReg(this.raw, "");
-        } catch (ex:GlobException) {
-            trace(Std.string(ex));
+        } catch (ex:String) {
             throw ex;
         } catch (ex:Dynamic) {
-            trace(Std.string(GlobException.Unknown));
-            throw GlobException.Unknown;
+            throw "unknown: " + Std.string(ex);
         }
     }
 
@@ -176,11 +172,11 @@ class Glob {
                         if (breaking) {
                             rawRegex.addChar("\\".code);
                         } else if (startedParsingGroup) {
-                            throw GlobException.SpanCalledAfterGroupOpening;
+                            throw "cannot span immediately after group opening";
                         } else if (justNegatedGroup) {
-                            throw GlobException.SpanCalledAfterGroupNegation;
+                            throw "cannot span immediately after group negation";
                         } else if (parsingSpan) {
-                            throw GlobException.SpanCalledWhileParsingSpan;
+                            throw "cannot span on an unescaped span";
                         } else {
                             parsingSpan = true;
                         }
@@ -194,7 +190,7 @@ class Glob {
                             breaking = false;
                             continue;
                         } else if (parsingSpan) {
-                            throw GlobException.SpanRanIntoGroupClosure;
+                            throw "cannot span into an unescaped group closure";
                         } else {
                             parsingGroup = false;
                         }
@@ -254,15 +250,4 @@ class Glob {
         }
         return rawRegex.toString();
     }
-}
-
-/**
-    An enumeration of possible exceptions that can occur when creating a glob.
-**/
-enum GlobException {
-    SpanCalledAfterGroupOpening;
-    SpanCalledAfterGroupNegation;
-    SpanCalledWhileParsingSpan;
-    SpanRanIntoGroupClosure;
-    Unknown;
 }
