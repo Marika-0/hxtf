@@ -1,0 +1,16 @@
+{
+    "name": "hxtf",
+    "url": "https://github.com/Marika-0/hxtf",
+    "license": "MIT",
+    "tags": [
+        "cross",
+        "testing",
+        "utility"
+    ],
+    "description": "A Haxe 4+ Conditional Unit Testing Framework for Haxe Targets with Access to the System Environment",
+    "version": "1.0.0",
+    "classPath": "src",
+    "releasenote": "Initial release.",
+    "contributors": ["Marika-0"],
+    "dependencies": {}
+}
