@@ -5,9 +5,6 @@
 -dce full
 -D analyzer
 
--hl buildtmp/hxtf.hl
+--resource project/import.hx@ImportFile
 
--cmd rm -rf build
--cmd cp -rf framework build
--cmd mv -f  buildtmp/hxtf.hl build/hxtf.hl
--cmd rm -rf buildtmp
+-neko run.n
