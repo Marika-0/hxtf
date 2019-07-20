@@ -1,4 +1,4 @@
-## Help information and troubleshooting for development crud that happen.
+## Help information and troubleshooting for development crud that happens.
 ---
 
 If the following errror appears when trying to run HashLink:
