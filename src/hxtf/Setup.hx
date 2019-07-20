@@ -27,6 +27,8 @@ class Setup {
         hxmlBase.push("");
         hxmlBase.push("--macro hxtf.Macro.setup()");
         hxmlBase.push("");
+        hxmlBase.push("-L hxtf:1.0.0");
+        hxmlBase.push("");
         hxmlBase.push("-D hxtf_ansi=" + (Flags.disableAnsiFormatting ? "0" : "1"));
         hxmlBase.push("-D hxtf_cache=" + (Flags.saveCache ? "1" : "0"));
         hxmlBase.push("-D hxtf_cwd=" + Sys.getCwd());
@@ -63,7 +65,6 @@ class Setup {
         var hxml = new Array<String>();
 
         hxml.push('-D hxtf_target=$target');
-
         hxml.push("");
         hxml.push('$target.hxml');
         hxml.push("");
