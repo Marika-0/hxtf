@@ -20,5 +20,5 @@ testing:
 release:
 - version      : "1.0.0"
   dependencies :
-   haxelib : "3.4.0",
-   neko    : "2.2.0"
+    haxelib : "3.4.0",
+    neko    : "2.2.0"
