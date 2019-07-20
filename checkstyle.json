@@ -130,7 +130,7 @@
 		},
 		{
 			"props": {
-				"enforceEmptyPackage": false
+				"enforceEmptyPackage": true
 			},
 			"type": "EmptyPackage"
 		},
@@ -515,10 +515,18 @@
 					"IF",
 					"WHILE",
 					"SWITCH",
-					"TRY",
-					"CATCH"
+					"TRY"
 				],
 				"option": "same"
+			},
+			"type": "RightCurly"
+		},
+		{
+			"props": {
+				"tokens": [
+					"CATCH"
+				],
+				"option": "aloneorsingle"
 			},
 			"type": "RightCurly"
 		},
