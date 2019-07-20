@@ -135,28 +135,6 @@ The `hxtf_cwd` flag should be overridden with care - it changes where "&lt;targe
 
 The `hxtf_y` and `hxtf_n` flags generally should not be overridden in hxml files. `hxtf_push` and `hxtf_pull` can be used instead. `hxtf_push` is used to extend the `hxtf_y` define with more tests to specifically compile the test run for, `hxtf_pull` is used to extend the `hxtf_n` define with more tests to specifically exclude from the test run. Both of these flags will attempt to be used as a colon-separated list of PCRE expressions.
 
-
-Installation
-============
-
-Currently, HxTF is available as a HashLink bytecode file supported by HashLink 1.10.0 and a directory of backend framework files (`framework/src/hxtf/`) which, in the above setup, would be located in `test/src/test/hxtf/`.
-
-Installation simply requires copying these files, most simply for the following directory structure:
-
-```plaintext
-test/
-├── src/
-│   ├── hxtf/
-│   │   └──  ### [framework/src/hxtf/*] Files Here ###
-│   └── ...
-├── hxtf.hl
-└── ...
-```
-
-It may be more convenient to have "hxtf.hl" in the same directory as HxTF target hxml and script files as these need to be in the working directory when HxTF is invoked on the command line.
-
-Beyond that, make sure that all target hxml and script files correctly reference source and output directories. The "\_.hxml" file does not define "./src/" as a source directory, this must be done in target hxml files.
-
 > Note that, as hxml files can be nested within each other, it may simplify things to have an "\_base.hxml" or similar file defining source directories and compiler flags, and include it in HxTF target hxml files.
 
 
