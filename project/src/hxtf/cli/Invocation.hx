@@ -21,6 +21,14 @@ class Invocation {
     @:allow(hxtf.Hxtf)
     static function run():Void {
         var iterator = Sys.args().iterator();
+
+        // Remove the final working directory argument if launched from haxelib.
+        if (Sys.getEnv("HAXELIB_RUN") == "1") {
+            var args = Sys.args();
+            args.pop();
+            iterator = args.iterator();
+        }
+
         if (!iterator.hasNext()) {
             printNoFlags();
         }
@@ -157,7 +165,7 @@ class Invocation {
     static function printHelp():Void {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
-            "usage: hxtf [OPTIONS...] TARGETS...",
+            "Usage: hxtf [OPTIONS...] TARGETS...",
             "",
             "Run configurable unit tests for Haxe targets",
             "with access to Sys and the system package",
@@ -190,7 +198,7 @@ class Invocation {
     static function printUsage():Void {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
-            "usage: hxtf [OPTIONS...] TARGETS...",
+            "Usage: hxtf [OPTIONS...] TARGETS...",
             ""
         ].join("\n"));
         Sys.exit(0);
@@ -200,7 +208,7 @@ class Invocation {
     static function printNoFlags():Void {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
-            "usage: hxtf [OPTIONS...] TARGETS...",
+            "Usage: hxtf [OPTIONS...] TARGETS...",
             "Try 'hxtf --help' for more information.",
             ""
         ].join("\n"));
