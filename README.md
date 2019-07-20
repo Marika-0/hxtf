@@ -1,7 +1,7 @@
 HxTF
 ====
 
-[![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases) ![Build](https://img.shields.io/badge/build-passing-brightgreen.svg) ![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg) [![Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master) [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md) [![Haxelib](https://img.shields.io/badge/haxelib-v1.0.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
+[![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases) [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)]() [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)]() [![Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master) [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md) [![Haxelib](https://img.shields.io/badge/haxelib-v1.0.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
 
 A Haxe 4 conditional unit testing framework for targets with access to the system environment.
 
