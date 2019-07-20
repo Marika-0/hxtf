@@ -3,7 +3,6 @@ package hxtf;
 import haxe.ds.BalancedTree;
 import haxe.io.Path.addTrailingSlash as slash;
 import haxe.macro.Context;
-import haxe.macro.Expr;
 import sys.FileSystem;
 import sys.io.File;
 
