@@ -90,7 +90,7 @@ class Build {
         if (Macro.pushedTests.length != 0) {
             for (regex in Macro.pushedTests) {
                 if (regex.match(test)) {
-                    return true;
+                    return !Macro.cache.exists(test);
                 }
             }
             return false;
