@@ -18,6 +18,7 @@ testing:
     python : "3.6.8"
 ---
 release:
-  - version      : "1.0.0"
-    dependencies :
-      hashlink : "1.10.0"
+- version      : "1.0.0"
+  dependencies :
+   haxelib : "3.4.0",
+   neko    : "2.2.0"
