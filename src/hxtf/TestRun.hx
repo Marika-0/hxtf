@@ -7,6 +7,10 @@ import sys.io.File;
 
 using StringTools;
 
+/**
+    The main class for compiling a test run and the runtime access class for
+    test run configuration.
+**/
 class TestRun {
     /**
         The cache of TestCases.
