@@ -64,9 +64,15 @@ class TestBroker {
     }
 }
 
+/**
+    Helper functions that shouldn't normally be accessed by Test Brokers.
+**/
 @:access(hxtf.TestRun)
 @:access(hxtf.TestCase)
 class Helper {
+    /**
+        Evaluates the given test case and records if it passed or failed.
+    **/
     public static function evaluateCase(test:TestCase, name:String, start:Float):Void {
         if (test._passed) {
             var time = formatTimeDelta(start, stamp());
@@ -86,6 +92,9 @@ class Helper {
         }
     }
 
+    /**
+        Prints stack trace information for an unhandled exception.
+    **/
     @:access(haxe.CallStack)
     public static function caseException(ex:Dynamic, name:String, start:Float):Void {
         stderr('[41;1m${ansi ? "----" : "!-- "}$name exception: ${Std.string(ex)} [0m\n');
