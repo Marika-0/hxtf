@@ -1,0 +1,10 @@
+-cp src
+
+-main hxtf.Hxtf
+
+-dce full
+-D analyzer
+
+--resource ../resources/import.hx@ImportFile
+
+-neko ../run.n
