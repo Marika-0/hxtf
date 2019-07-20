@@ -3,11 +3,12 @@ HxTF
 
 [![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases) [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Marika-0/hxtf) [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)](https://github.com/Marika-0/hxtf) [![Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master) [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md) [![Haxelib](https://img.shields.io/badge/haxelib-v1.0.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
 
-A Haxe 4 conditional unit testing framework for targets with access to the system environment.
+A Haxe 4 Conditional Unit Testing Framework for Haxe Targets with Access to the System Environment.
+
+---
 
 
-Abstract
-========
+### Abstract
 
 HxTF (**H**a**x**e **T**esting **F**ramework) operates through a  series of 'Test Brokers' (or 'Test Suites') which sequentially instantiate more Test Brokers and/or 'Test Cases'.
 
@@ -111,8 +112,7 @@ The general setup has a Test Broker called "TestSuite" in every package, which a
 The `addTest()` function, at compile time, checks a cache file to see if its argument has passed testing previously. If it has, the call is exited and no `new` expression is returned. Without a reference to the Test Case, the Haxe compiler ignores it and the type isn't generated, excluding it from later compilation and the test run in general.
 
 
-Setup
-=====
+### Setup
 
 A HxTF target is defined as a Haxe target with access to the system environment, with a hxml file configuring its compilation and a script file executing the test run.
 
@@ -140,8 +140,7 @@ The `hxtf_y` and `hxtf_n` flags generally should not be overridden in hxml files
 > Note that, as hxml files can be nested within each other, it may simplify things to have an "\_base.hxml" or similar file defining source directories and compiler flags, and include it in HxTF target hxml files.
 
 
-Use
-===
+### Use
 
 The HxTF command line tool has several flags for configuring test runs.
 
@@ -219,8 +218,7 @@ If a test is not included in the test run, references to it from `addCase()` fun
 > If a test is marked as "push" and "pull", the exclusion of that test will take precidence but the effects of a test being included will remain. Other tests not marked as "push" still won't be compiled.
 
 
-Test Cases
-==========
+### Test Cases
 
 A Test Case has several assertion methods, all of which have an optional argument for a custom message to be printed if they fail.
 
