@@ -215,8 +215,18 @@ class Invocation {
         Sys.exit(0);
     }
 
-    static inline function generateImport():Void {
+    static function generateImport():Void {
+        if (sys.FileSystem.exists(Sys.getCwd() + "/import.hx")) {
+            stderr("[1mOverwrite existing 'import.hx'? [y/N][0m ");
+            if (Sys.stdin().readLine().toLowerCase() != "y") {
+                Sys.exit(0);
+            }
+            if (sys.FileSystem.isDirectory(Sys.getCwd() + "/import.hx")) {
+                sys.FileSystem.deleteDirectory(Sys.getCwd() + "/import.hx");
+            }
+        }
         sys.io.File.saveContent(Sys.getCwd() + "/import.hx", haxe.Resource.getString("ImportFile"));
+        stdout("[3mCreated default HxTF import.hx file[0m\n\n");
         Sys.exit(0);
     }
 }
