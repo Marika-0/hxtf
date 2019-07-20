@@ -1,6 +1,5 @@
 package hxtf;
 
-import haxe.Timer.stamp;
 import haxe.ds.BalancedTree;
 import haxe.io.Path.addTrailingSlash as slash;
 import hxtf.Print.*;
