@@ -25,7 +25,7 @@ class Invocation {
         // Remove the final working directory argument if launched from haxelib.
         if (Sys.getEnv("HAXELIB_RUN") == "1") {
             var args = Sys.args();
-            args.pop();
+            Sys.setCwd(args.pop());
             iterator = args.iterator();
         }
 
@@ -216,7 +216,7 @@ class Invocation {
     }
 
     static inline function generateImport():Void {
-        sys.io.File.saveContent("import.hx", haxe.Resource.getString("ImportFile"));
+        sys.io.File.saveContent(Sys.getCwd() + "/import.hx", haxe.Resource.getString("ImportFile"));
         Sys.exit(0);
     }
 }
