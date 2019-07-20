@@ -523,15 +523,6 @@
 		},
 		{
 			"props": {
-				"tokens": [
-					"CATCH"
-				],
-				"option": "aloneorsingle"
-			},
-			"type": "RightCurly"
-		},
-		{
-			"props": {
 				"commaPolicy": "after",
 				"semicolonPolicy": "after",
 				"dotPolicy": "none"
