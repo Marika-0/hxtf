@@ -1,6 +1,6 @@
 package hxtf.cli;
 
-import hxtf.cli.Flags.disableAnsiFormatting;
+import hxtf.cli.Flags.disableAnsi;
 
 using hxtf.sys.Formatter;
 
@@ -14,7 +14,7 @@ class Printer {
         (stripping ANSI from the string if required).
     **/
     public static inline function stdout(str:String):Void {
-        Sys.stdout().writeString(disableAnsiFormatting ? str.stripAnsi() : str);
+        Sys.stdout().writeString(disableAnsi ? str.stripAnsi() : str);
     }
 
     /**
@@ -22,6 +22,6 @@ class Printer {
         (stripping ANSI from the string if required).
     **/
     public static inline function stderr(str:String):Void {
-        Sys.stderr().writeString(disableAnsiFormatting ? str.stripAnsi() : str);
+        Sys.stderr().writeString(disableAnsi ? str.stripAnsi() : str);
     }
 }

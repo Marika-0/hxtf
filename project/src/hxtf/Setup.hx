@@ -29,15 +29,15 @@ class Setup {
         hxmlBase.push("");
         hxmlBase.push("-L hxtf:1.0.0");
         hxmlBase.push("");
-        hxmlBase.push("-D hxtf_ansi=" + (Flags.disableAnsiFormatting ? "0" : "1"));
+        hxmlBase.push("-D hxtf_ansi=" + (Flags.disableAnsi ? "0" : "1"));
         hxmlBase.push("-D hxtf_cache=" + (Flags.saveCache ? "1" : "0"));
         hxmlBase.push("-D hxtf_cwd=" + Sys.getCwd());
         hxmlBase.push("-D hxtf_force=" + (Flags.forceTestRerun ? "1" : "0"));
-        if (Flags.testsToRun.length != 0) {
-            hxmlBase.push("-D hxtf_y=" + Flags.testsToRun.join(":"));
+        if (Flags.testsToPush.length != 0) {
+            hxmlBase.push("-D hxtf_y=" + Flags.testsToPush.join(":"));
         }
-        if (Flags.testsToIgnore.length != 0) {
-            hxmlBase.push("-D hxtf_n=" + Flags.testsToIgnore.join(":"));
+        if (Flags.testsToPull.length != 0) {
+            hxmlBase.push("-D hxtf_n=" + Flags.testsToPull.join(":"));
         }
     }
 

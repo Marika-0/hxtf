@@ -24,7 +24,7 @@ class Hxtf {
 
     static function handleInvocation():Void {
         if (Flags.targets.length == 0) {
-            if (Flags.deletePreviousRecords) {
+            if (Flags.deleteCache) {
                 stderr("[1mDelete all .cache files with corresponding .hxml and .script files? [Y/n][0m ");
 
                 var input = Sys.stdin().readLine().toLowerCase();
@@ -60,7 +60,7 @@ class Hxtf {
             }
         }
 
-        if (Flags.deletePreviousRecords) {
+        if (Flags.deleteCache) {
             var deleted = false;
             for (target in Flags.targets) {
                 if (FSManager.delete('./$target.cache')) {
@@ -101,15 +101,15 @@ class Hxtf {
                 stdout("\n");
                 continue;
             }
-            if (Flags.onlyCompiling) {
+            if (Flags.onlyCompile) {
                 if (!iterator.hasNext() || Flags.writeCompilationOutput) {
                     stdout("\n");
                 }
                 continue;
             }
             if (!Run.run(target)) {
-                stderr('${Flags.disableAnsiFormatting ? "  " : ""}[3mTesting failed for target: $target[0m\n');
-                if (!Flags.quickTestRuns && iterator.hasNext()) {
+                stderr('${Flags.disableAnsi ? "  " : ""}[3mTesting failed for target: $target[0m\n');
+                if (Flags.blockOnTestFailure && iterator.hasNext()) {
                     stdout("[3mPress any key to continue...[0m\n");
                     Sys.getChar(false);
                 }

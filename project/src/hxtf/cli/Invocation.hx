@@ -59,13 +59,13 @@ class Invocation {
                 for (part in flags) {
                     switch (part) {
                         case "c" | "--compile":
-                            Flags.onlyCompiling = true;
+                            Flags.onlyCompile = true;
                         case "f" | "--forcing":
                             Flags.forceTestRerun = true;
                         case "q" | "--quick":
-                            Flags.quickTestRuns = true;
+                            Flags.blockOnTestFailure = false;
                         case "a" | "--no-ansi":
-                            Flags.disableAnsiFormatting = true;
+                            Flags.disableAnsi = true;
                         case "w" | "--write":
                             Flags.writeCompilationOutput = true;
                         case "z" | "--no-cache":
@@ -77,7 +77,7 @@ class Invocation {
                             } else {
                                 for (glob in argument.split(":").filter((s) -> s.length != 0)) {
                                     try {
-                                        Flags.testsToRun.push(new Glob(glob).raw);
+                                        Flags.testsToPush.push(new Glob(glob).raw);
                                     } catch (ex:Dynamic) {
                                         invocationErrors.add('[3mInvalid ignored test object glob \'$glob\': ${Std.string(ex)}[0m\n');
                                     }
@@ -90,7 +90,7 @@ class Invocation {
                             } else {
                                 for (glob in argument.split(":").filter((s) -> s.length != 0)) {
                                     try {
-                                        Flags.testsToIgnore.push(new Glob(glob).raw);
+                                        Flags.testsToPull.push(new Glob(glob).raw);
                                     } catch (ex:Dynamic) {
                                         invocationErrors.add('[3mInvalid ignored test object glob \'$glob\': ${Std.string(ex)}[0m\n');
                                     }
@@ -101,7 +101,7 @@ class Invocation {
                         case "u" | "--usage":
                             printUsage();
                         case "r" | "--reset":
-                            Flags.deletePreviousRecords = true;
+                            Flags.deleteCache = true;
                         case "--default-import":
                             createDefaultImport();
                         default:
