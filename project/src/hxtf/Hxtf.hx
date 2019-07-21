@@ -30,11 +30,11 @@ class Hxtf {
                 var input = Sys.stdin().readLine().toLowerCase();
                 if (input == "" || input == "y") {
                     var files = FSManager.readFiles("./");
-                    files = files.filter(function(f) return f.endsWith(".cache")
+                    files = files.filter((f) -> f.endsWith(".cache")
                         && f.length > 5
                         && files.has(f.substr(0, f.length - 5) + "hxml")
                         && files.has(f.substr(0, f.length - 5) + "script"));
-                    files.sort(function(a, b) return Reflect.compare(a, b));
+                    files.sort((a, b) -> Reflect.compare(a, b));
 
                     var deleted = false;
                     for (file in files) {
