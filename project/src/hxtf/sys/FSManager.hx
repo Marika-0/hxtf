@@ -3,8 +3,7 @@ package hxtf.sys;
 import sys.FileSystem.*;
 
 /**
-    This class abstracts common filesystem operations to make other code cleaner
-    and less error-prone.
+    Abstracts common filesystem operations.
 **/
 class FSManager extends sys.FileSystem {
     /**
@@ -93,10 +92,10 @@ class FSManager extends sys.FileSystem {
     }
 
     /**
-        Deletes the object (file or directory) at the given path.
+        Deletes the file or directory at the given path.
 
-        Returns `false` if this failed or the object did not exist, otherwise
-        returns `true`.
+        Returns `false` if this fails or the file/directory does not exist,
+        otherwise returns `true`.
     **/
     public static function delete(path:String):Bool {
         try {
@@ -118,7 +117,7 @@ class FSManager extends sys.FileSystem {
     /**
         Deletes the directory at the given path if it is empty.
 
-        Returns `true` if a directory was deleted, returns `false` otherwise.
+        Returns `true` if the directory was deleted, otherwise returns `false`.
     **/
     public static function deleteIfEmpty(path:String):Bool {
         try {
@@ -152,6 +151,6 @@ class FSManager extends sys.FileSystem {
         if (!doesDirectoryExist(path)) {
             return null;
         }
-        return readDirectory(path).filter(function(p) return !isDirectory(p));
+        return readDirectory(path).filter((p) -> !isDirectory(p));
     }
 }
