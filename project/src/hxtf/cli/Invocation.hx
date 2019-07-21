@@ -6,18 +6,33 @@ import hxtf.pattern.Glob;
 using StringTools;
 
 /**
-    This class handles initial cli invocation and parses the given arguments,
-    storing valid information in `hxtf.cli.Flags`.
+    Handles parsing CLI flags and arguments; printing invalid flag errors;
+    prompting help/usage information; and creating the default import file.
 **/
 class Invocation {
     /**
-        Set to `true` if any printing occurred due to invalid flags or
-        arguments.
+        If `true`, the call to `hxtf.cli.Invocation.run()` printed errors.
+
+        If this value is read before `hxtf.cli.Invocation.run()` is called, the
+        result is unspecified.
     **/
-    public static var prePrintingOccurred(default, null) = false;
+    public static var prePrintingOccurred(default, null):Bool;
 
-    static var postRunErrors = new List<String>();
+    /**
+        A list of string to print to stderr after parsing CLI flags and
+        arguments.
 
+        Allows parsing of the 'no ansi' flag if it's provided before printing
+        errors.
+    **/
+    static var invocationErrors = new List<String>();
+
+    /**
+        Parses invocation flags and arguments, printing error and help
+        information as appropriate.
+
+        If this function is called more that once, the result is unspecified.
+    **/
     @:allow(hxtf.Hxtf)
     static function run():Void {
         var iterator = Sys.args().iterator();
@@ -30,138 +45,85 @@ class Invocation {
         }
 
         if (!iterator.hasNext()) {
-            printNoFlags();
-        }
-
-        inline function invalidArgument(arg:String) {
-            postRunErrors.add('[3mInvalid flag \'$arg\'[0m\n');
-        }
-
-        inline function embeddedArgument(arg:String) {
-            postRunErrors.add('[3mEmbedded flag \'$arg\' requires an argument[0m\n');
-        }
-
-        inline function missingArgument(arg:String) {
-            postRunErrors.add('[3mFlag \'$arg\' requires an argument[0m\n');
+            printNoFlagsUsage();
         }
 
         while (iterator.hasNext()) {
-            var arg = iterator.next();
-
-            if (arg.startsWith("-")) {
-                arg = arg.substring(1);
-                if (arg.startsWith("-")) {
-                    switch (arg) {
-                        case "-compile":
+            var flag = iterator.next();
+            if (flag.startsWith("-")) {
+                if (flag == "-" || flag == "--") {
+                    invocationErrors.add('[3mInvalid flag \'$flag\'[0m\n');
+                    continue;
+                }
+                var flags = flag.startsWith("--") ? [flag] : flag.substr(1).split("");
+                for (part in flags) {
+                    switch (part) {
+                        case "c" | "--compile":
                             Flags.onlyCompiling = true;
-                        case "-force":
+                        case "f" | "--forcing":
                             Flags.forceTestRerun = true;
-                        case "-quick":
+                        case "q" | "--quick":
                             Flags.quickTestRuns = true;
-                        case "-no-ansi":
+                        case "a" | "--no-ansi":
                             Flags.disableAnsiFormatting = true;
-                        case "-write":
+                        case "w" | "--write":
                             Flags.writeCompilationOutput = true;
-                        case "-no-cache":
+                        case "z" | "--no-cache":
                             Flags.saveCache = false;
-                        case "-help":
+                        case "y" | "--push":
+                            var argument = iterator.next();
+                            if (argument == null) {
+                                invocationErrors.add("[3mFlag '-y' requires an argument[0m\n");
+                            } else {
+                                for (glob in argument.split(":").filter((s) -> s.length != 0)) {
+                                    try {
+                                        Flags.testsToRun.push(new Glob(glob).raw);
+                                    } catch (ex:Dynamic) {
+                                        invocationErrors.add('[3mInvalid ignored test object glob \'$glob\': ${Std.string(ex)}[0m\n');
+                                    }
+                                }
+                            }
+                        case "n" | "--pull":
+                            var argument = iterator.next();
+                            if (argument == null) {
+                                invocationErrors.add("[3mFlag '-n' requires an argument[0m\n");
+                            } else {
+                                for (glob in argument.split(":").filter((s) -> s.length != 0)) {
+                                    try {
+                                        Flags.testsToIgnore.push(new Glob(glob).raw);
+                                    } catch (ex:Dynamic) {
+                                        invocationErrors.add('[3mInvalid ignored test object glob \'$glob\': ${Std.string(ex)}[0m\n');
+                                    }
+                                }
+                            }
+                        case "h" | "--help":
                             printHelp();
-                        case "-usage":
+                        case "u" | "--usage":
                             printUsage();
-                        case "-reset":
+                        case "r" | "--reset":
                             Flags.deletePreviousRecords = true;
-                        case "-make-import":
-                            generateImport();
+                        case "--default-import":
+                            createDefaultImport();
                         default:
-                            invalidArgument('-$arg');
+                            invocationErrors.add('[3mInvalid flag \'$flag\'[0m\n');
                     }
-                } else if (arg.length != 0) {
-                    if (arg.endsWith("y")) {
-                        var val = iterator.next();
-                        if (val == null) {
-                            missingArgument("-y");
-                        } else {
-                            for (module in val.split(":")) {
-                                if (module.length != 0) {
-                                    try {
-                                        Flags.testsToRun.push(new Glob(module).raw);
-                                    } catch (ex:Dynamic) {
-                                        postRunErrors.add('[3mInvalid ignored test object glob \'$module\'[0m\n');
-                                    }
-                                }
-                            }
-                        }
-                        if (arg.length == 1) {
-                            continue;
-                        }
-                        arg = arg.substr(0, arg.length - 1);
-                    } else if (arg.endsWith("n")) {
-                        var val = iterator.next();
-                        if (val == null) {
-                            missingArgument("-n");
-                        } else {
-                            for (module in val.split(":")) {
-                                if (module.length != 0) {
-                                    try {
-                                        Flags.testsToIgnore.push(new Glob(module).raw);
-                                    } catch (ex:Dynamic) {
-                                        stderr('[3mIgnored test object glob \'$module\'[0m\n');
-                                    }
-                                }
-                            }
-                        }
-                        if (arg.length == 1) {
-                            continue;
-                        }
-                        arg = arg.substr(0, arg.length - 1);
-                    }
-                    for (char in arg.split("")) {
-                        switch (char) {
-                            case "c":
-                                Flags.onlyCompiling = true;
-                            case "f":
-                                Flags.forceTestRerun = true;
-                            case "q":
-                                Flags.quickTestRuns = true;
-                            case "a":
-                                Flags.disableAnsiFormatting = true;
-                            case "w":
-                                Flags.writeCompilationOutput = true;
-                            case "z":
-                                Flags.saveCache = false;
-                            case "y":
-                                embeddedArgument("y");
-                            case "n":
-                                embeddedArgument("n");
-                            case "h":
-                                printHelp();
-                            case "u":
-                                printUsage();
-                            case "r":
-                                Flags.deletePreviousRecords = true;
-                            case "i":
-                                generateImport();
-                            default:
-                                invalidArgument('-$char');
-                        }
-                    }
-                } else {
-                    invalidArgument("-");
                 }
             } else {
-                for (target in arg.split(":")) {
-                    Flags.targets.push(target);
-                }
+                Flags.targets.concat(flag.split(":").filter((s) -> s.length != 0));
             }
         }
 
-        prePrintingOccurred = postRunErrors.length != 0;
-        for (item in postRunErrors) {
+        prePrintingOccurred = !invocationErrors.isEmpty();
+        for (item in invocationErrors) {
             stderr(item);
         }
     }
 
     // @formatter:off
+
+    /**
+        Prints help information and exits.
+    **/
     static function printHelp():Void {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
@@ -179,13 +141,13 @@ class Invocation {
             "                          output cannot be formatted to remove ANSI",
             "    -z, --no-cache      disable caching of passed tests",
             "",
-            "    -y TEST[:TEST]*     only compile/run these tests",
-            "    -n TEST[:TEST]*     exclude these tests (overrides '-y')",
+            "    -y, --push (TEST[:TEST]*)  compile/run only these tests",
+            "    -n, --pull (TEST[:TEST]*)  exclude these tests (overrides '-y')",
             "",
             "    -h, --help          print this help and exit",
             "    -u, --usage         print usage information and exit",
             "    -r, --reset         delete the passed-test cache of each target",
-            "    -i, --make-import   create a default import.hx file in the working directory",
+            "    --default-import    create a default import.hx file in the working directory",
             "",
             "Targets:",
             "    A colon or space-separated list of targets to test (in order)",
@@ -194,18 +156,10 @@ class Invocation {
         Sys.exit(0);
     }
 
-    // @formatter:off
-    static function printUsage():Void {
-        //  [------------------------------------80 chars------------------------------------]
-        stdout([
-            "Usage: hxtf [OPTIONS...] TARGETS...",
-            ""
-        ].join("\n"));
-        Sys.exit(0);
-    }
-
-    // @formatter:off
-    static function printNoFlags():Void {
+    /**
+        Prints usage information and a prompt to help information, then exits.
+    **/
+    static function printNoFlagsUsage():Void {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
             "Usage: hxtf [OPTIONS...] TARGETS...",
@@ -215,7 +169,27 @@ class Invocation {
         Sys.exit(0);
     }
 
-    static function generateImport():Void {
+    /**
+        Prints usage information and exits.
+    **/
+    static function printUsage():Void {
+        //  [------------------------------------80 chars------------------------------------]
+        stdout([
+            "Usage: hxtf [OPTIONS...] TARGETS...",
+            ""
+        ].join("\n"));
+        Sys.exit(0);
+    }
+
+    // @formatter:on
+
+    /**
+        Creates a default 'import.hx' file for HxTF and exits.
+
+        If an 'import.hx' file already exists, prompts the user if they want it
+        overwritten.
+    **/
+    static function createDefaultImport():Void {
         if (sys.FileSystem.exists(Sys.getCwd() + "/import.hx")) {
             stderr("[1mOverwrite existing 'import.hx'? [y/N][0m ");
             if (Sys.stdin().readLine().toLowerCase() != "y") {
