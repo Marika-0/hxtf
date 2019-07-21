@@ -3,7 +3,7 @@ package hxtf.sys;
 using StringTools;
 
 /**
-    This class handles the formatting of things.
+    Handles formatting.
 **/
 class Formatter {
     /**
@@ -11,7 +11,7 @@ class Formatter {
     **/
     public static function stripAnsi(s:String):String {
         return
-            ~/[][[\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?␇)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g.split(s)
+            ~/[\x1b\x9b][[\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?\x07)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g.split(s)
             .join("");
     }
 }
