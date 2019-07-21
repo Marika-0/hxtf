@@ -6,8 +6,7 @@ import hxtf.sys.Formatter.stripAnsi;
 import sys.io.Process;
 
 /**
-    This class invokes the compilation of a given target and handles compilation
-    errors.
+    Invokes the compilation of a given target and handles compilation errors.
 **/
 class Compile {
     @:allow(hxtf.Hxtf)

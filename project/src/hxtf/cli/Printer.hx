@@ -5,13 +5,14 @@ import hxtf.cli.Flags.disableAnsi;
 using hxtf.sys.Formatter;
 
 /**
-    This class handles the formatting and writing of strings to the standard
-    output/error streams.
+    Handles printing to the standard output and error streams.
+
+    Strips ANSI from the strings if configured to from the command line.
 **/
 class Printer {
     /**
         Writes the given string `str` to the process standard output stream
-        (stripping ANSI from the string if required).
+        (stripping ANSI if required).
     **/
     public static inline function stdout(str:String):Void {
         Sys.stdout().writeString(disableAnsi ? str.stripAnsi() : str);
@@ -19,7 +20,7 @@ class Printer {
 
     /**
         Writes the given string `str` to the process standard error stream
-        (stripping ANSI from the string if required).
+        (stripping ANSI if required).
     **/
     public static inline function stderr(str:String):Void {
         Sys.stderr().writeString(disableAnsi ? str.stripAnsi() : str);

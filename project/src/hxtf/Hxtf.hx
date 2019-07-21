@@ -9,7 +9,7 @@ using Lambda;
 using StringTools;
 
 /**
-    The main driver class for this program.
+    Main driver class for HxTF.
 **/
 class Hxtf {
     static function main():Void {

@@ -6,8 +6,8 @@ import hxtf.sys.FSManager;
 import sys.io.File;
 
 /**
-    This class handles setting up the test hxml file for compiling tests and
-    checking if the required files exist for any given target.
+    Handles setting up the test hxml file for compiling tests and checking if
+    the required files exist for given targets.
 **/
 class Setup {
     /**
