@@ -1,8 +1,6 @@
 Contributing
 ============
 
-I have absolutely no idea - never done this before.
+I'm hoping to use this for an assignment so I won't be accepting direct contributions for the time being.
 
-Hoping to use this for a University assignment, so I might be the only contributer for awhile (not sure about uni policy).
-
-If you find an issue or think of an improvement, please make an issue on the [GitHub page](https://github.com/Marika-0/hxtf).
+If, however, you'd like to report a bug or suggest an improvement, please create an issue on this projects [GitHub page](https://github.com/Marika-0/hxtf/issues).
