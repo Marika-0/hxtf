@@ -14,7 +14,15 @@ using StringTools;
 class Hxtf {
     static function main():Void {
         Invocation.run();
+        handleInvocation();
 
+        Setup.setup();
+        organizeTestRuns();
+
+        FSManager.delete("./_.hxml");
+    }
+
+    static function handleInvocation():Void {
         if (Flags.targets.length == 0) {
             if (Flags.deletePreviousRecords) {
                 stderr("[1mDelete all .cache files with corresponding .hxml and .script files? [Y/n][0m ");
@@ -45,10 +53,9 @@ class Hxtf {
                 Sys.exit(0);
             } else {
                 if (Invocation.prePrintingOccurred) {
-                    stderr("\n[1mNo targets were passed to test for![0m\n\n");
-                } else {
-                    stderr("[1mNo targets were passed to test for![0m\n\n");
+                    stderr("\n");
                 }
+                stderr("[1mNo targets were passed to test for![0m\n\n");
                 Sys.exit(1);
             }
         }
@@ -67,43 +74,36 @@ class Hxtf {
             stdout("\n");
             Sys.exit(0);
         }
+    }
 
-        Setup.setup();
-
-        inline function skip(target:String) {
-            stderr('[0m[3mSkipping target: $target[0m\n');
+    static function organizeTestRuns():Void {
+        stdout("\n");
+        if (Invocation.prePrintingOccurred) {
+            stdout("[0m================================================================\n");
         }
-        inline function divide(line = false) {
-            stdout("\n");
-            if (line) {
-                stdout("[0m================================================================\n");
-            }
-        }
-
-        divide(Invocation.prePrintingOccurred);
 
         var iterator = Flags.targets.iterator();
         for (target in iterator) {
             if (!Setup.checkRunnable(target)) {
-                skip(target);
-                divide();
+                stderr('[0m[3mSkipping target: $target[0m\n');
+                stdout("\n");
                 continue;
             }
             if (!Setup.generateRunHxml(target)) {
-                skip(target);
-                divide();
+                stderr('[0m[3mSkipping target: $target[0m\n');
+                stdout("\n");
                 continue;
             }
             if (!Compile.target(target)) {
                 if (!Flags.writeCompilationOutput) {
-                    skip(target);
+                    stderr('[0m[3mSkipping target: $target[0m\n');
                 }
-                divide();
+                stdout("\n");
                 continue;
             }
             if (Flags.onlyCompiling) {
                 if (!iterator.hasNext() || Flags.writeCompilationOutput) {
-                    divide();
+                    stdout("\n");
                 }
                 continue;
             }
@@ -114,9 +114,10 @@ class Hxtf {
                     Sys.getChar(false);
                 }
             }
-            divide(iterator.hasNext());
+            stdout("\n");
+            if (iterator.hasNext()) {
+                stdout("[0m================================================================\n");
+            }
         }
-
-        FSManager.delete("./_.hxml");
     }
 }
