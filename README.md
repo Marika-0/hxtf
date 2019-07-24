@@ -1,7 +1,7 @@
 HxTF
 ====
 
-[![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases) [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Marika-0/hxtf) [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)](https://github.com/Marika-0/hxtf) [![Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master) [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md) [![Haxelib](https://img.shields.io/badge/haxelib-v1.1.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
+[![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases) [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Marika-0/hxtf) [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)](https://github.com/Marika-0/hxtf) [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md) [![Haxelib](https://img.shields.io/badge/haxelib-v1.1.0-blue.svg)](https://lib.haxe.org/p/hxtf/) [![Outdate](https://img.shields.io/github/commits-since/Marika-0/hxtf/latest.svg)](https://github.com/Marika-0/hxtf/commits/master) [![Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master)
 
 A Conditional Unit Testing Framework for Haxe 4 Targets with Access to the System Environment.
 
@@ -22,7 +22,7 @@ And is based around the following terms:
 - A "Test Broker" is a class inheriting from `hxtf.TestBroker` - its main use should be to reference other Test Brokers and Test Cases.
 - A "Test Case" is a class inheriting from `hxtf.TestCase` and is the smallest unit of a Test Setup. It should perform a single unit test.
 
-The HxTF CLI defines several flags for configuring Test Runs, several of which can be overriden by a specific Target in its _&lt;target&gt;.hxml_ file. When HxTF is invoked on the command line, it creates an _\_.hxml_ file nesting each Target specified to create a Test Run for. This _\_.hxml_ defines the main class for the Test Run.
+The HxTF CLI defines several flags for configuring Test Runs, several of which can be overridden by a specific Target in its _&lt;target&gt;.hxml_ file. When HxTF is invoked on the command line, it creates an _\_.hxml_ file nesting each Target specified to create a Test Run for. This _\_.hxml_ defines the main class for the Test Run.
 
 HxTF operates through a series of Test Brokers (otherwise referred to as 'Test Suites') sequentially instantiating more Test Brokers and/or Test Cases (simply referred to as 'tests').
 
@@ -46,7 +46,7 @@ Setup
 A particular Test Run is defined for some user-defined 'Target' (a Haxe target potentially with some specialization), and requires a _&lt;target&gt;.hxml_ and _&lt;target&gt;.script_ file.
 
 - The _&lt;target&gt;.hxml_ file includes compiler configuration for that Target and is nested within a hxml file created by HxTF.
-- The _&lt;target&gt;.script_ file is read and passed to the command line - it can include setup and teardown information for the test, but should invoke the Test Run in some way.
+- The _&lt;target&gt;.script_ file is read and passed to the command line - it can include setup and tear-down information for the test, but should invoke the Test Run in some way.
 
 > The exit code of the Test Run is used by the HxTF CLI to determine if the Test Run succeeded or failed. If the exit code of passing the _&lt;target&gt;.script_ contents to the command line is not the same as the exit code of the Test Run, HxTF will not behave as expected.
 
@@ -156,7 +156,7 @@ The functions `addTest()` and `addBroker()` are macros inherited from `hxtf.Test
 
 The `addTest()` function, at compile time, checks a cache file to see if its argument was successful previously. If it has, the call is exited and no `new` expression is returned. Without a reference to the Test Case, the Haxe compiler ignores it and the type isn't generated, excluding it from later compilation and the Test Run in general.
 
-> Technically, `addBroker()` just checks that the argument is a valid dot-path and returns a `new` expression to that path. It's included with `addTest()` for completeness
+> Technically, `addBroker()` just checks that the argument is a valid dot-path and returns a `new` expression to that path. It's included with `addTest()` for completeness.
 
 > `addTest()` performs some extra operations (checking the cache etc) on it's given type and output. It should be used specifically and exclusively for Test Cases.
 
@@ -194,7 +194,7 @@ Usage: hxtf [OPTIONS...] TARGETS...
 
 Options:
     -f, --force         force rerunning of previously-passed tests
-    -q, --quick         do not wait for acknowledgement after a failed Test Run
+    -q, --quick         do not wait for acknowledgment after a failed Test Run
     -c, --compile       only run compilation for the specified targets
     -w, --write         write haxe compiler outputs to stdout
                           output cannot be formatted to remove ANSI
@@ -264,7 +264,7 @@ Examples:
 
 > If a test is not included in the Test Run, references to it from `addCase()` functions in Test Brokers are removed. Without any references to the type, the Haxe compiler will ignore it an it won't be included in compilation of the Test Run.
 
-> If a test is marked as "push" and "pull", the exclusion of that test will take precidence but the effects of a test being included will remain. Other tests not marked as "push" still won't be included.
+> If a test is marked as "push" and "pull", the exclusion of that test will take precedence but the effects of a test being included will remain. Other tests not marked as "push" still won't be included.
 
 
 Test Cases
