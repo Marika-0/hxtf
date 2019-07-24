@@ -61,6 +61,7 @@ class TestRun {
         if (failedTestCount != 0) {
             Sys.exit(1);
         }
+        stdout('${ansi ? "" : "  "}[3mTesting passed for target: $target[0m\n');
         Sys.exit(0);
     }
 
@@ -105,7 +106,5 @@ class TestRun {
         stdout('${ansi ? "" : "  "}[3mTesting complete![0m\n');
         stdout('${ansi ? "" : "  "} $preamble Tests passed: ${"".lpad(" ", space - '$passedTestCount'.length)}${passedTestCount} [0m\n');
         stdout('${ansi ? "" : "  "} $preamble Tests failed: ${"".lpad(" ", space - '$failedTestCount'.length)}${failedTestCount} [0m\n');
-
-        stdout('${ansi ? "" : "  "}[3mTesting passed for target: $target[0m\n');
     }
 }
