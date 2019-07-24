@@ -1,9 +1,9 @@
 HxTF
 ====
 
-[![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases) [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Marika-0/hxtf) [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)](https://github.com/Marika-0/hxtf) [![Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master) [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md) [![Haxelib](https://img.shields.io/badge/haxelib-v1.0.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
+[![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases) [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Marika-0/hxtf) [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)](https://github.com/Marika-0/hxtf) [![Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master) [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md) [![Haxelib](https://img.shields.io/badge/haxelib-v1.1.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
 
-A Conditional Unit Testing Framework for Targets with Access to the System Environment.
+A Conditional Unit Testing Framework for Haxe 4 Targets with Access to the System Environment.
 
 
 Abstract
@@ -16,17 +16,17 @@ Abstract
 
 And is based around the following terms:
 
-- A "Target" is a user defined compilation target. It is configured in a _&lt;target&gt;.hxml_ file.
-- A "Test Setup" is the source code and auxilary files used to test a project.
+- A "Test Setup" is the source code and auxilary files used to test a project for one or more Targets.
+- A "Target" is a user-defined Haxe compilation target. It is configured in a _&lt;target&gt;.hxml_ file.
 - A "Test Run" is the compiled output of a Test Setup for a particular Target.
 - A "Test Broker" is a class inheriting from `hxtf.TestBroker` - its main use should be to reference other Test Brokers and Test Cases.
 - A "Test Case" is a class inheriting from `hxtf.TestCase` and is the smallest unit of a Test Setup. It should perform a single unit test.
 
 The HxTF CLI defines several flags for configuring Test Runs, several of which can be overriden by a specific Target in its _&lt;target&gt;.hxml_ file. When HxTF is invoked on the command line, it creates an _\_.hxml_ file nesting each Target specified to create a Test Run for. This _\_.hxml_ defines the main class for the Test Run.
 
-HxTF operates through a series of Test Brokers (otherwise referred to as 'Test Suites') sequentially instantiating more Test Brokers and/or Test Cases (simply referred to as 'Tests').
+HxTF operates through a series of Test Brokers (otherwise referred to as 'Test Suites') sequentially instantiating more Test Brokers and/or Test Cases (simply referred to as 'tests').
 
-Each specific Target for a Test Run must have a _&lt;target&gt;.hxml_ file (configuring compilation) and a _&lt;target&gt;.script_ file (invoking the Test Run), and will have a _&lt;target&gt;.cache_ file created for it storing passed tests.
+Each specific Target for a Test Run must have a _&lt;target&gt;.hxml_ file (configuring compilation) and a _&lt;target&gt;.script_ file (invoking the Test Run), and will have a _&lt;target&gt;.cache_ file created for it storing passing tests.
 
 > A HxTF Target differs from a Haxe target. All HxTF Targets are Haxe targets, but can have specializations (such as testing optimized and debug builds of a particular Haxe target).
 
@@ -36,11 +36,7 @@ Each specific Target for a Test Run must have a _&lt;target&gt;.hxml_ file (conf
 Restrictions
 ------------
 
-- Only available for Haxe 4.
-- Requires that there be a type `TestMain` in the top-level package. This type must have a constructor taking no arguments, and will be instantiated by the main function in `hxtf.TestRun`.
-
-> Generally, `TestMain` would extend `hxtf.TestBroker` and be used as the main entry for adding Test Brokers and Test Cases.
-
+- Requires that there be a type `TestMain` in the top-level package. This type must have a constructor taking no arguments, will be instantiated by the main class `hxtf.TestRun`, and would generally extend `hxtf.TestBroker` (being used as the main entry for adding Test Brokers and Test Cases).
 - `addBroker()` and `addTest()` functions must be explicitly imported. See `--default-import` flag details.
 
 
@@ -52,7 +48,7 @@ A particular Test Run is defined for some user-defined 'Target' (a Haxe target p
 - The _&lt;target&gt;.hxml_ file includes compiler configuration for that Target and is nested within a hxml file created by HxTF.
 - The _&lt;target&gt;.script_ file is read and passed to the command line - it can include setup and teardown information for the test, but should invoke the Test Run in some way.
 
-> The exit code of the Test Run is used by the HxTF CLI to determine if the Test Run passed or failed. If the exit code of passing the _&lt;target&gt;.script_ contents to the command line is not the same as the exit code of the Test Run, HxTF will not behave as expected.
+> The exit code of the Test Run is used by the HxTF CLI to determine if the Test Run succeeded or failed. If the exit code of passing the _&lt;target&gt;.script_ contents to the command line is not the same as the exit code of the Test Run, HxTF will not behave as expected.
 
 HxTF defines the main function and automatically includes the current version of the HxTF library (if the `-l` flag isn't specified).
 
@@ -158,15 +154,15 @@ The example setup has a Test Broker called "TestSuite" in every package, adding 
 
 The functions `addTest()` and `addBroker()` are macros inherited from `hxtf.TestBroker` accepting one absolute dot-path argument to another type.
 
-The `addTest()` function, at compile time, checks a cache file to see if its argument has passed testing previously. If it has, the call is exited and no `new` expression is returned. Without a reference to the Test Case, the Haxe compiler ignores it and the type isn't generated, excluding it from later compilation and the Test Run in general.
+The `addTest()` function, at compile time, checks a cache file to see if its argument was successful previously. If it has, the call is exited and no `new` expression is returned. Without a reference to the Test Case, the Haxe compiler ignores it and the type isn't generated, excluding it from later compilation and the Test Run in general.
 
 > Technically, `addBroker()` just checks that the argument is a valid dot-path and returns a `new` expression to that path. It's included with `addTest()` for completeness
 
-> `addTest()` performs some operations (checking the cache etc) for it's given type, and should be used exclusively for TestCases.
+> `addTest()` performs some extra operations (checking the cache etc) on it's given type and output. It should be used specifically and exclusively for Test Cases.
 
 ---
 
-In the above example, "cpp_debug" and "cpp_optimized" are separate HxTF Targets for the same Haxe target. Each Test Run will save the result of its testing in a _&lt;target&gt;.cache_ file, with each passing Test Case separated by a newline. Each cache is specific to the Target and referred to when compiling another Test Run for that Target.
+In the above example, "cpp_debug" and "cpp_optimized" are separate HxTF Targets for the same Haxe target. Each Test Run will save the result of its testing in a _&lt;target&gt;.cache_ file, with each passing Test Case separated by a newline. Each cache is specific to its Target and referred to when compiling another Test Run for that Target.
 
 HxTF creates an _\_.hxml_ file specifying the main class and some other configuration information. This _\_.hxml_ file defines the following compiler flags:
 
@@ -174,20 +170,18 @@ HxTF creates an _\_.hxml_ file specifying the main class and some other configur
 | -------------- | :---------: | :--: | ------------------------------------------------------------------------------------------------------------------ | -------------------------- |
 | `hxtf_ansi`    | `"1"`       | `-a` | If has the value `"1"`, ANSI formatting is not stripped from output printed through `hxtf.Print`.                  | `hxtf.Print.ansi`          |
 | `hxtf_cache`   | `"1"`       | `-z` | If has the value `"1"`, passing tests for the Test Run will be cached.                                             | `hxtf.TestRun.savingCache` |
-| `hxtf_cwd`     | $PWD        | N/A  | The working directory that HxTF was invoked from, and the location where cache files are read from and written to. | `hxtf.TestRun.cwd`         |
+| `hxtf_cwd`     | $PWD        | N/A  | The absolute path to the working directory that HxTF was invoked from, and the location where cache files are read from and written to. | `hxtf.TestRun.cwd`         |
 | `hxtf_force`   | `"0"`       | `-f` | If has the value of `"1"`, all tests are compiled and run even if they have an entry in the Target cache.          | `hxtf.TestRun.forcing`     |
 | `hxtf_y`       | CLI-defined | `-y` | A colon-separated list of PCRE regexes for tests to push to the Test Run.                                          | `hxtf.Macro.pushedTests`   |
 | `hxtf_n`       | CLI-defined | `-n` | A colon-separated list of PCRE regexes for tests to pull from the Test Run.                                        | `hxtf.Macro.pushedTests`   |
 
-The value of these flags can be overridden by specific HxTF Targets by defining the flag in that Target's hxml file. E.g. to always save the cache add the line `-D hxtf_cache=1`, or to always strip ANSI formatting add the line `-D hxtf_ansi=0`.
+The value of these flags can be overridden by specific HxTF Targets by defining the flag in that Target's hxml file. To always save the cache add the line `-D hxtf_cache=1`, to always strip ANSI formatting add the line `-D hxtf_ansi=0`, etc.
 
 The `hxtf_ansi`, `hxtf_cache`, and `hxtf_force` flags can be safely overridden.
 
 The `hxtf_cwd` flag should be overridden with care - it changes where _&lt;target&gt;.cache_ is read from and written to.
 
 The `hxtf_y` and `hxtf_n` flags generally should not be overridden in hxml files. `hxtf_push` and `hxtf_pull` can be used instead. `hxtf_push` is used to extend the `hxtf_y` define with more tests to specifically compile the Test Run for, `hxtf_pull` is used to extend the `hxtf_n` define with more tests to specifically exclude from the Test Run. Both of these flags will attempt to be used as a colon-separated list of PCRE expressions.
-
-To define a different default value, create a hxml file with the default values and include it at the top of Target hxml files.
 
 
 Use
@@ -222,13 +216,13 @@ Targets:
 
 | Flag               | Description                                                                                               |
 | ------------------ | --------------------------------------------------------------------------------------------------------- |
-| `-f`, `--force`    | Forces previously-passed tests to be run.                                                                 |
+| `-f`, `--force`    | Forces previously-successful tests to be run.                                                             |
 | `-q`, `--quick`    | Don't block and wait for user input after a failed Test Run.                                              |
 | `-c`, `--compile`  | Compile the specified HxTF Targets, but doesn't run any tests.                                            |
 | `-w`, `--write`    | Write Haxe compilation output (does not strip ANSI).                                                      |
 | `-a`, `--no-ansi`  | Disable ANSI formatting in hxTF.                                                                          |
 | `-l`, `--no-lib`   | Disable automatically including the current version of HxTF in the _\_.hxml_ file.                        |
-| `-z`, `--no-cache` | Don't cache passed tests for this Test Run.                                                               |
+| `-z`, `--no-cache` | Don't cache successful tests for this Test Run.                                                           |
 | `-y`, `--push`     | Followed by an argument of comma-separated glob dot-paths for tests to include in (push to) the Test Run. |
 | `-n`, `--pull`     | Followed by an argument of comma-separated glob dot-paths for tests to exclude (pull) from the Test Run.  |
 | `-h`, `--help`     | Print help information and exit.                                                                          |
@@ -257,12 +251,12 @@ Examples:
   - Don't block for user input if a test fails.
 - `hxtf -r`
   1. Confirm that the user wants to delete all cache files.
-  1. Delete all _&lt;target&gt;.cache_ files that also have a _&lt;target&gt;.hxml_ and _&lt;target&gt;.sh_ file and exit.
+  1. Delete all _&lt;target&gt;.cache_ files that also have a _&lt;target&gt;.hxml_ and _&lt;target&gt;.sh_ file, then exit.
 - `hxtf -r neko_stable`
   - Delete the _neko\_stable.cache_ file and exit.
 - `hxtf neko -zy "*Math*" -n "*Complex*"`
   - Compile the 'neko' HxTF Target for all tests that match `~/.*Math.*/` and don't match `~/.*Complex.*/`.
-  - Don't cache passed tests.
+  - Don't cache successful tests.
 
 > When a test is marked as "push" (`-y`), all other tests that are not marked as "push" will not be included in the Test Run.
 
@@ -299,6 +293,6 @@ Below is a simplified outline of the methods natively available to a Test Case:
 | `softFail(msg:String, printPos = true)`        | Prompts the standard error stream with the message `msg` and soft fails the Test Case.                                                      |
 | `hardFail(msg:String, printPos = true)`        | Prompts the standard error stream with the message `msg` and hard fails the Test Case.                                                      |
 
-> A Test Case that has 'soft failed' will not be saved to the cache, but will not explicitly by marked as a failure. Soft failures will be overridden by hard failures (a failed assertion results in a hard failures), and a hard failure explicitly marks the test as failed as well as preventing it from being cached.
+> A Test Case that has 'soft failed' will not be saved to the cache, but will also not be explicitly marked as a failure. Soft failures will be overridden by hard failures (a failed assertion results in a hard failure), which explicitly mark the test as failed as well as preventing it from being cached.
 
 `hxtf.TestCase` instances also have a `@:noCompletion var _passed(default, never):Bool` field. This field is used to record if the Test Case has hard failed - modify during runtime at your own risk.
