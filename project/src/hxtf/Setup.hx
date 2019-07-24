@@ -26,8 +26,10 @@ class Setup {
         hxmlBase.push("-main hxtf.TestRun");
         hxmlBase.push("");
         hxmlBase.push("--macro hxtf.Macro.setup()");
-        hxmlBase.push("");
-        hxmlBase.push("-L hxtf:1.1.0");
+        if (!Flags.disableAutomaticLibraryInclusion) {
+            hxmlBase.push("");
+            hxmlBase.push("-L hxtf:1.1.0");
+        }
         hxmlBase.push("");
         hxmlBase.push("-D hxtf_ansi=" + (Flags.disableAnsi ? "0" : "1"));
         hxmlBase.push("-D hxtf_cache=" + (Flags.saveCache ? "1" : "0"));

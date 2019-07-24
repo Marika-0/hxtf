@@ -22,6 +22,11 @@ class Flags {
     public static var disableAnsi(default, null) = false;
 
     /**
+        Disable including this version of HxTF automatically?
+    **/
+    public static var disableAutomaticLibraryInclusion(default, null) = false;
+
+    /**
         Force rerunning of previously-passed tests in cache?
     **/
     public static var forceTestRerun(default, null) = false;

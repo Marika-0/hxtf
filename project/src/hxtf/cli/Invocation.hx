@@ -58,16 +58,18 @@ class Invocation {
                 var flags = flag.startsWith("--") ? [flag] : flag.substr(1).split("");
                 for (part in flags) {
                     switch (part) {
-                        case "c" | "--compile":
-                            Flags.onlyCompile = true;
                         case "f" | "--forcing":
                             Flags.forceTestRerun = true;
                         case "q" | "--quick":
                             Flags.blockOnTestFailure = false;
-                        case "a" | "--no-ansi":
-                            Flags.disableAnsi = true;
+                        case "c" | "--compile":
+                            Flags.onlyCompile = true;
                         case "w" | "--write":
                             Flags.writeCompilationOutput = true;
+                        case "a" | "--no-ansi":
+                            Flags.disableAnsi = true;
+                        case "l" | "--no-lib":
+                            Flags.disableAutomaticLibraryInclusion = true;
                         case "z" | "--no-cache":
                             Flags.saveCache = false;
                         case "y" | "--push":
@@ -143,6 +145,7 @@ class Invocation {
             "    -w, --write         write haxe compiler outputs to stdout",
             "                          output cannot be formatted to remove ANSI",
             "    -a, --no-ansi       disable output ANSI formatting",
+            "    -l, --no-lib        disable automatically include the hxtf library",
             "    -z, --no-cache      disable caching of passed tests",
             "",
             "    -y, --push (TEST[:TEST]*)  compile/run only these tests",
