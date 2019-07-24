@@ -140,7 +140,7 @@ class Invocation {
             "",
             "Options:",
             "    -f, --force         force rerunning of previously-passed tests",
-            "    -q, --quick         do not wait for acknowledgement after a failed test run",
+            "    -q, --quick         do not wait for acknowledgment after a failed test run",
             "    -c, --compile       only run compilation for the specified targets",
             "    -w, --write         write haxe compiler outputs to stdout",
             "                          output cannot be formatted to remove ANSI",
