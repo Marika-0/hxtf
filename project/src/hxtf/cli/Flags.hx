@@ -17,7 +17,7 @@ class Flags {
     public static var deleteCache(default, null) = false;
 
     /**
-       Strip ANSI formatting from output?
+        Strip ANSI formatting from output?
     **/
     public static var disableAnsi(default, null) = false;
 
