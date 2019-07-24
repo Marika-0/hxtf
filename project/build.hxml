@@ -3,7 +3,7 @@
 -main hxtf.Hxtf
 
 -dce full
--D analyzer
+-D analyzer-optimize
 
 --resource ../resources/import.hx@ImportFile
 
