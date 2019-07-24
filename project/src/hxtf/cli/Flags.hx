@@ -32,6 +32,11 @@ class Flags {
     public static var forceTestRerun(default, null) = false;
 
     /**
+        Create a default 'import.hx' file?
+    **/
+    public static var generateDefaultImport(default, null) = false;
+
+    /**
         Only run compilation for the specified targets?
     **/
     public static var onlyCompile(default, null) = false;

@@ -23,6 +23,75 @@ class Hxtf {
     }
 
     static function handleInvocation():Void {
+        if (Flags.deleteCache) {
+            if (Flags.targets.length == 0) {
+                stderr("[1mDelete all .cache files with corresponding .hxml and .script files? [Y/n][0m ");
+
+                var input = Sys.stdin().readLine().toLowerCase();
+                if (input == "" || input == "y") {
+                    var files = FSManager.readFiles("./");
+                    files = files.filter((f) -> f.endsWith(".cache")
+                        && f.length > 5
+                        && files.has(f.substr(0, f.length - 5) + "hxml")
+                        && files.has(f.substr(0, f.length - 5) + "script"));
+                    files.sort((a, b) -> Reflect.compare(a, b));
+
+                    var deleted = false;
+                    for (file in files) {
+                        if (FSManager.delete(file)) {
+                            stdout('[3mDeleted $file[0m\n');
+                            deleted = true;
+                        }
+                    }
+                    if (!deleted) {
+                        stderr("[3mNo cache files were deleted![0m\n");
+                    }
+                } else {
+                    stdout("[3mAborted[0m\n");
+                }
+                stdout("\n");
+            } else {
+                var deleted = false;
+                for (target in Flags.targets) {
+                    if (FSManager.delete('./$target.cache')) {
+                        stdout('[3mDeleted $target.cache[0m\n');
+                        deleted = true;
+                    } else {
+                        stdout('[3mFailed to delete $target.cache[0m\n');
+                    }
+                }
+                if (!deleted) {
+                    stderr("[1mNo cache files were deleted![0m\n");
+                }
+                stdout("\n");
+            }
+            Sys.exit(0);
+        }
+
+        if (Flags.generateDefaultImport) {
+            if (sys.FileSystem.exists(Sys.getCwd() + "/import.hx")) {
+                stderr("[1mOverwrite existing 'import.hx'? [y/N][0m ");
+                if (Sys.stdin().readLine().toLowerCase() != "y") {
+                    stderr("[3mAborted[0m\n\n");
+                    Sys.exit(0);
+                }
+                if (sys.FileSystem.isDirectory(Sys.getCwd() + "/import.hx")) {
+                    sys.FileSystem.deleteDirectory(Sys.getCwd() + "/import.hx");
+                }
+            }
+            sys.io.File.saveContent(Sys.getCwd() + "/import.hx", haxe.Resource.getString("ImportFile"));
+            stdout("[3mCreated default HxTF import.hx file[0m\n\n");
+            Sys.exit(0);
+        }
+
+        if (Flags.targets.length == 0) {
+            if (Invocation.prePrintingOccurred) {
+                stderr("\n");
+            }
+            stderr("[1mNo targets were passed to test for![0m\n\n");
+            Sys.exit(1);
+        }
+
         if (Flags.targets.length == 0) {
             if (Flags.deleteCache) {
                 stderr("[1mDelete all .cache files with corresponding .hxml and .script files? [Y/n][0m ");
@@ -51,28 +120,7 @@ class Hxtf {
                 }
                 stdout("\n");
                 Sys.exit(0);
-            } else {
-                if (Invocation.prePrintingOccurred) {
-                    stderr("\n");
-                }
-                stderr("[1mNo targets were passed to test for![0m\n\n");
-                Sys.exit(1);
-            }
-        }
-
-        if (Flags.deleteCache) {
-            var deleted = false;
-            for (target in Flags.targets) {
-                if (FSManager.delete('./$target.cache')) {
-                    stdout('[3mDeleted $target.cache[0m\n');
-                    deleted = true;
-                }
-            }
-            if (!deleted) {
-                stderr("[1mNo cache files were deleted![0m\n");
-            }
-            stdout("\n");
-            Sys.exit(0);
+            } else {}
         }
     }
 

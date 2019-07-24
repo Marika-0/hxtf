@@ -58,7 +58,7 @@ class Invocation {
                 var flags = flag.startsWith("--") ? [flag] : flag.substr(1).split("");
                 for (part in flags) {
                     switch (part) {
-                        case "f" | "--forcing":
+                        case "f" | "--force":
                             Flags.forceTestRerun = true;
                         case "q" | "--quick":
                             Flags.blockOnTestFailure = false;
@@ -105,7 +105,7 @@ class Invocation {
                         case "r" | "--reset":
                             Flags.deleteCache = true;
                         case "--default-import":
-                            createDefaultImport();
+                            Flags.generateDefaultImport = true;
                         default:
                             invocationErrors.add('[3mInvalid flag \'$flag\'[0m\n');
                     }
@@ -185,29 +185,6 @@ class Invocation {
             "Usage: hxtf [OPTIONS...] TARGETS...",
             ""
         ].join("\n"));
-        Sys.exit(0);
-    }
-
-    // @formatter:on
-
-    /**
-        Creates a default 'import.hx' file for HxTF and exits.
-
-        If an 'import.hx' file already exists, prompts the user if they want it
-        overwritten.
-    **/
-    static function createDefaultImport():Void {
-        if (sys.FileSystem.exists(Sys.getCwd() + "/import.hx")) {
-            stderr("[1mOverwrite existing 'import.hx'? [y/N][0m ");
-            if (Sys.stdin().readLine().toLowerCase() != "y") {
-                Sys.exit(0);
-            }
-            if (sys.FileSystem.isDirectory(Sys.getCwd() + "/import.hx")) {
-                sys.FileSystem.deleteDirectory(Sys.getCwd() + "/import.hx");
-            }
-        }
-        sys.io.File.saveContent(Sys.getCwd() + "/import.hx", haxe.Resource.getString("ImportFile"));
-        stdout("[3mCreated default HxTF import.hx file[0m\n\n");
         Sys.exit(0);
     }
 }
