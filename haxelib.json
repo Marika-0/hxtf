@@ -7,10 +7,10 @@
         "testing",
         "utility"
     ],
-    "description": "A Haxe 4 Conditional Unit Testing Framework for Haxe Targets with Access to the System Environment.",
-    "version": "1.0.0",
+    "description": "A Conditional Unit Testing Framework for Targets with Access to the System Environment.",
+    "version": "1.1.0",
     "classPath": "src",
-    "releasenote": "Initial release.",
+    "releasenote": "Usability and Documentation Improvements.",
     "contributors": ["Marika-0"],
     "dependencies": {}
 }
