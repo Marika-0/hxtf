@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-x.x.x (yyyy/mm/dd)
+1.1.0 (2019/07/24)
 ------------------
 
 Usability and documentation improvements.
@@ -19,7 +19,7 @@ Usability and documentation improvements.
   - Updated Documentation.
 
 
-1.0.1 (2019/07/21)
+1.0.0 (2019/07/21)
 ------------------
 
-- Initial release.
+Initial release.
