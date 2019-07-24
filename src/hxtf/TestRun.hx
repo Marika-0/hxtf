@@ -57,6 +57,11 @@ class TestRun {
             saveCache();
         }
         printResults();
+
+        if (failedTestCount != 0) {
+            Sys.exit(1);
+        }
+        Sys.exit(0);
     }
 
     @:access(hxtf.Print)
@@ -101,10 +106,6 @@ class TestRun {
         stdout('${ansi ? "" : "  "} $preamble Tests passed: ${"".lpad(" ", space - '$passedTestCount'.length)}${passedTestCount} [0m\n');
         stdout('${ansi ? "" : "  "} $preamble Tests failed: ${"".lpad(" ", space - '$failedTestCount'.length)}${failedTestCount} [0m\n');
 
-        if (failedTestCount != 0) {
-            Sys.exit(1);
-        }
         stdout('${ansi ? "" : "  "}[3mTesting passed for target: $target[0m\n');
-        Sys.exit(0);
     }
 }
