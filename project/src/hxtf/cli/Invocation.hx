@@ -109,7 +109,11 @@ class Invocation {
                     }
                 }
             } else {
-                Flags.targets.concat(flag.split(":").filter((s) -> s.length != 0));
+                for (target in flag.split(":")) {
+                    if (target.length != 0) {
+                        Flags.targets.push(target);
+                    }
+                }
             }
         }
 
