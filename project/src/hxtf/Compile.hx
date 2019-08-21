@@ -17,6 +17,7 @@ class Compile {
             if (Sys.command("haxe _.hxml") != 0) {
                 stderr('\n[3mCompilation failed for target: $target[0m');
                 stdout("\n");
+                Exit.elevate(TestRunCompilationFailure);
                 return false;
             }
         } else {
@@ -24,6 +25,7 @@ class Compile {
             if (process.exitCode() != 0) {
                 stderr('[3mCompilation failed for target: $target[0m\n');
                 stderr("[41;1m" + stripAnsi(process.stderr.readAll().toString()) + "[0m");
+                Exit.elevate(TestRunCompilationFailure);
                 return false;
             }
         }

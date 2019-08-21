@@ -20,6 +20,7 @@ class Hxtf {
         organizeTestRuns();
 
         FSManager.delete("./_.hxml");
+        Exit.exit();
     }
 
     static function handleInvocation():Void {
@@ -90,37 +91,6 @@ class Hxtf {
             }
             stderr("[1mNo targets were passed to test for![0m\n\n");
             Sys.exit(1);
-        }
-
-        if (Flags.targets.length == 0) {
-            if (Flags.deleteCache) {
-                stderr("[1mDelete all .cache files with corresponding .hxml and .script files? [Y/n][0m ");
-
-                var input = Sys.stdin().readLine().toLowerCase();
-                if (input == "" || input == "y") {
-                    var files = FSManager.readFiles("./");
-                    files = files.filter((f) -> f.endsWith(".cache")
-                        && f.length > 5
-                        && files.has(f.substr(0, f.length - 5) + "hxml")
-                        && files.has(f.substr(0, f.length - 5) + "script"));
-                    files.sort((a, b) -> Reflect.compare(a, b));
-
-                    var deleted = false;
-                    for (file in files) {
-                        if (FSManager.delete(file)) {
-                            stdout('[3mDeleted $file[0m\n');
-                            deleted = true;
-                        }
-                    }
-                    if (!deleted) {
-                        stderr("[3mNo cache files were deleted![0m\n");
-                    }
-                } else {
-                    stdout("[3mAborted[0m\n");
-                }
-                stdout("\n");
-                Sys.exit(0);
-            } else {}
         }
     }
 

@@ -19,11 +19,19 @@ class Run {
             raw = File.getContent('$target.script');
         } catch (ex:Dynamic) {
             stderr('[42;1mFailed to get contents of script file for target: $target[0m\n');
-            return false;
+            Exit.elevate(HxtfRuntimeFailure);
         }
 
         stdout('[1mTesting target: $target[0m\n\n');
+        var code = Sys.command(raw);
+        switch (code) {
+            case 0:
+            case 2:
+                Exit.elevate(TestRunAssertionFailure);
+            default:
+                Exit.elevate(TestRunRuntimeFailure);
+        }
 
-        return Sys.command(raw) == 0;
+        return code == 0;
     }
 }

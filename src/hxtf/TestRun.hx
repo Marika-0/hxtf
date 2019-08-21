@@ -59,7 +59,7 @@ class TestRun {
         printResults();
 
         if (failedTestCount != 0) {
-            Sys.exit(1);
+            Sys.exit(2);
         }
         stdout('${ansi ? "" : "  "}[3mTesting passed for target: $target[0m\n');
         Sys.exit(0);
