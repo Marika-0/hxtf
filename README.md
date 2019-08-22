@@ -296,3 +296,17 @@ Below is a simplified outline of the methods natively available to a Test Case:
 > A Test Case that has 'soft failed' will not be saved to the cache, but will also not be explicitly marked as a failure. Soft failures will be overridden by hard failures (a failed assertion results in a hard failure), which explicitly mark the test as failed as well as preventing it from being cached.
 
 `hxtf.TestCase` instances also have a `@:noCompletion var _passed(default, never):Bool` field. This field is used to record if the Test Case has hard failed - modify during runtime at your own risk.
+
+
+Exit Codes
+----------
+
+| Code | Description                                            |
+| ---- | ------------------------------------------------------ |
+| `0`  | Normal program termination - all assertions passed.    |
+| `1`  | Unexpected run-time error occured in HxTF or haxelib.  |
+| `2`  | At least one assertion for at least one target failed. |
+| `3`  | Unexpected run-time error occured in a Test Run.       |
+| `4`  | At least one Test Run failed to compile.               |
+
+Codes are organized in order of preference. If a one Test Run fails to compile and an assertion fails in a different Test Run, code `4` will be returned over code `2`.
