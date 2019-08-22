@@ -100,6 +100,8 @@ class Invocation {
                             }
                         case "h" | "--help":
                             printHelp();
+                        case "v" | "--version":
+                            printVersion();
                         case "u" | "--usage":
                             printUsage();
                         case "r" | "--reset":
@@ -152,6 +154,7 @@ class Invocation {
             "    -n, --pull (TEST[:TEST]*)  exclude these tests (overrides '-y')",
             "",
             "    -h, --help          print this help and exit",
+            "    -v, --version       print version and exit",
             "    -u, --usage         print usage information and exit",
             "    -r, --reset         delete the passed-test cache of each target",
             "    --default-import    create a default import.hx file in the working directory",
@@ -169,6 +172,7 @@ class Invocation {
     static function printNoFlagsUsage():Void {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
+            "HxTF Version: " + hxtf.Macro.version(),
             "Usage: hxtf [OPTIONS...] TARGETS...",
             "Try 'hxtf --help' for more information.",
             ""
@@ -183,6 +187,18 @@ class Invocation {
         //  [------------------------------------80 chars------------------------------------]
         stdout([
             "Usage: hxtf [OPTIONS...] TARGETS...",
+            ""
+        ].join("\n"));
+        Sys.exit(0);
+    }
+
+    /**
+        Prints version information and exits.
+    **/
+    static function printVersion():Void {
+        //  [------------------------------------80 chars------------------------------------]
+        stdout([
+            "HxTF Version: " + hxtf.Macro.version(),
             ""
         ].join("\n"));
         Sys.exit(0);
