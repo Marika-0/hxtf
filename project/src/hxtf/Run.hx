@@ -20,6 +20,7 @@ class Run {
         } catch (ex:Dynamic) {
             stderr('[42;1mFailed to get contents of script file for target: $target[0m\n');
             Exit.elevate(HxtfRuntimeFailure);
+            return false;
         }
 
         stdout('[1mTesting target: $target[0m\n\n');
