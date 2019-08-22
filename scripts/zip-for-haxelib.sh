@@ -6,8 +6,7 @@ cd ..;
 zip -r ../hxtf.zip \
     src \
     CHANGELOG.md \
-    CONTRIBUTING.md \
-    haxelib.json \
     LICENSE.md \
     README.md \
+    haxelib.json \
     run.n;
