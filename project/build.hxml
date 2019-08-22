@@ -5,6 +5,8 @@
 -dce full
 -D analyzer-optimize
 
+--macro hxtf.Macro.buildVersion("1.2.0")
+
 --resource ../resources/import.hx@ImportFile
 
 -neko ../run.n
