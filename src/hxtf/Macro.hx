@@ -111,12 +111,14 @@ class Macro {
                 pulledTests.push(new EReg(raw, ""));
             }
         }
-        if (Context.defined("hxtf_pull")) {
-            for (raw in Context.definedValue("hxtf_pull").split(":")) {
-                try {
-                    pulledTests.push(new EReg(raw, ""));
-                } catch (ex:Dynamic) {
-                    Context.warning('invalid pulled test regex: $ex', Context.currentPos());
+        for (key in Context.getDefines().keys()) {
+            if (key.startsWith("hxtf_pull")) {
+                for (raw in Context.definedValue(key).split(":")) {
+                    try {
+                        pulledTests.push(new EReg(raw, ""));
+                    } catch (ex:Dynamic) {
+                        Context.warning('invalid pulled test regex \'$raw\': $ex', Context.currentPos());
+                    }
                 }
             }
         }
@@ -129,12 +131,14 @@ class Macro {
                 pushedTests.push(new EReg(raw, ""));
             }
         }
-        if (Context.defined("hxtf_push")) {
-            for (raw in Context.definedValue("hxtf_push").split(":")) {
-                try {
-                    pushedTests.push(new EReg(raw, ""));
-                } catch (ex:Dynamic) {
-                    Context.warning('invalid pushed test regex: $ex', Context.currentPos());
+        for (key in Context.getDefines().keys()) {
+            if (key.startsWith("hxtf_push")) {
+                for (raw in Context.definedValue(key).split(":")) {
+                    try {
+                        pushedTests.push(new EReg(raw, ""));
+                    } catch (ex:Dynamic) {
+                        Context.warning('invalid pushed test regex \'$raw\': $ex', Context.currentPos());
+                    }
                 }
             }
         }
