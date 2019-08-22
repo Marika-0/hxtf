@@ -1,24 +1,35 @@
 package hxtf;
 
 class Exit {
-    static var code = Passing;
+    static var code:Code = Passing;
 
     public static function elevate(code:Code) {
-        if (Exit.code < code) {
+        if (eval(Exit.code) < eval(code)) {
             Exit.code = code;
+        }
+    }
+
+    @:using static function eval(x:Code) {
+        return switch (x) {
+            case Passing: 0;
+            case HxtfRuntimeFailure: 1;
+            case TestRunAssertionFailure: 2;
+            case TestRunRuntimeFailure: 3;
+            case TestRunCompilationFailure: 4;
+            default: -1;
         }
     }
 
     @:allow(hxtf.Hxtf.main)
     static function exit() {
-        Sys.exit(code);
+        Sys.exit(eval(code));
     }
 }
 
-enum abstract ExitCode(Int) {
-    Passing = 0;
-    HxtfRuntimeFailure = 1;
-    TestRunAssertionFailure = 2;
-    TestRunRuntimeFailure = 3;
-    TestRunCompilationFailure = 4;
+enum Code {
+    Passing;
+    HxtfRuntimeFailure;
+    TestRunAssertionFailure;
+    TestRunRuntimeFailure;
+    TestRunCompilationFailure;
 }
