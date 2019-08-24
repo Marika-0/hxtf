@@ -1,15 +1,15 @@
 package hxtf;
 
 class Exit {
-    static var code:Code = Passing;
+    static var status:Status = Passing;
 
-    public static function elevate(code:Code) {
-        if (eval(Exit.code) < eval(code)) {
-            Exit.code = code;
+    public static function elevate(code:Status) {
+        if (eval(status) < eval(code)) {
+            status = code;
         }
     }
 
-    @:using static function eval(x:Code) {
+    static function eval(x:Status) {
         return switch (x) {
             case Passing: 0;
             case HxtfRuntimeFailure: 1;
@@ -22,11 +22,11 @@ class Exit {
 
     @:allow(hxtf.Hxtf.main)
     static function exit() {
-        Sys.exit(eval(code));
+        Sys.exit(eval(status));
     }
 }
 
-enum Code {
+enum Status {
     Passing;
     HxtfRuntimeFailure;
     TestRunAssertionFailure;
