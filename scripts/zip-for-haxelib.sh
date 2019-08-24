@@ -3,6 +3,8 @@
 cd "$(dirname "$0")"
 cd ..;
 
+rm -f ../hxtf.zip;
+
 zip -r ../hxtf.zip \
     src \
     CHANGELOG.md \
