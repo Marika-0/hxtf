@@ -13,7 +13,7 @@ Integration and scripting improvements.
   - Added `-v` flag for printing version information.
   - Made `hxtf.TestCase._passed` write-accessible to inheriting classes.
 - Internal changes:
-  - Changed format of _\_.hxml_ file.
+  - Changed _\_.hxml_ file layout.
 - Meta changes:
   - Updated documentation.
 
