@@ -23,23 +23,23 @@ class Setup {
     static function setup():Void {
         hxmlBase = [];
         hxmlBase.push("");
-        hxmlBase.push("-main hxtf.TestRun");
+        hxmlBase.push("--main    hxtf.TestRun");
         if (!Flags.disableAutomaticLibraryInclusion) {
             hxmlBase.push("");
-            hxmlBase.push("-L hxtf:" + Macro.version());
+            hxmlBase.push("--library hxtf:" + Macro.version());
         }
         hxmlBase.push("");
-        hxmlBase.push("--macro hxtf.Macro.setup()");
+        hxmlBase.push("--macro   hxtf.Macro.setup()");
         hxmlBase.push("");
-        hxmlBase.push("-D hxtf_ansi=" + (Flags.disableAnsi ? "0" : "1"));
-        hxmlBase.push("-D hxtf_cache=" + (Flags.saveCache ? "1" : "0"));
-        hxmlBase.push("-D hxtf_cwd=" + Sys.getCwd());
-        hxmlBase.push("-D hxtf_force=" + (Flags.forceTestRerun ? "1" : "0"));
+        hxmlBase.push("--define  hxtf_ansi=" + (Flags.disableAnsi ? "0" : "1"));
+        hxmlBase.push("--define  hxtf_cache=" + (Flags.saveCache ? "1" : "0"));
+        hxmlBase.push("--define  hxtf_cwd=" + Sys.getCwd());
+        hxmlBase.push("--define  hxtf_force=" + (Flags.forceTestRerun ? "1" : "0"));
         if (Flags.testsToPush.length != 0) {
-            hxmlBase.push("-D hxtf_y=" + Flags.testsToPush.join(":"));
+            hxmlBase.push("--define  hxtf_y=" + Flags.testsToPush.join(":"));
         }
         if (Flags.testsToPull.length != 0) {
-            hxmlBase.push("-D hxtf_n=" + Flags.testsToPull.join(":"));
+            hxmlBase.push("--define  hxtf_n=" + Flags.testsToPull.join(":"));
         }
     }
 
@@ -66,7 +66,7 @@ class Setup {
     static function generateRunHxml(target:String):Bool {
         var hxml = new Array<String>();
 
-        hxml.push('-D hxtf_target=$target');
+        hxml.push('--define  hxtf_target=$target');
         hxml.push("");
         hxml.push('$target.hxml');
         hxml.push("");
