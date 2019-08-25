@@ -2,6 +2,21 @@ Changelog
 =========
 
 
+1.2.0 (YYYY/mm/dd)
+------------------
+
+Integration and scripting improvements.
+
+- API changes:
+  - Added support for any flag starting with `"hxtf_push"` or `"hxtf_pull"` being interpreted as that flag.
+  - Added exit status.
+  - Added `-v` flag for printing version information.
+  - Made `hxtf.TestCase._passed` write-accessible to inheriting classes.
+- Internal changes:
+  - Changed format of _\_.hxml_ file.
+- Meta changes:
+  - Updated documentation.
+
 1.1.0 (2019/07/24)
 ------------------
 
@@ -16,7 +31,7 @@ Usability and documentation improvements.
   - Improved a lot of variable names.
   - Improved and added a lot of commenting.
 - Meta changes:
-  - Updated Documentation.
+  - Updated documentation.
 
 
 1.0.0 (2019/07/21)
