@@ -137,8 +137,7 @@ class Invocation {
         stdout([
             "Usage: hxtf [OPTIONS...] TARGETS...",
             "",
-            "Run configurable unit tests for Haxe targets",
-            "with access to Sys and the system package",
+            "Run unit tests for Haxe targets with access to the system environment",
             "",
             "Options:",
             "    -f, --force         force rerunning of previously-passed tests",
