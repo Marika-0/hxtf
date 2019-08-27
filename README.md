@@ -364,7 +364,7 @@ Exit Status
 The HxTF CLI returns an exit status.
 
 | Code | Description |
-| ---- | ----------- |
+| :--: | ----------- |
 | `0` | Normal program termination - all assertions passed, no hard failures. |
 | `1` | An unexpected run-time error occurred in HxTF or haxelib. |
 | `2` | At least one test failed - a hard failure occured. |
@@ -376,7 +376,7 @@ Higher exit codes are prioritized over lower ones. If a Test Run fails to compil
 A compiled test will return the following codes, which are evaluated by the HxTF CLI:
 
 | Code | Description | Evaluation |
-| ---- | ----------- | ---------- |
-| `0` | Normal program termination - all assertions passed, no hard failures. | HxTF CLI Code `0`. |
-| `1` | An unexpected run-time error occured and the test was aborted. | HxTF CLI Code `2`. |
-| `2` | The test failed - a hard failure occured. | HxTF CLI Code `2`. |
+| :--: | ----------- | ---------- |
+| `0` | Normal program termination - all assertions passed, no hard failures. | HxTF CLI Code `0` |
+| `1` | An unexpected run-time error occured and the test was aborted. | HxTF CLI Code `2` |
+| `2` | The test failed - a hard failure occured. | HxTF CLI Code `2` |
