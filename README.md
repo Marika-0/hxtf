@@ -17,7 +17,7 @@ Installation
 
 ##### Haxelib
 
-To install HxTF as a Haxelib library, run:
+To install HxTF as a Haxelib package, run:
 
 ```
 haxelib install hxtf
@@ -25,10 +25,12 @@ haxelib install hxtf
 
 ##### Manual Installation
 
-1. Edit `./project/build.hxml` as required.
-1. Set the working directory to `./project/` and run `haxe build.hxml`.
-1. Link to the produced build in some way.
-1. Add `./src` as a class path flag when compiling with Haxe.
+To install and use HxTF manually:
+
+1. Edit `project/build.hxml` as required.
+1. Set the working directory to `project/` and run `haxe build.hxml`.
+1. Store the build somewhere persistent and link to it in some way (ie an alias).
+1. Store the `src` directory somewhere persistent and add it as a class path flag when compiling with Haxe.
 
 
 Abstract
