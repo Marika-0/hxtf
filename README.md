@@ -2,7 +2,6 @@ HxTF
 ====
 
 [![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases)
-[![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Marika-0/hxtf)
 [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)](https://github.com/Marika-0/hxtf)
 [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md)
 [![Haxelib](https://img.shields.io/badge/haxelib-v1.1.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
@@ -362,12 +361,22 @@ Below is a simplified outline of the methods natively available to a Test Case:
 Exit Status
 -----------
 
+The HxTF CLI returns an exit status.
+
 | Code | Description |
 | ---- | ----------- |
-| `0` | Normal program termination - all assertions passed. |
-| `1` | Unexpected run-time error occurred in HxTF or haxelib. |
-| `2` | At least one assertion for at least one target failed. |
+| `0` | Normal program termination - all assertions passed, no hard failures. |
+| `1` | An unexpected run-time error occurred in HxTF or haxelib. |
+| `2` | At least one test failed - a hard failure occured. |
 | `3` | Unexpected run-time error occurred in a Test Run. |
 | `4` | At least one Test Run failed to compile. |
 
 Higher exit codes are prioritized over lower ones. If a Test Run fails to compile one Target and another Target has a run-time failure, code `4` will be returned by HxTF over code `3`.
+
+A compiled test will return the following codes, which are evaluated by the HxTF CLI:
+
+| Code | Description | Evaluation |
+| ---- | ----------- | ---------- |
+| `0` | Normal program termination - all assertions passed, no hard failures. | HxTF CLI Code `0`. |
+| `1` | An unexpected run-time error occured and the test was aborted. | HxTF CLI Code `2`. |
+| `2` | The test failed - a hard failure occured. | HxTF CLI Code `2`. |
