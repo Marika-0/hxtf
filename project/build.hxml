@@ -1,6 +1,5 @@
--cp src
-
--main hxtf.Hxtf
+-p src
+-m hxtf.Hxtf
 
 -dce full
 -D analyzer-optimize
@@ -10,3 +9,5 @@
 --resource ../resources/import.hx@ImportFile
 
 -neko ../run.n
+
+--cmd sh ../scripts/zip-for-haxelib.sh
