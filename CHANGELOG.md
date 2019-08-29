@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.2.0 (YYYY/mm/dd)
+1.2.0 (2019/08/29)
 ------------------
 
 Integration and scripting improvements.
@@ -14,6 +14,7 @@ Integration and scripting improvements.
   - Made `hxtf.TestCase._passed` write-accessible to inheriting classes.
 - Internal changes:
   - Changed _\_.hxml_ file layout.
+  - Made an project initialization `hxtf.Macro.buildVersion` that takes a string and populates the build version.
 - Meta changes:
   - Updated documentation.
 

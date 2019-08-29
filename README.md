@@ -4,7 +4,7 @@ HxTF
 [![Release](https://img.shields.io/github/release/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/releases)
 [![Coverage](https://img.shields.io/badge/coverage-0%25-critical.svg)](https://github.com/Marika-0/hxtf)
 [![License](https://img.shields.io/github/license/Marika-0/hxtf.svg)](LICENSE.md)
-[![Haxelib](https://img.shields.io/badge/haxelib-v1.1.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
+[![Haxelib](https://img.shields.io/badge/haxelib-v1.2.0-blue.svg)](https://lib.haxe.org/p/hxtf/)
 [![Outdatedness](https://img.shields.io/github/commits-since/Marika-0/hxtf/latest.svg)](https://github.com/Marika-0/hxtf/commits/master)
 [![Latest Commit](https://img.shields.io/github/last-commit/Marika-0/hxtf.svg)](https://github.com/Marika-0/hxtf/commits/master)
 
