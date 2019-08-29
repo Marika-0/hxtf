@@ -1,24 +1,26 @@
 %YAML 1.2
 ---
 internal:
-  haxe      : "4.0.0-rc.3"
-  haxelib   : "3.4.0"
-  libraries :
-    checkstyle : "2.4.2"
-    dox        : "1.2.0"
-    formatter  : "1.8.1"
+  haxe: "4.0.0-rc.3"
+  haxelib: "3.4.0"
+  libraries:
+    checkstyle: "2.4.2"
+    formatter: "1.8.1"
 ---
 testing:
   libraries:
-    hxcpp : "4.0.19"
-  targets :
-    cpp    : "gcc 7.4.0-1ubuntu1~18.04.1"
-    neko   : "2.2.0"
-    php    : "7.2.19-0ubuntu0.18.04.1"
-    python : "3.6.8"
+    hxcpp: "4.0.19"
+  targets:
+    cpp: "gcc 7.4.0-1ubuntu1~18.04.1"
+    neko: "2.2.0"
+    php: "7.2.19-0ubuntu0.18.04.1"
+    python: "3.6.8"
 ---
 release:
-- version      : "1.0.0"
-  dependencies :
-    haxelib : "3.4.0",
-    neko    : "2.2.0"
+- version:
+  - "1.0.0"
+  - "1.1.0"
+  - "1.2.0"
+  dependencies:
+    haxelib: "3.4.0",
+    neko: "2.2.0"
