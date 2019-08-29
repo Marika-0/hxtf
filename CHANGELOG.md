@@ -17,6 +17,7 @@ Integration and scripting improvements.
   - Made an project initialization `hxtf.Macro.buildVersion` that takes a string and populates the build version.
 - Meta changes:
   - Updated documentation.
+  - Changed project description.
 
 1.1.0 (2019/07/24)
 ------------------
