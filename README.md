@@ -37,7 +37,7 @@ Abstract
 
 HxTF (**H**a**x**e **T**esting **F**ramework) describes two components:
 
-- The `hxtf` command line tool (HxTF CLI), and
+- The `hxtf` command line tool (HxTF CLI); and
 - The library files used to write Test Setups (HxTF API).
 
 And is based around the following terms:
@@ -48,17 +48,15 @@ And is based around the following terms:
 - A "Test Broker" is a class inheriting from `hxtf.TestBroker` and operates like a directory of other Test Brokers and Test Cases.
 - A "Test Case" is a class inheriting from `hxtf.TestCase` and is the smallest unit of a Test Setup. It should perform a single unit test.
 
-A Test Setup is organized so that a user-defined Test Broker class `TestMain` references other Test Brokers (and/or Test Cases), which in turn reference more Test Brokers (and/or Test Cases) and so on. This results in a sequential recursive instantiation of Test Cases.
-
-The most easily maintainable Test Setup for HxTF is designed for there to be a Test Broker in each Haxe package, referencing all Test Cases in that package and all Test Brokers one package below.
+A Test Setup is organized so that a user-defined Test Broker class `TestMain` references other Test Brokers (and/or Test Cases), which, in turn, reference more Test Brokers (and/or Test Cases), and so on, recursively referencing all Test Cases.
 
 ---
 
-The HxTF CLI can be configured for different Test Runs with various flags, several of which can be overridden by specific Targets in their _&lt;target&gt;.hxml_ files.
+The HxTF CLI can be configured for different Test Runs with various flags, several of which can be overridden by specific Targets in their _&lt;target&gt;.hxml_ file.
 
 When the HxTF CLI is called to start a Test Run, each Target is compiled and run individually. HxTF creates an _\_.hxml_ file in the working directory nesting the hxml file for each specified targets. An example of this _\_.hxml_ file is shown below:
 
-```hxml
+```plaintext
 --main    hxtf.TestRun
 
 --library hxtf:1.2.0
@@ -76,7 +74,7 @@ cpp_debug.hxml
 
 Each Target for a Test Run must have a _&lt;target&gt;.hxml_ file (configuring compilation) and a _&lt;target&gt;.script_ file (invoking the Test Run). Each target will have a _&lt;target&gt;.cache_ file created for it by HxTF storing a list of Test Cases that have passed in previous Test Runs.
 
-All HxTF Targets are Haxe targets. Several HxTF Targets can be defined for the same Haxe target for testing different conditions (such as optimized and debug builds) or for calling different initialization macros etc.
+All HxTF Targets are Haxe targets. Several HxTF Targets can be defined for the same Haxe target for testing different conditions (such as optimized and debug builds), calling different initialization macros, etc.
 
 Test Brokers and Test Cases _must_ have a constructor taking no arguments accessible to the Test Broker referencing it.
 
@@ -85,7 +83,7 @@ Requirements
 ------------
 
 - HxTF requires that there be a type `TestMain` in the top-level package. This type must have a constructor taking no arguments, will be instantiated by the main class `hxtf.TestRun`, and would generally extend `hxtf.TestBroker` (being used as the main entry for adding Test Brokers and/or Test Cases).
-- `addBroker()` and `addTest()` functions must be explicitly imported (see `--default-import` flag details)
+- `addBroker()` and `addTest()` functions for Test Brokers must be explicitly imported (see `--default-import` flag details).
 
 
 Setup
@@ -93,7 +91,7 @@ Setup
 
 A particular Test Run is defined for some user-defined HxTF Target (a Haxe target potentially with some specialization), and requires a _&lt;target&gt;.hxml_ and _&lt;target&gt;.script_ file.
 
-- The _&lt;target&gt;.hxml_ file includes compiler configuration for that Target and is nested within a hxml file created by HxTF.
+- The _&lt;target&gt;.hxml_ file includes compiler configuration for that Target and is nested within the _\_.hxml_ file created by HxTF.
 - The _&lt;target&gt;.script_ file is read and passed to the command line. It can include setup and tear-down information for the test, but should invoke the Test Run in some way.
 
 > The exit status of the Test Run is used by HxTF CLI to determine if the Test Run succeeded or failed. If the exit code of passing the _&lt;target&gt;.script_ file contents to the command line is not the same as the exit code of the Test Run, HxTF will not behave as expected.
@@ -210,7 +208,7 @@ The `addTest()` function, at compile time, checks a cache file to see if its arg
 
 ---
 
-In the above example, "cpp_debug" and "cpp_optimized" are separate HxTF Targets for the same Haxe target. Each Test Run will save the result of its testing in a _&lt;target&gt;.cache_ file, with each passing Test Case separated by a newline. Each cache is specific to its Target and referred to when compiling another Test Run for that Target.
+In the above example, "cpp_debug" and "cpp_optimized" are separate HxTF Targets for the same Haxe target. Each Test Run will save the result of its testing in a _&lt;target&gt;.cache_ file with each passing Test Case separated by a newline. Each cache is specific to its Target and referred to when compiling another Test Run for that Target.
 
 HxTF creates an _\_.hxml_ file specifying the main class and some other configuration information. This _\_.hxml_ file defines the following compiler flags:
 
@@ -231,7 +229,7 @@ The `hxtf_cwd` flag should be overridden with care - it changes where _&lt;targe
 
 The `hxtf_y` and `hxtf_n` flags generally should not be overridden in hxml files. `hxtf_push` and `hxtf_pull` can be used instead. `hxtf_push` is used to extend the `hxtf_y` define with more tests to specifically compile the Test Run for, `hxtf_pull` is used to extend the `hxtf_n` define with more tests to specifically exclude from the Test Run. Both of these flags will attempt to be used as a colon-separated list of PCRE expressions.
 
-> All compiler defines that _start_ with `"hxtf_pull"` or `"hxtf_push"` will be interpreted as the respective define. This allows the user to define multiple pull/push defines when nesting hxml files.
+> All compiler defines _starting_ with `"hxtf_pull"` or `"hxtf_push"` will be interpreted as the respective pull/push define. This allows the user to define multiple pull/push defines when nesting hxml files.
 
 
 Use
@@ -284,7 +282,7 @@ Targets:
 | `--default-import` | Generate a default _import.hx_ file for HxTF and exit. |
 
 
-> From the command line, the `-y` and `-n` flags take a colon-separated list of glob expressions for Test Cases to push to and/or pull from the Test Run. The following wildcards are supported: `*`; `?`; `[abc]`; `[a-z]`; `[!abc]`; and `[!a-z]` - see [Wikipedia](https://en.wikipedia.org/wiki/Glob_%28programming%29#Syntax) for details.
+> From the command line, the `-y` and `-n` flags take a colon-separated list of glob expressions for Test Cases to push to and/or pull from the Test Run. The following wildcards are supported: `*`, `?`, `[abc]`, `[a-z]`, `[!abc]`, and `[!a-z]` - see [Wikipedia](https://en.wikipedia.org/wiki/Glob_%28programming%29#Syntax) for details.
 
 > Internally, glob expressions are converted into PCRE expressions stored in the `hxtf_y` and `hxtf_n` compiler defines.
 
@@ -355,7 +353,7 @@ Below is a simplified outline of the methods natively available to a Test Case:
 
 > A Test Case that has 'soft failed' will not be saved to the cache, but will also not be explicitly marked as a failure. Soft failures will be overridden by hard failures (a failed assertion results in a hard failure), which explicitly mark the test as failed as well as preventing it from being cached.
 
-`hxtf.TestCase` instances also have a `@:noCompletion var _passed(default, never):Bool` field. This field is used internally to record if the Test Case has had a hard failure - modify during runtime at your own risk.
+`hxtf.TestCase` instances also have a `@:noCompletion var _passed:Bool` field. This field is used internally to record if the Test Case has had a hard failure - modify during runtime at your own risk.
 
 
 Exit Status
@@ -371,12 +369,12 @@ The HxTF CLI returns an exit status.
 | `3` | Unexpected run-time error occurred in a Test Run. |
 | `4` | At least one Test Run failed to compile. |
 
-Higher exit codes are prioritized over lower ones. If a Test Run fails to compile one Target and another Target has a run-time failure, code `4` will be returned by HxTF over code `3`.
+Higher exit codes are prioritized over lower ones. If one Target fails to compile and another Target has a run-time failure, code `4` will be returned over code `3`.
 
-A compiled test will return the following codes, which are evaluated by the HxTF CLI:
+A Test Run will return one of the following codes, which are evaluated by the HxTF CLI:
 
 | Code | Description | Evaluation |
 | :--: | ----------- | ---------- |
 | `0` | Normal program termination - all assertions passed, no hard failures. | HxTF CLI Code `0` |
-| `1` | An unexpected run-time error occured and the test was aborted. | HxTF CLI Code `2` |
+| `1` | An unexpected run-time error occured and the test was aborted. | HxTF CLI Code `3` |
 | `2` | The test failed - a hard failure occured. | HxTF CLI Code `2` |
