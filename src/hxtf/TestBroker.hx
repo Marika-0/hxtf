@@ -79,10 +79,14 @@ class Helper {
             if (time != "") {
                 time = " [96;1m" + time;
             }
+
             var path = name.split(".");
             var type = path.pop();
+            if (path.length != 0) {
+                path.push("");
+            }
 
-            stdout('[92m >> ${path.join(".")}.[1m$type[0m[92m passed$time[0m\n');
+            stdout('[92m >> ${path.join(".")}[1m$type[0m[92m passed$time[0m\n');
             if (!TestRun.cache.exists(name)) {
                 TestRun.cache.set(name, true);
             }

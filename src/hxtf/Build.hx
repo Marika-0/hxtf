@@ -109,8 +109,9 @@ class Build {
         if (!typePathRegex.match(str)) {
             throw 'invalid type path: $str';
         }
+        var pack = typePathRegex.matched(1).substring(0, typePathRegex.matched(1).length - 1);
         return {
-            pack: typePathRegex.matched(1).substring(0, typePathRegex.matched(1).length - 1).split("."),
+            pack: pack == "" ? [] : pack.split("."),
             name: typePathRegex.matched(3),
             sub: typePathRegex.matched(5)
         }
