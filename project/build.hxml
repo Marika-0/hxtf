@@ -4,7 +4,7 @@
 -dce full
 -D analyzer-optimize
 
---macro hxtf.Macro.buildVersion("1.2.0")
+--macro hxtf.Macro.buildVersion("1.2.1")
 
 --resource ../resources/import.hx@ImportFile
 

@@ -2,6 +2,16 @@ Changelog
 =========
 
 
+1.2.1 (YYYY/MM/DD)
+------------------
+
+Fixes and stability improvements.
+
+- Bug fixes:
+  - Fixed invalid ANSI stripping regex.
+  - Fixed everything to do with having Test Cases in the root package.
+
+
 1.2.0 (2019/08/29)
 ------------------
 
