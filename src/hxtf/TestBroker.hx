@@ -75,18 +75,7 @@ class Helper {
     **/
     public static function evaluateCase(test:TestCase, name:String, start:Float):Void {
         if (test._passed) {
-            var time = formatTimeDelta(start, stamp());
-            if (time != "") {
-                time = " [96;1m" + time;
-            }
-
-            var path = name.split(".");
-            var type = path.pop();
-            if (path.length != 0) {
-                path.push("");
-            }
-
-            stdout('[92m >> ${path.join(".")}[1m$type[0m[92m passed$time[0m\n');
+            stdout(formatCasePrinting(name, true, start));
             if (!TestRun.cache.exists(name)) {
                 TestRun.cache.set(name, true);
             }
@@ -115,17 +104,33 @@ class Helper {
     }
 
     static function caseFailure(name:String, start:Float):Void {
-        var time = formatTimeDelta(start, stamp());
-        if (time != "") {
-            time = " [93;1m" + time;
-        }
-        var path = name.split(".");
-        var type = path.pop();
-
-        stderr('[91m${ansi ? " " : "!"}>> ${path.join(".")}.[1m$type[0m[91m failed$time[0m\n');
+        stderr(formatCasePrinting(name, false, start));
         if (TestRun.cache.exists(name)) {
             TestRun.cache.set(name, false);
         }
         TestRun.failedTestCount++;
+    }
+
+    static function formatCasePrinting(name:String, passed:Bool, start:Float):String {
+        var time = formatTimeDelta(start, stamp());
+        if (time != "") {
+            if (passed) {
+                time = " [96;1m" + time;
+            } else {
+                time = " [93;1m" + time;
+            }
+        }
+
+        var path = name.split(".");
+        var type = path.pop();
+        if (path.length != 0) {
+            path.push("");
+        }
+
+        return if (passed) {
+            '[92m >> ${path.join(".")}[1m$type[0m[92m passed$time[0m\n';
+        } else {
+            '[91m${ansi ? " " : "!"}>> ${path.join(".")}[1m$type[0m[91m failed$time[0m\n';
+        }
     }
 }
