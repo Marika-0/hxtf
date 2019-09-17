@@ -2,10 +2,10 @@ Changelog
 =========
 
 
-1.2.1 (YYYY/MM/DD)
+1.2.1 (2019/09/17)
 ------------------
 
-Fixes and stability improvements.
+Printing and formatting fixes.
 
 - Bug fixes:
   - Fixed invalid ANSI stripping regex (was causing compilation failure for Java).

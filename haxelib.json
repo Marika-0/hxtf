@@ -10,7 +10,7 @@
     "description": "A Lightweight Conditional Unit Testing Framework for Haxe 4 Targets with Access to the System Environment.",
     "version": "1.2.1",
     "classPath": "src",
-    "releasenote": "Fixes and stability improvements.",
+    "releasenote": "Printing and formatting fixes.",
     "contributors": ["Marika-0"],
     "dependencies": {}
 }
