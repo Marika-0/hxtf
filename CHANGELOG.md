@@ -11,6 +11,8 @@ Fixes and stability improvements.
   - Fixed invalid ANSI stripping regex (was causing compilation failure for Java).
   - Fixed Test Objects in the root package having their path incorrectly parsed.
   - Fixed Test Objects in the root package having their path incorrectly displayed.
+- Improvements:
+  - Now flushing stdout and stderr after writing to them.
 
 
 1.2.0 (2019/08/29)
