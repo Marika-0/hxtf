@@ -20,6 +20,7 @@ class Print {
     **/
     public static inline function stdout(s:String):Void {
         Sys.stdout().writeString(ansi ? s : stripAnsi(s));
+        Sys.stdout().flush();
     }
 
     /**
@@ -28,6 +29,7 @@ class Print {
     **/
     public static inline function stderr(s:String):Void {
         Sys.stderr().writeString(ansi ? s : stripAnsi(s));
+        Sys.stderr().flush();
     }
 
     /**

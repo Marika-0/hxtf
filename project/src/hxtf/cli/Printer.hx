@@ -16,6 +16,7 @@ class Printer {
     **/
     public static inline function stdout(str:String):Void {
         Sys.stdout().writeString(disableAnsi ? str.stripAnsi() : str);
+        Sys.stdout().flush();
     }
 
     /**
@@ -24,5 +25,6 @@ class Printer {
     **/
     public static inline function stderr(str:String):Void {
         Sys.stderr().writeString(disableAnsi ? str.stripAnsi() : str);
+        Sys.stderr().flush();
     }
 }
