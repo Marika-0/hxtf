@@ -13,6 +13,8 @@ Printing and formatting fixes.
   - Fixed Test Objects in the root package having their path incorrectly displayed.
 - Improvements:
   - Now flushing stdout and stderr after writing to them.
+- Meta changes:
+  - Fixed a lot of documentation grammar.
 
 
 1.2.0 (2019/08/29)
