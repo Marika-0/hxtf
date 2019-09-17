@@ -8,8 +8,9 @@ Changelog
 Fixes and stability improvements.
 
 - Bug fixes:
-  - Fixed invalid ANSI stripping regex.
-  - Fixed everything to do with having Test Cases in the root package.
+  - Fixed invalid ANSI stripping regex (was causing compilation failure for Java).
+  - Fixed Test Objects in the root package having their path incorrectly parsed.
+  - Fixed Test Objects in the root package having their path incorrectly displayed.
 
 
 1.2.0 (2019/08/29)
