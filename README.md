@@ -167,3 +167,5 @@ HxTF currently uses Haxe EReg's for pattern matching. This could be confusing wh
 To ease with parsing the output of HxTF, changing the formatting of information printed to the command line is considered a breaking change. Statements that a test started, failed an assertion, printed a prompt, reaching the maximum assertion failure limit, threw an uncaught exception, passed or failed, etc, are all printed to the command line in a specific format that won't be changed without the release of another major version of HxTF.
 
 Care should be taken when branching unit tests from other unit test. If a unit test `A` adds other unit tests `B` and `C`, and `A` is cached as passing on one test run, then `B` and `C` will not be run in future test runs without ignoring the cache.
+
+When multithreading with Java, printing to the command line from multiple threads can merge strings together and make strange sequences of characters. This might also happen on other targets, but it's definitely most pronounced with Java.
