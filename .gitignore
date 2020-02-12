@@ -1,2 +1,3 @@
-build/
-buildtmp/
+test/build/
+test/*.cache
+run.n
