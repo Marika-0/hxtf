@@ -14,6 +14,7 @@ haxelib install hxtf
 ```
 
 To install HxTF manually:
+
 1. Download the latest release.
 1. Go to `~/project/` and run `haxe build.hxml`.
 1. Add the `~/src/` directory and `~/run.n` neko binary to your project.
@@ -57,6 +58,7 @@ Examples of the use of `hxtf.TestRun.addObject()` can be found in Haxe source fi
 The `hxtf.TestObject` class is the base class for creating unit tests. A specific unit test class must extend `hxtf.TestObject` to be treated as a unit test by HxTF when added using `hxtf.TestMain.addObject()`.
 
 `hxtf.TestObject` defines several methods for use in testing:
+
 | Method | Description |
 | :----- | :---------- |
 | `assert(x:Bool, ?msg:String, ?pos:haxe.PosInfos):Bool` | Asserts that the given boolean `x` is `true`. |
@@ -79,6 +81,7 @@ Running Unit Tests
 ------------------
 
 The HxTF CLI has various flags for configuring a test run.
+
 | Flag | Argument/s | Description |
 | :--: | :--------: | ----------- |
 | `-f`, `--force` | &lt;none&gt; | Force rerunning of all tests, regardless of if the cache states those tests have already passed. |
@@ -110,18 +113,26 @@ The `--push` and `--pull` flags both require a colon-separated list of Unix glob
 Some examples of commands to run tests are as follows:
 
 - `hxtf -afz hl_dceStd cpp_noOptimisation java`
+
 Test the `hl_dceStd`, `cpp_noOptimisation`, and `java` targets without ANSI formatting, excluding tests that the cache says are already passing, or saving the passing tests from this test run to the cache.
+
 - `hxtf -r python_std python_simple`
+
 Remove the `python_std.cache` and `python_simple.cache` files if they exist.
+
 - `hxtf -t 0 -m 0 cs`
+
 Test the `cs` target without multithreading and without aborting tests prematurely.
+
 - `hxtf -y "numeric.*:math.*" -n "math.algebra.*" lua_fullOp:lua_noOp neko`
+
 Test everything in the `numeric` and `math` packages, except for everything in the `math.algebra` package for the `lua_fullOp`, `lua_noOp`, and `neko` targets, and don't run unit tests that have been cached as passed in previous test runs on each target.
 
 Advanced Target Configuration
 -----------------------------
 
-Specific HxTF targets can be configured to override
+Specific HxTF targets can be setup to override or add to command line configuration by specifying compiler defines:
+
 | Flag | Define | Value |
 | :--: | :----: | :---- |
 | `-f`, `--force` | `hxtf.readCache` | `"true"` to read the cache, otherwise ignores the cache. |
