@@ -1,20 +1,24 @@
-package hxtf.pattern;
+package hxtf.format;
 
 using StringTools;
 using Type;
 
 /**
-    An implementation of unix glob pattern-matching that translates a glob
-    pattern into a Haxe regular expression.
+    A clas for pattern matching with unix glob expressions.
 
-    Wildcard | Description
-    :------: | -----------
-    `*`      | Matches any amount of any character.
-    `?`      | Matches exactly one of any character.
-    `[abc]`  | Matches one of any of the listed characters (the literal character `-` must be escaped like so: `\-`).
-    `[a-h]`  | Matches one of any characters in the given range.
-    `[!abc]` | Matches one of any characters that are not listed (escape `!` with `\!` if it is at the start of a non-exclusive group).
-    `[!a-h]` | Matches one of any characters not in the given range.
+    This class translates a given unix glob string into a Haxe Ereg and provides
+    an interface for matching strings against that ereg.
+
+    | Wildcard | Description |
+    | :------: | ----------- |
+    | `*`      | Matches any amount of any character. |
+    | `?`      | Matches exactly one of any character. |
+    | `[abc]`  | Matches one of any of the listed characters (the literal
+                 character `-` must be escaped like so: `\-`). |
+    | `[a-h]`  | Matches one of any characters in the given range. |
+    | `[!abc]` | Matches one of any characters that are not listed (escape `!`
+                 with `\!` if it is at the start of a non-exclusive group). |
+    | `[!a-h]` | Matches one of any characters not in the given range. |
 
     A wildcard in a group will represent it's literal character/s.
 
@@ -35,7 +39,7 @@ using Type;
 
     The literal backslash character will only be interpreted if it is the last
     character in the glob (eg `a\` -> `"a\"`). In any other case, the backslash
-    character must be escaped (`a\\b` -> `"a\b"`)
+    character must be escaped (`a\\b` -> `"a\b"`).
 
     Examples:
     - `[abcj-z]` will not match `"d"`, `"e"`, `"f"`, etc.
@@ -43,59 +47,65 @@ using Type;
     - `\*` will match the literal `"*"` character.
     - `\[abc\]` and `\[abc]` will both match the literal string `"[abc]"`.
     - `\` and `\\` will both match the literal string `"\"`.
+    - `[abs` will be interpreted as `[abc]`.
     - `[\` will be interpreted as `[\\]`.
 **/
 class Glob {
     /**
-        The raw string used to construct `this` glob.
+        The string used to construct the Haxe Ereg instance.
     **/
-    public var raw(default, null):String;
+    public final eregString:String;
 
-    var regex:EReg;
+    final regex:EReg;
 
     /**
-        Creates a new glob expression with pattern `raw`.
-
-        If the glob is invalid, guaranteed to throw an exception of type String.
+        Simplifies the given string unix glob `glob`.
     **/
-    public function new(raw:String) {
-        try {
-            this.raw = parseRaw(raw);
-            regex = new EReg(this.raw, "");
-        } catch (ex:String) {
-            throw ex;
-        } catch (ex:Dynamic) {
-            throw "unknown: " + Std.string(ex);
+    public static function siplifyGlob(glob:String):String {
+        var buf = new StringBuf();
+        var index = 0;
+        while (index < glob.length) {
+            var char = glob.fastCodeAt(index++);
+            buf.addChar(char);
+            if (char == "*".code) {
+                while (glob.fastCodeAt(index) == "*".code) {
+                    index++;
+                }
+            }
         }
+        return buf.toString();
     }
 
     /**
-        Tells if `this` glob expression matches String `s`.
+        Creates a new `Glob` using the given unix glob expressions `glob` for
+        pattern matching.
 
-        If `s` is `null`, the result is unspecified.
+        Throws an exception of type `String` if `glob` is not a valid unix glob
+        expression.
+    **/
+    public function new(glob:String) {
+        eregString = parseGlob(glob);
+        regex = new EReg(eregString, "");
+    }
+
+    /**
+        Tests if the given string `s` can be matched by the provided unix glob
+        expression.
     **/
     public function match(s:String):Bool {
         return regex.match(s);
     }
 
     /**
-        Returns a copy of `this` Glob.
-    **/
-    public function copy():Glob {
-        var copy = this.getClass().createEmptyInstance();
-        copy.regex = regex;
-        copy.raw = raw;
-        return copy;
-    }
+        Converts the given unix glob expression `glob` into a Haxe Ereg string.
 
-    /**
-        Parses the given raw glob and transforms it into a EReg-type string with
-        the same match capabilities and limitations.
+        Guaranteed to throw an exception of type `String` if `glob` is not a
+        valid unix glob expression.
     **/
-    public static function parseRaw(raw:String):String {
-        var rawRegex = new StringBuf();
-        if (!raw.startsWith("*")) {
-            rawRegex.addChar("^".code);
+    function parseGlob(glob:String):String {
+        var rawEregBuf = new StringBuf();
+        if (!glob.startsWith("*")) {
+            rawEregBuf.addChar("^".code);
         }
 
         var justParsedAny = false;
@@ -104,9 +114,8 @@ class Glob {
         var justNegatedGroup = false;
         var parsingSpan = false;
         var breaking = false;
-
-        for (index in 0...raw.length) {
-            var char = raw.fastCodeAt(index);
+        for (index in 0...glob.length) {
+            var char = glob.fastCodeAt(index);
             var initStartedParsingGroup = startedParsingGroup;
             var initJustNegatedGroup = justNegatedGroup;
             var initParsingSpan = parsingSpan;
@@ -114,44 +123,44 @@ class Glob {
 
             if (startedParsingGroup) {
                 if (char != "]".code && char != "!".code) {
-                    rawRegex.addChar("[".code);
+                    rawEregBuf.addChar("[".code);
                 }
             } else if (justNegatedGroup) {
                 if (char != "]".code) {
-                    rawRegex.addChar("[".code);
-                    rawRegex.addChar("^".code);
+                    rawEregBuf.addChar("[".code);
+                    rawEregBuf.addChar("^".code);
                 }
             }
 
             switch (char) {
                 case "*".code:
                     if (parsingGroup) {
-                        rawRegex.addChar("*".code);
+                        rawEregBuf.addChar("*".code);
                     } else if (breaking) {
-                        rawRegex.addChar("\\".code);
-                        rawRegex.addChar("*".code);
+                        rawEregBuf.addChar("\\".code);
+                        rawEregBuf.addChar("*".code);
                     } else {
                         if (!justParsedAny) {
-                            rawRegex.addChar(".".code);
-                            rawRegex.addChar("*".code);
+                            rawEregBuf.addChar(".".code);
+                            rawEregBuf.addChar("*".code);
                         }
                         justParsedAny = true;
                     }
                 case "?".code:
                     if (parsingGroup) {
-                        rawRegex.addChar("?".code);
+                        rawEregBuf.addChar("?".code);
                     } else if (breaking) {
-                        rawRegex.addChar("\\".code);
-                        rawRegex.addChar("?".code);
+                        rawEregBuf.addChar("\\".code);
+                        rawEregBuf.addChar("?".code);
                     } else {
-                        rawRegex.addChar(".".code);
+                        rawEregBuf.addChar(".".code);
                     }
                 case "[".code:
                     if (parsingGroup) {
-                        rawRegex.addChar("[".code);
+                        rawEregBuf.addChar("[".code);
                     } else if (breaking) {
-                        rawRegex.addChar("\\".code);
-                        rawRegex.addChar("[".code);
+                        rawEregBuf.addChar("\\".code);
+                        rawEregBuf.addChar("[".code);
                     } else {
                         parsingGroup = true;
                         startedParsingGroup = true;
@@ -160,17 +169,17 @@ class Glob {
                     if (startedParsingGroup && !breaking) {
                         justNegatedGroup = true;
                     } else {
-                        rawRegex.addChar("!".code);
+                        rawEregBuf.addChar("!".code);
                     }
                 case "^".code:
                     if (startedParsingGroup || !parsingGroup) {
-                        rawRegex.addChar("\\".code);
+                        rawEregBuf.addChar("\\".code);
                     }
-                    rawRegex.addChar("^".code);
+                    rawEregBuf.addChar("^".code);
                 case "-".code:
                     if (parsingGroup) {
                         if (breaking) {
-                            rawRegex.addChar("\\".code);
+                            rawEregBuf.addChar("\\".code);
                         } else if (startedParsingGroup) {
                             throw "cannot span immediately after group opening";
                         } else if (justNegatedGroup) {
@@ -181,12 +190,12 @@ class Glob {
                             parsingSpan = true;
                         }
                     }
-                    rawRegex.addChar("-".code);
+                    rawEregBuf.addChar("-".code);
                 case "]".code:
                     if (parsingGroup) {
                         if (breaking) {
-                            rawRegex.addChar("\\".code);
-                            rawRegex.addChar("]".code);
+                            rawEregBuf.addChar("\\".code);
+                            rawEregBuf.addChar("]".code);
                             breaking = false;
                             continue;
                         } else if (parsingSpan) {
@@ -195,34 +204,33 @@ class Glob {
                             parsingGroup = false;
                         }
                     } else {
-                        rawRegex.addChar("\\".code);
-                        rawRegex.addChar("]".code);
+                        rawEregBuf.addChar("\\".code);
+                        rawEregBuf.addChar("]".code);
                         breaking = false;
                         continue;
                     }
                     if (!startedParsingGroup && !justNegatedGroup) {
-                        rawRegex.addChar("]".code);
+                        rawEregBuf.addChar("]".code);
                     }
                 case "\\".code:
                     if (breaking) {
-                        rawRegex.addChar("\\".code);
-                        rawRegex.addChar("\\".code);
+                        rawEregBuf.addChar("\\".code);
+                        rawEregBuf.addChar("\\".code);
                     } else {
                         breaking = true;
                     }
                 case ".".code | "+".code | "$".code | "|".code | "(".code | ")".code:
                     if (!parsingGroup) {
-                        rawRegex.addChar("\\".code);
+                        rawEregBuf.addChar("\\".code);
                     }
-                    rawRegex.addChar(char);
+                    rawEregBuf.addChar(char);
                 default:
-                    rawRegex.addChar(char);
+                    rawEregBuf.addChar(char);
             }
 
             if (char != "*".code) {
                 justParsedAny = false;
             }
-
             if (initStartedParsingGroup) {
                 startedParsingGroup = false;
             }
@@ -238,16 +246,16 @@ class Glob {
         }
 
         if (breaking) {
-            rawRegex.addChar("\\".code);
-            rawRegex.addChar("\\".code);
+            rawEregBuf.addChar("\\".code);
+            rawEregBuf.addChar("\\".code);
         }
         if (parsingGroup && !startedParsingGroup && !justNegatedGroup) {
-            rawRegex.addChar("]".code);
+            rawEregBuf.addChar("]".code);
         }
 
-        if (!raw.endsWith("*")) {
-            rawRegex.addChar("$".code);
+        if (!glob.endsWith("*")) {
+            rawEregBuf.addChar("$".code);
         }
-        return rawRegex.toString();
+        return rawEregBuf.toString();
     }
 }
