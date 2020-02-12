@@ -4,10 +4,6 @@
 -dce full
 -D analyzer-optimize
 
---macro hxtf.Macro.buildVersion("1.2.1")
+--macro hxtf.Macro.setBuild("2.0.0")
 
---resource ../resources/import.hx@ImportFile
-
--neko ../run.n
-
---cmd sh ../scripts/zip-for-haxelib.sh
+--neko ../run.n
