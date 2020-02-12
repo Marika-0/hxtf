@@ -1,87 +1,140 @@
 package hxtf;
 
-using Std;
+import haxe.CallStack;
+import haxe.PosInfos;
 
 /**
-    Formatting and writing to the standard output/error streams.
+    Handles printing to the standard output and error streams, stripping ANSI
+    if required.
 **/
 class Print {
     /**
-        `true` if the flag to disable ANSI printing was not set, `false`
-        otherwise.
+        The EReg that matches with ANSI escape sequences.
     **/
-    public static var ansi(default, null):Bool;
-
-    static var ansiRegex = ~/[\x1b\x9b][\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?\x07)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g;
+    static final ansiRegex = ~/[\x1b\x9b][\[\]()#;?]*((([a-zA-Z0-9]*(;[-a-zA-Z0-9\/#&.:=?%@~_]*)*)?\x07)|(([0-9][0-9]?[0-9]?[0-9]?(;[0-9]?[0-9]?[0-9]?[0-9]?)*)?[0-9A-PR-TZcf-ntqry=><~]))/g;
 
     /**
-        Writes the given string `s` to the standard output stream, stripping
-        ANSI formatting if `ansi` is true.
+        Removes ANSI escape sequences from the given string `str`.
     **/
-    public static inline function stdout(s:String):Void {
-        Sys.stdout().writeString(ansi ? s : stripAnsi(s));
+    public static inline function stripAnsi(str:String):String {
+        return ansiRegex.split(str).join("");
+    }
+
+    /**
+        Prints `s` to the standard output stream, stripping ANSI if required.
+    **/
+    public static function stdout(s:String):Void {
+        Sys.stdout().writeString(Config.stripAnsi ? stripAnsi(s) : s);
         Sys.stdout().flush();
     }
 
     /**
-        Writes the given string `s` to the standard error stream, stripping
-        ANSI formatting if `ansi` is true.
+        Prints `s` to the standard error stream, stripping ANSI if required.
     **/
-    public static inline function stderr(s:String):Void {
-        Sys.stderr().writeString(ansi ? s : stripAnsi(s));
+    public static function stderr(s:String):Void {
+        Sys.stderr().writeString(Config.stripAnsi ? stripAnsi(s) : s);
         Sys.stderr().flush();
     }
+}
 
-    /**
-        Formats the position `pos` uniformly for hxtf.
-    **/
-    public static inline function formatPosInfos(pos:haxe.PosInfos):String {
-        return 'line ${pos.lineNumber}';
+/**
+    Handles general and ANSI formatting of strings for printing the state of a
+    test run to the user.
+
+    Used internally by HxTF.
+**/
+class Format {
+    public static function formatTestStartMessage(test:String):String {
+        var path = test.split(".");
+        var type = path.pop();
+        if (path.length != 0) {
+            path.push("");
+        }
+        return '[37m~ ${path.join(".")}[1m$type[0m[37...[0m\n';
     }
 
-    /**
-        Formats the difference between times `a` and `b` uniformly for hxtf.
-    **/
-    public static function formatTimeDelta(a:Float, b:Float):String {
-        if (b <= a) {
+    public static function formatTimeDelta(delta:Float):String {
+        if (delta < 0) {
+            return "ERR_NEG_TIME";
+        } else if (delta == 0) {
             return "";
         }
 
-        var diff = DateTools.parse(1000 * (b - a));
-        var str = "";
+        var diff = DateTools.parse(1000 * delta);
+        var string = "";
 
         if (0 < diff.days) {
-            str += diff.days.string() + "d ";
+            string += diff.days + "d ";
         }
         if (0 < diff.hours) {
-            str += diff.hours.string() + "h ";
+            string += diff.hours + "h ";
         }
         if (0 < diff.minutes) {
-            str += diff.minutes.string() + "m ";
+            string += diff.minutes + "m ";
         }
         if (0 < diff.seconds) {
-            str += diff.seconds.string() + "s ";
+            string += diff.seconds + "s ";
         }
-        if (0 < diff.ms.int()) {
-            str += diff.ms.int().string() + "ms ";
+        if (0 < Std.int(diff.ms)) {
+            string += Std.int(diff.ms) + "ms ";
         }
 
-        return str == "" ? "" : '[${StringTools.trim(str)}]';
+        return string == "" ? "" : '[${StringTools.trim(string)}]';
     }
 
-    /**
-        Formats the given position expression `pos` uniformly for hxtf.
-    **/
-    public static function formatPosString(pos:haxe.macro.Expr.Position):String {
-        var str = Std.string(pos);
-        return str.substring(5, str.length - 1) + " : ";
+    public static function formatAssertionFailureMessage(source:String, reason:String, description:String, ?pos:PosInfos):String {
+        return '[41;1m! '
+            + '$source (line ${pos.lineNumber}):'
+            + '${reason == null ? "" : ' $reason'}'
+            + '${description == null ? "" : ' $description'} [0m\n';
     }
 
-    /**
-        Strips ANSI formatting from the given string `s` by splitting it with an
-        EReg and joining the result with an empty string.
-    **/
-    public static inline function stripAnsi(s:String):String {
-        return ansiRegex.split(s).join("");
+    public static function formatPromptMessage(source:String, message:String, printLine = true, ?pos:PosInfos):String {
+        return '[41;1m? $source${printLine ? ' (line ${pos.lineNumber})' : ""}: $message [0m\n';
+    }
+
+    public static function formatMaxAssertionsError(source:String):String {
+        return '[41;1mX $source maximum assertion failures reached - aborting test [0m\n';
+    }
+
+    public static function formatExceptionFailure(source:String, exception:Dynamic):String {
+        var lines = new Array<String>();
+        lines.push('[41;1mX $source: uncaught exception: ${Std.string(exception)} [0m\n');
+        if (CallStack.exceptionStack().length == 0) {
+            lines.push("[41;1m  > Exception stack unavailable [0m \n");
+        } else {
+            var stack = CallStack.toString(CallStack.exceptionStack()).split("\n");
+            lines = lines.concat(stack.map((line) -> {
+                // `CallStack.toString()` starts each line with a newline, so we
+                // need to filter that out before we can print properly.
+                if (line.length == 0) {
+                    return "";
+                }
+                return '[41;1m  > $line [0m\n';
+            }));
+        }
+        return lines.join("");
+    }
+
+    public static function formatTestCompletionMessage(test:String, passed:Bool, startTimeStamp:Float):String {
+        var time = formatTimeDelta(haxe.Timer.stamp() - startTimeStamp);
+        if (time != "") {
+            if (passed) {
+                time = " [96;1m" + time;
+            } else {
+                time = " [93;1m" + time;
+            }
+        }
+
+        var path = test.split(".");
+        var type = path.pop();
+        if (path.length != 0) {
+            path.push("");
+        }
+
+        if (passed) {
+            return '[92m+ ${path.join(".")}[1m$type[0m[92m passed$time[0m\n';
+        }
+        return '[91m# ${path.join(".")}[1m$type[0m[91m failed$time[0m\n';
     }
 }
