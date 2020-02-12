@@ -50,7 +50,7 @@ If the class passed to `hxtf.TestRun.addObject()` does not exist, does not have 
 
 `hxtf.TestRun.addObject()` handles everything to do with filtering tests based on the passed-test-cache and include/exclude specifications, multithreading, printing when a unit test starts and ends to the command line, handling a unit test exceeding the maximum assertion failure amount, and recording whether the test passed or failed. It is recommended to import `hxtf.TestRun.addObject` in an `import.hx` file in the root testing package for ease of use, but the user isn't required to do anything.
 
-Examples of the use of `hxtf.TestRun.addObject()` can be found in Haxe source files in this projects [`test/src`](test/src) directory.
+Examples of the use of `hxtf.TestRun.addObject()` can be found in Haxe source files in this projects [`test/src`](test/test) directory.
 
 ---
 
@@ -81,20 +81,20 @@ Running Unit Tests
 The HxTF CLI has various flags for configuring a test run.
 | Flag | Argument/s | Description |
 | :--: | :--------: | ----------- |
-| `-f`, `--force` | <none> | Force rerunning of all tests, regardless of if the cache states those tests have already passed. |
-| `-b`, `--block` | <none> | Block when testing of a target fails until the user presses a key (for multi-target testing). |
-| `-c`, `--compile` | <none> | Only compile the specified target/s. If this flag is set, script file do not need to exist for the given targets, only build hxmls. |
-| `-w`, `--write` | <none> | Write output of the Haxe compiler to the command line during compilation. |
-| `-a`, `--no-ansi` | <none> | Strip ANSI formatting from everything printed to the standard output streams. |
-| `-l`, `--no-lib` | <none> | Don't automatically include the HxTF library when compiling test runs. |
-| `-z`, `--no-cache` | <none> | Don't save passing unit tests to a `<target>.cache` file. |
+| `-f`, `--force` | &lt;none&gt; | Force rerunning of all tests, regardless of if the cache states those tests have already passed. |
+| `-b`, `--block` | &lt;none&gt; | Block when testing of a target fails until the user presses a key (for multi-target testing). |
+| `-c`, `--compile` | &lt;none&gt; | Only compile the specified target/s. If this flag is set, script file do not need to exist for the given targets, only build hxmls. |
+| `-w`, `--write` | &lt;none&gt; | Write output of the Haxe compiler to the command line during compilation. |
+| `-a`, `--no-ansi` | &lt;none&gt; | Strip ANSI formatting from everything printed to the standard output streams. |
+| `-l`, `--no-lib` | &lt;none&gt; | Don't automatically include the HxTF library when compiling test runs. |
+| `-z`, `--no-cache` | &lt;none&gt; | Don't save passing unit tests to a `<target>.cache` file. |
 | `-t`, `--max-threads` | A signed 32-bit integer | The maximum number of threads to use when running tests. The given value will be clamped in the range `[1,32]`. |
 | `-m`, `--max-failures` | A signed 32-bit integer | The maximum number of assertions that can fail in a single unit test before the test is prematurely aborted. A value less than `1` will disable this feature. |
 | `-y`, `--push` | A colon-separated list of class dot-paths globs | The unit tests to run in this test run. All other unit tests will not be run. |
 | `-n`, `--pull` | A colon-separated list of class dot-paths globs | The unit tests to exclude from this test run. Overrides the tests specified to include in `-y`. |
-| `-h`, `--help` | <none> | Print help information and exit. |
-| `-v`, `--version` | <none> | Print version information and exit. |
-| `-u`, `--usage` | <none> | Print usage information and exit. |
+| `-h`, `--help` | &lt;none&gt; | Print help information and exit. |
+| `-v`, `--version` | &lt;none&gt; | Print version information and exit. |
+| `-u`, `--usage` | &lt;none&gt; | Print usage information and exit. |
 | `-r`, `--reset` | None, or the target list | If the target list is given, deletes the cache file of each target. If no target list is given, deletes every `<name>.cache` file for every existing `<name>.hxml` and `<name>.script` file. |
 
 If the `--help`, `--version`, `--usage`, or `--reset` flags are set, the target list does not need to be included all other flags (except for `--no-ansi` in the case of `--reset`) will be ignored. `--help`, `--version`, and `--usage` take priority over `--reset`, and the first to be reached will print its information before exiting.
@@ -131,7 +131,7 @@ Specific HxTF targets can be configured to override
 | `-m`, `--max-failures` | `hxtf.maxAssertionFailures` | Parsed as an integer and clamped in the positive signed 32-bit integer range, defaults to `4` if parsing fails. |
 | `-y`, `--push` | `hxtf.includeTests` | A colon-separated list of Haxe EReg strings. |
 | `-n`, `--pull` | `hxtf.excludeTests` | A colon-separated list of Haxe EReg strings. |
-| <none> | `hxtf.workingDirectory` | A path to an existing write-accessible directory. |
+| &lt;none&gt; | `hxtf.workingDirectory` | A path to an existing write-accessible directory. |
 
 All defines beginning with `hxtf.includeTests` or `hxtf.excludeTests` are aggregated with the appropriate include/exclude list. This allows specific targets or nested hxml files to push or pull certain unit tests without overriding the `--push`/`--pull` command line arguments (e.g. `hl_noSys.hxml` can define `hxtf.excludeTests.noSys=^sys.:^filesystem.` to always exclude everything in the `sys` and `filesystem` packages, and `--pull "ds.*"` can still be defined on the command line to exclude everything in the `ds` package).
 
@@ -149,6 +149,7 @@ The HxTF CLI returns an exit status based on how testing went for the given targ
 | `2` | A unit test failed. |
 | `3` | An unexpected runtime error occurred in a test run. |
 | `4` | A target failed to compile. |
+
 Of exit codes `2`, `3`, and `4`: `4` takes precedence over `3`, which takes precedence over `2` (e.g. when testing multiple targets, if one target compiled successfully but had a unit test fail, and another target failed to compile, the exit code `4` would be returned instead of `2`).
 
 A compiled test run using the HxTF API also returns an exit code:
