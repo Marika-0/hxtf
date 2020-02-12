@@ -1,0 +1,7 @@
+-p test
+
+--define hxtf.writeCache=false
+--define hxtf.maxAssertionFailures=1
+--define hxtf.maxTestingThreads=99999
+
+--hl build/defines2.hl

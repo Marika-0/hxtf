@@ -1,0 +1,8 @@
+-p test
+
+--define hxtf.stripAnsi=true
+--define hxtf.readCache=false
+--define hxtf.maxTestingThreads=2
+--define hxtf.maxAssertionFailures=-8654
+
+--hl build/defines1.hl

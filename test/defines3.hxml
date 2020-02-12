@@ -1,0 +1,9 @@
+-p test
+
+--define hxtf.maxTestingThreads=-3
+--define hxtf.includeTestsQWERT=^imported.
+--define hxtf.includeTestsASDFG=^threading.
+--define hxtf.excludeTests.test=^threading.B.Ba
+--define hxtf.workingDirectory=./build/
+
+--hl build/defines3.hl

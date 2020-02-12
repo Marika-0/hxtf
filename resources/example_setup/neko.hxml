@@ -1,5 +1,0 @@
--cp src
-
--D hxtf_pull=.*Math.*:.*Array.*
-
--neko ./build/neko/TestRun.n
