@@ -2,6 +2,22 @@ Changelog
 =========
 
 
+2.0.0 (2020/02/12)
+------------------
+
+Multithreading and maximum assertion failure limits.
+
+- Breaking changes:
+  - Changed the `-q`/`--quick` flag to `-b`/`--block` and reversed it's function.
+  - Removed `hxtf.TestBroker` and `hxtf.TestCase`, unit tests now extend `hxtf.TestObject` and are added with `hxtf.TestRun.addObject()`.
+  - Changed hxtf-specific compile define names and values.
+  - Changed the format of command-line printing during a test run.
+- New Features:
+  - Multithreading of unit tests available is with the `--max-threads` flag (only available on targets that support multithreading).
+  - Individual unit tests will stop after reaching a maximum number of assertion failures available with the `--max-failures` flag.
+  - When a test run begins, the HxTF version, Haxe compiler version, and the number of threads are printed to the command line.
+
+
 1.2.1 (2019/09/17)
 ------------------
 
