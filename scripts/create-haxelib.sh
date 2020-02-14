@@ -17,3 +17,5 @@ zip -r ../hxtf.zip \
     README.md      \
     haxelib.json   \
     run.n;
+
+rm ../run.n
