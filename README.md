@@ -110,22 +110,21 @@ The `--push` and `--pull` flags both require a colon-separated list of Unix glob
 
 ---
 
-Some examples of commands to run tests are as follows:
+Some examples of commands to run tests or delete caches are as follows:
 
-- `hxtf -afz hl_dceStd cpp_noOptimisation java`
-
+`hxtf -afz hl_dceStd cpp_noOptimisation java`
 Test the `hl_dceStd`, `cpp_noOptimisation`, and `java` targets without ANSI formatting, excluding tests that the cache says are already passing, or saving the passing tests from this test run to the cache.
 
-- `hxtf -r python_std python_simple`
+`hxtf -r python_std python_simple`
+Delete the `python_std.cache` and `python_simple.cache` files if they exist.
 
-Remove the `python_std.cache` and `python_simple.cache` files if they exist.
+`hxtf -r`
+Delete every `<test>.cache` file if there exists a `<test>.hxml` and `<test>.script` file.
 
-- `hxtf -t 0 -m 0 cs`
-
+`hxtf -t 0 -m 0 cs`
 Test the `cs` target without multithreading and without aborting tests prematurely.
 
-- `hxtf -y "numeric.*:math.*" -n "math.algebra.*" lua_fullOp:lua_noOp neko`
-
+`hxtf -y "numeric.*:math.*" -n "math.algebra.*" lua_fullOp:lua_noOp neko`
 Test everything in the `numeric` and `math` packages, except for everything in the `math.algebra` package for the `lua_fullOp`, `lua_noOp`, and `neko` targets, and don't run unit tests that have been cached as passed in previous test runs on each target.
 
 Advanced Target Configuration
