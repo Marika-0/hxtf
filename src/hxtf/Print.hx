@@ -116,8 +116,8 @@ class Format {
         return lines.join("");
     }
 
-    public static function formatTestCompletionMessage(test:String, passed:Bool, startTimeStamp:Float):String {
-        var time = formatTimeDelta(haxe.Timer.stamp() - startTimeStamp);
+    public static function formatTestCompletionMessage(test:String, passed:Bool, timeDelta:Float):String {
+        var time = formatTimeDelta(timeDelta);
         if (time != "") {
             if (passed) {
                 time = " [96;1m" + time;
