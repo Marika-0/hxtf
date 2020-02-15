@@ -110,7 +110,7 @@ class Initialise {
                         case "r" | "--reset":
                             Config.DELETE_CACHE_FILES = true;
                         default:
-                            initialisationErrors.add('[3mInvalid flag \'${isLongFlag ? "" : "-"}$flag\'[0m\n');
+                            initialisationErrors.add('[3mInvalid flag \'${isLongFlag ? "" : "-"}$part\'[0m\n');
                     }
                 }
             } else {
