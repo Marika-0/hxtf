@@ -18,4 +18,4 @@ zip -r ../hxtf.zip \
     haxelib.json   \
     run.n;
 
-rm ../run.n
+rm run.n
