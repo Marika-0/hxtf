@@ -118,19 +118,22 @@ class Driver {
             Print.stdout('$SEPARATER_BAR\n');
         }
 
-        inline function printSkippingTarget(target:String):Void {
+        inline function printSkippingTarget(target:String, separator:Bool):Void {
             Print.stderr('[3mSkipping target: $target[0m\n\n');
+            if (separator) {
+                Print.stdout('$SEPARATER_BAR\n');
+            }
         }
 
         var iterator = Config.TARGETS.iterator();
         for (target in iterator) {
             if (!canTargetRunTests(target)) {
-                printSkippingTarget(target);
+                printSkippingTarget(target, iterator.hasNext());
                 continue;
             }
             if (!compileTestRun(target, getCompilationArguments(target))) {
                 if (!Config.WRITE_COMPILATION_OUTPUT) {
-                    printSkippingTarget(target);
+                    printSkippingTarget(target, iterator.hasNext());
                 }
                 continue;
             }
