@@ -10,6 +10,7 @@ Printing and documentation fixes.
 - Fixed the total printed testing time to the total time of all unit tests instead of the total time for everything after initializing `TestMain`.
 - Fixed the printing of invalid CLI flags.
 - Fixed the separator bar not being printed after failing to compile a test run.
+- Fixed not having updated the "No tests were run" statement to align with new formatting.
 - Fixed *many* documentation errors, and made a list of things to check before making a release so that hopefully there will be fewer errors in future.
 
 

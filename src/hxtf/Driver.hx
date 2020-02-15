@@ -175,7 +175,7 @@ class Driver {
 
     static function complete():Void {
         if (passedTestCount == 0 && failedTestCount == 0) {
-            Print.stdout("  [3;4mNo Tests Were Run![0m\n");
+            Print.stdout("  [3mNo tests were run[0m\n");
             Sys.exit(0);
         }
 
