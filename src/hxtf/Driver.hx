@@ -22,12 +22,17 @@ class Driver {
     /**
         The number of test cases that have passed in this test run.
     **/
-    @:noCompletion public static var passedTestCount(default, null):UInt = 0;
+    static var passedTestCount:UInt = 0;
 
     /**
         The number of test cases that have failed in this test run.
     **/
-    @:noCompletion public static var failedTestCount(default, null):UInt = 0;
+    static var failedTestCount:UInt = 0;
+
+    /**
+        The total amount of time spent running unit tests.
+    **/
+    static var totalTestTime:Float = 0;
 
     #if target.threaded
     /**
@@ -121,26 +126,29 @@ class Driver {
         }
         Config.cache.set(testName, false);
 
-        var startTimeStamp = haxe.Timer.stamp();
+        var testPassed = false;
+        Print.stdout(Print.Format.formatTestStartMessage(testName));
+        var testTime = Timer.stamp();
         try {
-            Print.stdout(Print.Format.formatTestStartMessage(testName));
-            if (run() == 0) {
-                passedTestCount++;
-                Config.cache.set(testName, true);
-                Print.stdout(Print.Format.formatTestCompletionMessage(testName, true, startTimeStamp));
-                return;
-            }
+            testPassed = run() == 0;
         } catch (ex:TestObject.MaximumAssertionFailuresReached) {
             Print.stderr(Print.Format.formatMaxAssertionsError(testName));
         } catch (ex:Dynamic) {
             Print.stderr(Print.Format.formatExceptionFailure(testName, ex));
         }
-        failedTestCount++;
-        Print.stdout(Print.Format.formatTestCompletionMessage(testName, false, startTimeStamp));
+
+        testTime = Timer.stamp() - testTime;
+        totalTestTime += testTime;
+        if (testPassed) {
+            passedTestCount++;
+            Config.cache.set(testName, true);
+        } else {
+            failedTestCount++;
+        }
+        Print.stdout(Print.Format.formatTestCompletionMessage(testName, testPassed, testTime));
     }
 
     @:allow(hxtf.TestRun) static function run():Void {
-        var startTime = Timer.stamp();
         new TestMain();
 
         #if target.threaded
@@ -161,10 +169,11 @@ class Driver {
             }
         }
         #end
-        complete(Timer.stamp() - startTime);
+
+        complete();
     }
 
-    static function complete(timeDelta:Float):Void {
+    static function complete():Void {
         if (passedTestCount == 0 && failedTestCount == 0) {
             Print.stdout("  [3;4mNo Tests Were Run![0m\n");
             Sys.exit(0);
@@ -183,7 +192,7 @@ class Driver {
         // passed/failed test count with a `.0`. We wrap all stringification of
         // numerics in `Std.int()` to force an integer representation.
         var padding = Math.round(Math.abs('${Std.int(passedTestCount)}'.length - '${Std.int(failedTestCount)}'.length)) + 1;
-        Print.stdout('\n[3mTesting complete ${Print.Format.formatTimeDelta(timeDelta)}[0m\n');
+        Print.stdout('\n[3mTesting complete [0m[1m${Print.Format.formatTimeDelta(totalTestTime)}[0m\n');
         Print.stdout('$format => Tests passed: ${"".lpad(" ", padding - '${Std.int(passedTestCount)}'.length)}${Std.int(passedTestCount)} [0m\n');
         Print.stdout('$format => Tests failed: ${"".lpad(" ", padding - '${Std.int(failedTestCount)}'.length)}${Std.int(failedTestCount)} [0m\n');
 
