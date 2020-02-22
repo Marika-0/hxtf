@@ -148,6 +148,7 @@ Exit Codes
 ----------
 
 The HxTF CLI returns an exit status based on how testing went for the given target/s:
+
 | Code | Description |
 | :--: | :---------- |
 | `0` | Normal program termination - all unit tests for all targets compiled and ran successfully. |
@@ -159,6 +160,7 @@ The HxTF CLI returns an exit status based on how testing went for the given targ
 Of exit codes `2`, `3`, and `4`: `4` takes precedence over `3`, which takes precedence over `2` (e.g. when testing multiple targets, if one target compiled successfully but had a unit test fail, and another target failed to compile, the exit code `4` would be returned instead of `2`).
 
 A compiled test run using the HxTF API also returns an exit code:
+
 | Code | Description |
 | :--: | :---------- |
 | `0` | All unit tests passed, no errors occurred. |
