@@ -8,7 +8,7 @@
         "utility"
     ],
     "description": "A Lightweight Multithreaded Conditional Unit Testing Framework for Haxe 4 Targets with Access to the System Environment.",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "classPath": "src",
     "releasenote": "Added multithreading and maximum assertion failure limits.",
     "contributors": ["Marika-0"],

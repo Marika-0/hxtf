@@ -4,6 +4,6 @@
 -dce full
 -D analyzer-optimize
 
---macro hxtf.Macro.setBuild("2.0.0")
+--macro hxtf.Macro.setBuild("2.0.1")
 
 --neko ../run.n
