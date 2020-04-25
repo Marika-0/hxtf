@@ -177,4 +177,4 @@ To ease with parsing the output of HxTF, changing the formatting of information 
 
 Care should be taken when branching unit tests from other unit test. If a unit test `A` adds other unit tests `B` and `C`, and `A` is cached as passing on one test run, then `B` and `C` will not be run in future test runs without ignoring the cache.
 
-When multithreading with Java, printing to the command line from multiple threads can merge strings together and make strange sequences of characters. This might also happen on other targets, but it's definitely most pronounced with Java.
+When multithreading with Java, printing to the standard outputs from multiple threads merges strings together into an unreadable mess. This hasn't been fixed yet.
