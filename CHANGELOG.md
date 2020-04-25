@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.0.1 (2020/??/??)
+2.0.1 (2020/02/22)
 ------------------
 
 Printing and documentation fixes.
