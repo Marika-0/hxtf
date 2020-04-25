@@ -42,8 +42,10 @@ class Driver {
     #end
 
     @:noCompletion public static macro function addObject(e:Expr):Expr {
-        // Get the name, including the module (if a submodule) of the test.
+        // Determine if the expression is a (hopefully instantiable) type and,
+        // if it is, get that types type name and module path.
         var typeName:String;
+        var typePath:TypePath;
         switch (Context.typeof(e)) {
             case TType(ref, _):
                 var defType = ref.get();
@@ -51,60 +53,39 @@ class Driver {
                     Context.fatalError('Invalid type ${defType.name} (may not have been imported?)', Context.currentPos());
                 }
                 typeName = defType.module;
+                var typeNameArray = typeName.split(".");
+                typePath = {
+                    pack: typeNameArray,
+                    name: typeNameArray.pop(),
+                    sub: null,
+                }
                 if (defType.name != 'Class<$typeName>') {
-                    typeName = typeName + defType.name.substring(defType.name.lastIndexOf("."), defType.name.length - 1);
+                    var sub = defType.name.substring(defType.name.lastIndexOf("."), defType.name.length - 1);
+                    typeName += sub;
+                    typePath.sub = sub;
                 }
             default:
                 Context.fatalError("Given expression is not a type.", Context.currentPos());
         }
 
-        // Exclude the test if it's already passed, excluded, or not included.
-        if (Config.CACHE.exists(typeName)) {
-            return macro null;
-        }
-        if (!Config.EXCLUDE_REGEXES.foreach((ereg) -> !ereg.match(typeName))) {
-            return macro null;
-        }
-        if (Config.INCLUDE_REGEXES.length != 0) {
-            if (Config.INCLUDE_REGEXES.foreach((ereg) -> !ereg.match(typeName))) {
-                return macro null;
-            }
-        }
-
-        // Get the typepath of the test, being aware of submodules.
-        var typePath:TypePath;
-        {
-            var module = ExprTools.toString(e).split(".");
-            if (module.length == 1) {
-                typePath = {
-                    pack: [],
-                    name: module.pop()
-                };
-            } else {
-                // Check every character of the second-to-last element for a
-                // capital letter, which would make the given type a subtype of
-                // the module. See <https://haxe.org/manual/expression.html>, (a
-                // package can be named any number of underscores, but an actual
-                // module *must* have a capital letter).
-                var isSubType = false;
-                for (index in 0...(module[module.length - 2]).length) {
-                    var code = module[module.length - 2].fastCodeAt(index);
-                    if ("A".code <= code && code <= "Z".code) {
-                        isSubType = true;
-                        break;
-                    }
-                }
-                typePath = {
-                    pack: module.slice(0, module.length - (isSubType ? 2 : 1)),
-                    name: module[module.length - (isSubType ? 2 : 1)],
-                    sub: isSubType ? module[module.length - 1] : null
-                }
-            }
-        }
-
         // Check if the type extends `hxtf.TestObject`.
         var isTestObject = TypeTools.unify(ComplexTypeTools.toType(TPath(typePath)), ComplexTypeTools.toType(TPath({pack: ["hxtf"], name: "TestObject"})));
         if (isTestObject) {
+            // Exclude the test if it has already passed, if it matches any of
+            // the exclusion regexes, or if it doesn't match any of the
+            // inclusion regexes.
+            if (Config.CACHE.exists(typeName)) {
+                Context.fatalError("1 - " + Std.string(typeName), Context.currentPos());
+                return macro null;
+            }
+            if (!Config.EXCLUDE_REGEXES.foreach((ereg) -> !ereg.match(typeName))) {
+                Context.fatalError("2 - " + Std.string(typeName), Context.currentPos());
+                return macro null;
+            }
+            if (Config.INCLUDE_REGEXES.length != 0 && Config.INCLUDE_REGEXES.foreach((ereg) -> !ereg.match(typeName))) {
+                Context.fatalError("3 - " + Std.string(typeName), Context.currentPos());
+                return macro null;
+            }
             if (Config.IS_THREADING_TESTS) {
                 return macro hxtf.Driver.addTestingThread(() -> new $typePath()._assertionFailureCount, $v{typeName});
             } else {
