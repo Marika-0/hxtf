@@ -2,6 +2,15 @@ Changelog
 =========
 
 
+2.0.2 (2020/04/25)
+------------------
+
+Fixes to test filtering and total testing time calculation.
+
+- Fixed added objects that aren't children of `hxtf.TestObject` getting excluded from compilation.
+- Fixed the total testing time not being calculated correctly.
+
+
 2.0.1 (2020/02/22)
 ------------------
 
