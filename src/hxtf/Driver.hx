@@ -60,8 +60,8 @@ class Driver {
                     sub: null,
                 }
                 if (defType.name != 'Class<$typeName>') {
-                    var sub = defType.name.substring(defType.name.lastIndexOf("."), defType.name.length - 1);
-                    typeName += sub;
+                    var sub = defType.name.substring(defType.name.lastIndexOf(".") + 1, defType.name.length - 1);
+                    typeName += "." + sub;
                     typePath.sub = sub;
                 }
             default:
@@ -75,15 +75,12 @@ class Driver {
             // the exclusion regexes, or if it doesn't match any of the
             // inclusion regexes.
             if (Config.CACHE.exists(typeName)) {
-                Context.fatalError("1 - " + Std.string(typeName), Context.currentPos());
                 return macro null;
             }
             if (!Config.EXCLUDE_REGEXES.foreach((ereg) -> !ereg.match(typeName))) {
-                Context.fatalError("2 - " + Std.string(typeName), Context.currentPos());
                 return macro null;
             }
             if (Config.INCLUDE_REGEXES.length != 0 && Config.INCLUDE_REGEXES.foreach((ereg) -> !ereg.match(typeName))) {
-                Context.fatalError("3 - " + Std.string(typeName), Context.currentPos());
                 return macro null;
             }
             if (Config.IS_THREADING_TESTS) {
