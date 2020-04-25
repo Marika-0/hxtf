@@ -76,7 +76,7 @@ class Format {
             string += diff.seconds + "s ";
         }
         if (0 < Std.int(diff.ms)) {
-            string += Std.int(diff.ms) + "ms ";
+            string += Math.round(diff.ms) + "ms ";
         }
 
         return string == "" ? "" : '[${StringTools.trim(string)}]';

@@ -118,7 +118,7 @@ class Driver {
             Print.stderr(Print.Format.formatExceptionFailure(testName, ex));
         }
 
-        testTime = Timer.stamp() - testTime;
+        testTime = Math.round(1000 * (Timer.stamp() - testTime)) / 1000;
         totalTestTime += testTime;
         if (testPassed) {
             passedTestCount++;
